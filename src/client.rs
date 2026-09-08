@@ -43,6 +43,19 @@ impl Client {
         }
     }
 
+    /// the v4 api, authenticated with a user access token from the v4 auth
+    /// flow — a different credential than the read token, so mixing them is
+    /// a compile error
+    pub fn v4(&self, access_token: &crate::AccessToken) -> crate::V4 {
+        let mut client = self.clone();
+        // a custom base (proxy, mock) serves both versions as-is
+        if let Some(origin) = client.base.strip_suffix("/3") {
+            client.base = format!("{origin}/4");
+        }
+        client.auth = Auth::Token(access_token.as_str().to_owned());
+        crate::V4::new(client)
+    }
+
     /// bring your own reqwest client (proxies, timeouts, ...)
     pub fn with_http_client(mut self, http: reqwest::Client) -> Self {
         self.http = http;
@@ -60,12 +73,58 @@ impl Client {
         path: &str,
         query: &[(&str, String)],
     ) -> Result<T> {
+        self.request(reqwest::Method::GET, path, query, None).await
+    }
+
+    pub(crate) async fn post<T: DeserializeOwned>(
+        &self,
+        path: &str,
+        query: &[(&str, String)],
+        body: &serde_json::Value,
+    ) -> Result<T> {
+        self.request(reqwest::Method::POST, path, query, Some(body))
+            .await
+    }
+
+    pub(crate) async fn put<T: DeserializeOwned>(
+        &self,
+        path: &str,
+        query: &[(&str, String)],
+        body: &serde_json::Value,
+    ) -> Result<T> {
+        self.request(reqwest::Method::PUT, path, query, Some(body))
+            .await
+    }
+
+    /// TMDB deletes carry a json body too (session, list items)
+    pub(crate) async fn delete<T: DeserializeOwned>(
+        &self,
+        path: &str,
+        query: &[(&str, String)],
+        body: &serde_json::Value,
+    ) -> Result<T> {
+        self.request(reqwest::Method::DELETE, path, query, Some(body))
+            .await
+    }
+
+    async fn request<T: DeserializeOwned>(
+        &self,
+        method: reqwest::Method,
+        path: &str,
+        query: &[(&str, String)],
+        body: Option<&serde_json::Value>,
+    ) -> Result<T> {
         let mut retried = false;
         loop {
-            let mut request = self.http.get(format!("{}{path}", self.base));
+            let mut request = self
+                .http
+                .request(method.clone(), format!("{}{path}", self.base));
             match &self.auth {
                 Auth::Key(key) => request = request.query(&[("api_key", key.as_str())]),
                 Auth::Token(token) => request = request.bearer_auth(token),
+            }
+            if let Some(body) = body {
+                request = request.json(body);
             }
             let response = request.query(query).send().await?;
             let status = response.status();
@@ -99,9 +158,9 @@ impl Client {
                     message: error.status_message,
                 },
                 Err(_) if status == StatusCode::NOT_FOUND => Error::NotFound,
-                Err(_) if status == StatusCode::TOO_MANY_REQUESTS => Error::RateLimited {
-                    retry_after: None,
-                },
+                Err(_) if status == StatusCode::TOO_MANY_REQUESTS => {
+                    Error::RateLimited { retry_after: None }
+                }
                 Err(_) => Error::Tmdb {
                     code: status.as_u16().into(),
                     message: body,

@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use serde::Deserialize;
 use time::Date;
 
@@ -171,6 +173,189 @@ pub struct SeasonShort {
     pub air_date: Option<Date>,
 }
 
+/// movie or series, for write-endpoint bodies
+#[derive(Debug, Clone, Copy, PartialEq, Eq, serde::Serialize)]
+#[serde(rename_all = "snake_case")]
+pub enum MediaType {
+    Movie,
+    Tv,
+}
+
+/// the success envelope of write endpoints
+#[derive(Debug, Clone, Deserialize)]
+pub struct StatusResponse {
+    pub success: bool,
+    pub status_code: i32,
+    pub status_message: String,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct Translation {
+    pub iso_3166_1: String,
+    pub iso_639_1: String,
+    pub name: String,
+    pub english_name: String,
+    pub data: TranslationData,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct TranslationData {
+    /// movies
+    pub title: Option<String>,
+    /// series
+    pub name: Option<String>,
+    pub overview: Option<String>,
+    pub homepage: Option<String>,
+    pub tagline: Option<String>,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct Translations {
+    pub translations: Vec<Translation>,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct AlternativeTitle {
+    pub iso_3166_1: String,
+    pub title: String,
+    #[serde(rename = "type")]
+    pub kind: String,
+}
+
+/// `/movie/{id}/alternative_titles`
+#[derive(Debug, Clone, Deserialize)]
+pub struct AlternativeTitles {
+    pub titles: Vec<AlternativeTitle>,
+}
+
+/// `/tv/{id}/alternative_titles` — same payload, different envelope
+#[derive(Debug, Clone, Deserialize)]
+pub struct AlternativeTitleResults {
+    pub results: Vec<AlternativeTitle>,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct AlternativeName {
+    pub name: String,
+    #[serde(rename = "type")]
+    pub kind: String,
+}
+
+/// company and network alternative names
+#[derive(Debug, Clone, Deserialize)]
+pub struct AlternativeNames {
+    pub results: Vec<AlternativeName>,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct ChangeItem {
+    pub id: String,
+    pub action: String,
+    pub time: String,
+    pub iso_639_1: Option<String>,
+    pub iso_3166_1: Option<String>,
+    /// free-form: the shape depends on the changed key
+    pub value: serde_json::Value,
+    pub original_value: Option<serde_json::Value>,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct Change {
+    pub key: String,
+    pub items: Vec<ChangeItem>,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct Changes {
+    pub changes: Vec<Change>,
+}
+
+/// `rated` is `false` until the user rates the title, then an object
+#[derive(Debug, Clone, Copy, Deserialize)]
+#[serde(untagged)]
+pub enum Rated {
+    Unrated(bool),
+    Rated { value: f64 },
+}
+
+impl Rated {
+    pub fn value(&self) -> Option<f64> {
+        match self {
+            Self::Unrated(_) => None,
+            Self::Rated { value } => Some(*value),
+        }
+    }
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct AccountStates {
+    pub favorite: bool,
+    pub watchlist: bool,
+    pub rated: Rated,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct WatchProvider {
+    pub provider_id: u64,
+    pub provider_name: String,
+    pub logo_path: Option<String>,
+    pub display_priority: Option<u32>,
+}
+
+/// one country's watch options for a title
+#[derive(Debug, Clone, Deserialize)]
+pub struct CountryProviders {
+    pub link: Option<String>,
+    #[serde(default)]
+    pub flatrate: Vec<WatchProvider>,
+    #[serde(default)]
+    pub rent: Vec<WatchProvider>,
+    #[serde(default)]
+    pub buy: Vec<WatchProvider>,
+    #[serde(default)]
+    pub ads: Vec<WatchProvider>,
+    #[serde(default)]
+    pub free: Vec<WatchProvider>,
+}
+
+/// the `watch/providers` payload, keyed by country code
+#[derive(Debug, Clone, Deserialize)]
+pub struct WatchProviders {
+    pub results: HashMap<String, CountryProviders>,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct AuthorDetails {
+    pub name: String,
+    pub username: String,
+    pub avatar_path: Option<String>,
+    pub rating: Option<f64>,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct Review {
+    pub id: String,
+    pub author: String,
+    pub author_details: AuthorDetails,
+    pub content: String,
+    pub created_at: String,
+    pub updated_at: String,
+    pub url: String,
+}
+
+/// one list in a list-of-lists response
+#[derive(Debug, Clone, Deserialize)]
+pub struct ListShort {
+    pub id: u64,
+    pub name: String,
+    pub description: String,
+    pub item_count: u32,
+    pub iso_639_1: Option<String>,
+    pub list_type: Option<String>,
+    pub poster_path: Option<String>,
+    pub favorite: Option<bool>,
+}
+
 appendable! {
     Credits,
     ReleaseDates,
@@ -180,4 +365,10 @@ appendable! {
     ExternalIds,
     Videos,
     Images,
+    Translations,
+    AlternativeTitles,
+    AlternativeTitleResults,
+    Changes,
+    AccountStates,
+    WatchProviders,
 }

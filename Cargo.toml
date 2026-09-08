@@ -7,13 +7,18 @@ license = "MIT"
 description = "Async, fully-typed TMDB (API v3 + v4) client with compile-time append_to_response"
 keywords = ["tmdb", "movies", "api", "client"]
 categories = ["api-bindings"]
+documentation = "https://docs.rs/tmdb-rs"
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
 
 [features]
 default = []
 stream = ["dep:futures-core"]
 
 [dependencies]
-reqwest = { version = "0.13.4", default-features = false, features = ["query", "rustls"] }
+reqwest = { version = "0.13.4", default-features = false, features = ["json", "query", "rustls"] }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 thiserror = "2"
@@ -25,3 +30,4 @@ futures-core = { version = "0.3", optional = true }
 [dev-dependencies]
 tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
 wiremock = "0.6"
+futures-util = "0.3"
