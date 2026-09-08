@@ -1,0 +1,27 @@
+[package]
+name = "tmdb-rs"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.85"
+license = "MIT"
+description = "Async, fully-typed TMDB (API v3 + v4) client with compile-time append_to_response"
+keywords = ["tmdb", "movies", "api", "client"]
+categories = ["api-bindings"]
+
+[features]
+default = []
+stream = ["dep:futures-core"]
+
+[dependencies]
+reqwest = { version = "0.13.4", default-features = false, features = ["query", "rustls"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+thiserror = "2"
+time = { version = "0.3", features = ["parsing", "macros"] }
+paste = "1"
+tokio = { version = "1", features = ["time"] }
+futures-core = { version = "0.3", optional = true }
+
+[dev-dependencies]
+tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
+wiremock = "0.6"
