@@ -19,14 +19,12 @@ pub struct Keyword {
 /// `/movie/{id}/keywords`
 #[derive(Debug, Clone, Deserialize)]
 pub struct MovieKeywords {
-    pub id: u64,
     pub keywords: Vec<Keyword>,
 }
 
 /// `/tv/{id}/keywords` — same payload, different envelope
 #[derive(Debug, Clone, Deserialize)]
 pub struct TvKeywords {
-    pub id: u64,
     pub results: Vec<Keyword>,
 }
 
@@ -44,7 +42,6 @@ pub struct Video {
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct Videos {
-    pub id: u64,
     pub results: Vec<Video>,
 }
 
@@ -61,7 +58,6 @@ pub struct Image {
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct Images {
-    pub id: u64,
     #[serde(default)]
     pub backdrops: Vec<Image>,
     #[serde(default)]
@@ -72,7 +68,6 @@ pub struct Images {
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct CastMember {
-    pub id: u64,
     pub name: String,
     pub character: Option<String>,
     pub profile_path: Option<String>,
@@ -82,7 +77,6 @@ pub struct CastMember {
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct CrewMember {
-    pub id: u64,
     pub name: String,
     pub job: String,
     pub department: String,
@@ -92,7 +86,6 @@ pub struct CrewMember {
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct Credits {
-    pub id: u64,
     pub cast: Vec<CastMember>,
     pub crew: Vec<CrewMember>,
 }
@@ -142,7 +135,6 @@ pub struct CountryReleaseDates {
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct ReleaseDates {
-    pub id: u64,
     pub results: Vec<CountryReleaseDates>,
 }
 
@@ -154,13 +146,11 @@ pub struct ContentRating {
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct ContentRatings {
-    pub id: u64,
     pub results: Vec<ContentRating>,
 }
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct ExternalIds {
-    pub id: u64,
     pub imdb_id: Option<String>,
     pub wikidata_id: Option<String>,
     pub tvdb_id: Option<u64>,
@@ -172,7 +162,6 @@ pub struct ExternalIds {
 /// one season inside a series' details
 #[derive(Debug, Clone, Deserialize)]
 pub struct SeasonShort {
-    pub id: u64,
     pub season_number: u32,
     pub name: String,
     pub episode_count: u32,

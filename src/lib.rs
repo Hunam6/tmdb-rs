@@ -44,5 +44,6 @@ pub use image::{Backdrop, Logo, Poster, Profile, Still};
 pub use locale::{Country, Language};
 pub use models::*;
 pub use page::Page;
+pub use time::Date;
 
 pub type Result<T> = std::result::Result<T, Error>;
