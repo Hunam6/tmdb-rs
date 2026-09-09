@@ -18,19 +18,35 @@ pub enum AccountSort {
 }
 
 #[derive(Debug, Clone, Deserialize)]
-pub struct Gravatar {
-    pub hash: String,
-}
-
-#[derive(Debug, Clone, Deserialize)]
-pub struct TmdbAvatar {
+#[serde(from = "RawAvatar")]
+pub struct Avatar {
+    pub gravatar_hash: String,
     pub avatar_path: Option<String>,
 }
 
-#[derive(Debug, Clone, Deserialize)]
-pub struct Avatar {
-    pub gravatar: Gravatar,
-    pub tmdb: TmdbAvatar,
+#[derive(Deserialize)]
+struct RawAvatar {
+    gravatar: RawGravatar,
+    tmdb: RawTmdbAvatar,
+}
+
+#[derive(Deserialize)]
+struct RawGravatar {
+    hash: String,
+}
+
+#[derive(Deserialize)]
+struct RawTmdbAvatar {
+    avatar_path: Option<String>,
+}
+
+impl From<RawAvatar> for Avatar {
+    fn from(raw: RawAvatar) -> Self {
+        Avatar {
+            gravatar_hash: raw.gravatar.hash,
+            avatar_path: raw.tmdb.avatar_path,
+        }
+    }
 }
 
 #[derive(Debug, Clone, Deserialize)]
