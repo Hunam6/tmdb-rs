@@ -7,7 +7,7 @@ use crate::common::{
 };
 use crate::endpoints::credit::Credits;
 use crate::endpoints::genre::Genre;
-use crate::endpoints::keyword::MovieKeywords;
+use crate::endpoints::keyword::{Keyword, MovieKeywords};
 use crate::endpoints::list::ListShort;
 use crate::endpoints::review::Review;
 use crate::{Backdrop, CountryCode, GuestSessionId, Language, Page, Poster, SessionId};
@@ -279,7 +279,7 @@ endpoint! {
 
 endpoint! {
     /// a movie's keywords, without the details round-trip
-    movie_keywords(id: u64): GET "/movie/{id}/keywords" => MovieKeywords
+    movie_keywords(id: u64): GET "/movie/{id}/keywords" => Vec<Keyword> [keywords]
 }
 
 endpoint! {

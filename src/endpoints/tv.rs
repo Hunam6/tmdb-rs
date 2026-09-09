@@ -7,7 +7,7 @@ use crate::common::{
 };
 use crate::endpoints::credit::Credits;
 use crate::endpoints::genre::Genre;
-use crate::endpoints::keyword::TvKeywords;
+use crate::endpoints::keyword::{Keyword, TvKeywords};
 use crate::endpoints::list::ListShort;
 use crate::endpoints::review::Review;
 use crate::{
@@ -376,7 +376,7 @@ endpoint! {
 
 endpoint! {
     /// a series' keywords, without the details round-trip
-    tv_keywords(id: u64): GET "/tv/{id}/keywords" => TvKeywords
+    tv_keywords(id: u64): GET "/tv/{id}/keywords" => Vec<Keyword> [results]
 }
 
 endpoint! {
@@ -501,15 +501,9 @@ endpoint! {
 
 endpoint! {
     /// a season's account states (per-episode ratings)
-    tv_season_account_states(id: u64, season: u32): GET "/tv/{id}/season/{season}/account_states" => SeasonAccountStates {
+    tv_season_account_states(id: u64, season: u32): GET "/tv/{id}/season/{season}/account_states" => Vec<EpisodeAccountState> [results] {
         params { session_id: SessionId, guest_session_id: GuestSessionId }
     }
-}
-
-/// per-episode ratings within a season
-#[derive(Debug, Clone, Deserialize)]
-pub struct SeasonAccountStates {
-    pub results: Vec<EpisodeAccountState>,
 }
 
 #[derive(Debug, Clone, Deserialize)]

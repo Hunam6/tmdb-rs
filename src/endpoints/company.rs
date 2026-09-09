@@ -1,6 +1,6 @@
 use serde::Deserialize;
 
-use crate::common::{AlternativeNames, Images};
+use crate::common::{AlternativeName, Images};
 use crate::Logo;
 
 /// one company in a search response
@@ -34,7 +34,7 @@ endpoint! {
 
 endpoint! {
     /// a company's alternative names
-    company_alternative_names(id: u64): GET "/company/{id}/alternative_names" => AlternativeNames
+    company_alternative_names(id: u64): GET "/company/{id}/alternative_names" => Vec<AlternativeName> [results]
 }
 
 endpoint! {

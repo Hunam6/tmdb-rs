@@ -148,12 +148,6 @@ pub struct AlternativeName {
     pub kind: String,
 }
 
-/// company and network alternative names
-#[derive(Debug, Clone, Deserialize)]
-pub struct AlternativeNames {
-    pub results: Vec<AlternativeName>,
-}
-
 #[derive(Debug, Clone, Deserialize)]
 pub struct ChangeItem {
     pub id: String,

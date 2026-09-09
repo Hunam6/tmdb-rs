@@ -33,15 +33,9 @@ pub struct GuestSession {
     pub expires_at: String,
 }
 
-/// the answer of `GET /authentication`
-#[derive(Debug, Clone, Deserialize)]
-pub struct ValidateKey {
-    pub success: bool,
-}
-
 endpoint! {
     /// validate the credentials: the key is good when this answers
-    validate_key(): GET "/authentication" => ValidateKey
+    validate_key(): GET "/authentication" => bool [success]
 }
 
 endpoint! {

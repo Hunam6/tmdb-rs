@@ -1,6 +1,6 @@
 use serde::Deserialize;
 
-use crate::common::{AlternativeNames, Images};
+use crate::common::{AlternativeName, Images};
 use crate::Logo;
 
 #[derive(Debug, Clone, Deserialize)]
@@ -22,7 +22,7 @@ endpoint! {
 
 endpoint! {
     /// a network's alternative names
-    network_alternative_names(id: u64): GET "/network/{id}/alternative_names" => AlternativeNames
+    network_alternative_names(id: u64): GET "/network/{id}/alternative_names" => Vec<AlternativeName> [results]
 }
 
 endpoint! {

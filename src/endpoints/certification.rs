@@ -10,17 +10,14 @@ pub struct Certification {
 }
 
 /// certifications by country code
-#[derive(Debug, Clone, Deserialize)]
-pub struct Certifications {
-    pub certifications: HashMap<String, Vec<Certification>>,
-}
+pub type Certifications = HashMap<String, Vec<Certification>>;
 
 endpoint! {
     /// the movie certifications by country
-    movie_certifications(): GET "/certification/movie/list" => Certifications
+    movie_certifications(): GET "/certification/movie/list" => Certifications [certifications]
 }
 
 endpoint! {
     /// the series certifications by country
-    tv_certifications(): GET "/certification/tv/list" => Certifications
+    tv_certifications(): GET "/certification/tv/list" => Certifications [certifications]
 }
