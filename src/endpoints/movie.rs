@@ -6,7 +6,7 @@ use crate::models::{
     AccountStates, AlternativeTitles, Changes, Credits, ExternalIds, Genre, Images, ListShort,
     MovieKeywords, ReleaseDates, Review, StatusResponse, Translations, Videos, WatchProviders,
 };
-use crate::{Country, GuestSessionId, Language, Page, SessionId};
+use crate::{CountryCode, GuestSessionId, Language, Page, SessionId};
 
 /// one movie in a list or search response
 #[derive(Debug, Clone, Deserialize)]
@@ -86,7 +86,7 @@ endpoint! {
 endpoint! {
     /// a movie's alternative titles
     movie_alternative_titles(id: u64): GET "/movie/{}/alternative_titles" => AlternativeTitles {
-        params { language: Language, country: Country }
+        params { language: Language, country: CountryCode }
     }
 }
 
@@ -200,28 +200,28 @@ endpoint! {
 endpoint! {
     /// movies currently in theatres
     movie_now_playing(): GET "/movie/now_playing" => Page<MovieShort> {
-        params { language: Language, page: u32, region: Country }
+        params { language: Language, page: u32, region: CountryCode }
     }
 }
 
 endpoint! {
     /// movies ordered by popularity
     movie_popular(): GET "/movie/popular" => Page<MovieShort> {
-        params { language: Language, page: u32, region: Country }
+        params { language: Language, page: u32, region: CountryCode }
     }
 }
 
 endpoint! {
     /// movies ordered by rating
     movie_top_rated(): GET "/movie/top_rated" => Page<MovieShort> {
-        params { language: Language, page: u32, region: Country }
+        params { language: Language, page: u32, region: CountryCode }
     }
 }
 
 endpoint! {
     /// upcoming movies
     movie_upcoming(): GET "/movie/upcoming" => Page<MovieShort> {
-        params { language: Language, page: u32, region: Country }
+        params { language: Language, page: u32, region: CountryCode }
     }
 }
 

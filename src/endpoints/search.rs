@@ -3,7 +3,7 @@ use serde::Deserialize;
 use crate::endpoints::movie::MovieShort;
 use crate::endpoints::tv::TvShort;
 use crate::models::Keyword;
-use crate::{Country, Language, Page};
+use crate::{CountryCode, Language, Page};
 
 /// one person in a list or search response
 #[derive(Debug, Clone, Deserialize)]
@@ -57,7 +57,7 @@ endpoint! {
             language: Language,
             page: u32,
             include_adult: bool,
-            region: Country,
+            region: CountryCode,
             year: u32,
             primary_release_year: u32,
         }

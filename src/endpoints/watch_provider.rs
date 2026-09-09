@@ -1,7 +1,7 @@
 use serde::Deserialize;
 
 use crate::models::WatchProvider;
-use crate::{Country, Language};
+use crate::{CountryCode, Language};
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct ProviderRegion {
@@ -31,13 +31,13 @@ endpoint! {
 endpoint! {
     /// the movie watch providers available in a region
     movie_watch_provider_list(): GET "/watch/providers/movie" => ProviderList {
-        params { language: Language, watch_region: Country }
+        params { language: Language, watch_region: CountryCode }
     }
 }
 
 endpoint! {
     /// the series watch providers available in a region
     tv_watch_provider_list(): GET "/watch/providers/tv" => ProviderList {
-        params { language: Language, watch_region: Country }
+        params { language: Language, watch_region: CountryCode }
     }
 }

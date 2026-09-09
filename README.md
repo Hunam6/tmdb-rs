@@ -49,7 +49,7 @@ for movie in &page.results {
 // details with appends
 let tv = tmdb
     .tv(1399)
-    .language(Language::FRENCH)
+    .language(Language::Fra)
     .with_credits()
     .with_content_ratings()
     .send()

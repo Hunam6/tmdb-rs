@@ -2,7 +2,7 @@ use std::fmt;
 
 use crate::endpoints::movie::MovieShort;
 use crate::endpoints::tv::TvShort;
-use crate::{Country, Date, Language, Page};
+use crate::{CountryCode, Date, Language, Page};
 
 macro_rules! sort {
     ($(#[$meta:meta])* $name:ident { $($variant:ident = $key:literal),* $(,)? }) => {
@@ -75,8 +75,8 @@ endpoint! {
             sort_by: MovieSort,
             include_adult: bool,
             include_video: bool,
-            region: Country,
-            watch_region: Country,
+            region: CountryCode,
+            watch_region: CountryCode,
             with_watch_providers: Vec<u64>,
             with_watch_monetization_types: &str,
             with_genres: Vec<u64>,
@@ -88,10 +88,10 @@ endpoint! {
             with_people: Vec<u64>,
             with_companies: Vec<u64>,
             with_networks: Vec<u64>,
-            with_origin_country: Country,
+            with_origin_country: CountryCode,
             with_original_language: Language,
             certification: &str,
-            certification_country: Country,
+            certification_country: CountryCode,
             primary_release_year: u32,
             year: u32,
             vote_average_gte: f64,
@@ -113,7 +113,7 @@ endpoint! {
             sort_by: TvSort,
             include_adult: bool,
             include_null_first_air_dates: bool,
-            watch_region: Country,
+            watch_region: CountryCode,
             with_watch_providers: Vec<u64>,
             with_watch_monetization_types: &str,
             with_genres: Vec<u64>,
@@ -122,7 +122,7 @@ endpoint! {
             without_keywords: Vec<u64>,
             with_companies: Vec<u64>,
             with_networks: Vec<u64>,
-            with_origin_country: Country,
+            with_origin_country: CountryCode,
             with_original_language: Language,
             with_status: &str,
             with_type: &str,

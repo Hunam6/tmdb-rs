@@ -7,7 +7,7 @@ use crate::datetime::opt_date;
 use crate::endpoints::movie::MovieShort;
 use crate::endpoints::tv::TvShort;
 use crate::models::{ListShort, MediaType, StatusResponse};
-use crate::{Country, Language, Page, SessionId};
+use crate::{CountryCode, Language, Page, SessionId};
 
 /// the sort order of account lists
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -164,7 +164,7 @@ endpoint! {
     /// the account's watch providers preferences
     account_watch_providers(): GET "/account/watch/providers" => AccountWatchProviders {
         required { session_id: SessionId }
-        params { watch_region: Country }
+        params { watch_region: CountryCode }
     }
 }
 

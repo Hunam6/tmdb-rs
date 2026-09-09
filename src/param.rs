@@ -1,6 +1,4 @@
-use std::fmt;
-
-use crate::{Country, Date, GuestSessionId, Language, SessionId};
+use crate::{CountryCode, Date, GuestSessionId, Language, SessionId};
 
 /// a query param value; slices join with commas, as TMDB expects
 pub trait ToParam {
@@ -17,32 +15,31 @@ macro_rules! to_param {
     )*};
 }
 
-to_param!(
-    u32,
-    u64,
-    i32,
-    i64,
-    f64,
-    bool,
-    &str,
-    String,
-    Language,
-    Country,
-    Date,
-    SessionId,
-    GuestSessionId
-);
+to_param!(u32, u64, i32, i64, f64, bool, &str, String, Date, SessionId, GuestSessionId);
 
-impl<T: fmt::Display> ToParam for &[T] {
+impl ToParam for Language {
+    fn to_param(&self) -> String {
+        // TMDB wants 639-1; a few languages only have a 639-3 code
+        self.to_639_1().unwrap_or_else(|| self.to_639_3()).into()
+    }
+}
+
+impl ToParam for CountryCode {
+    fn to_param(&self) -> String {
+        self.alpha2().into()
+    }
+}
+
+impl<T: ToParam> ToParam for &[T] {
     fn to_param(&self) -> String {
         self.iter()
-            .map(|item| item.to_string())
+            .map(ToParam::to_param)
             .collect::<Vec<_>>()
             .join(",")
     }
 }
 
-impl<T: fmt::Display> ToParam for Vec<T> {
+impl<T: ToParam> ToParam for Vec<T> {
     fn to_param(&self) -> String {
         self.as_slice().to_param()
     }
