@@ -1,7 +1,6 @@
 use serde::Deserialize;
 use time::Date;
 
-use crate::append::appendable;
 use crate::datetime::opt_date;
 use crate::endpoints::credit::Credits;
 use crate::endpoints::genre::Genre;
@@ -10,9 +9,24 @@ use crate::endpoints::list::ListShort;
 use crate::endpoints::review::Review;
 use crate::models::{
     AccountStates, AlternativeTitleResults, Changes, ContentRatings, ExternalIds, Images, Rated,
-    SeasonShort, StatusResponse, Translations, Videos, WatchProviders,
+    StatusResponse, Translations, Videos, WatchProviders,
 };
 use crate::{Backdrop, GuestSessionId, Language, Logo, Page, Poster, Profile, SessionId, Still};
+
+/// one season inside a series' details
+#[derive(Debug, Clone, Deserialize)]
+pub struct SeasonShort {
+    pub season_number: u32,
+    pub name: String,
+    pub episode_count: u32,
+    pub overview: Option<String>,
+    #[serde(rename = "poster_path")]
+    pub poster: Option<Poster>,
+    #[serde(default, deserialize_with = "opt_date")]
+    pub air_date: Option<Date>,
+}
+
+use crate::append::appendable;
 
 /// one series in a list or search response
 #[derive(Debug, Clone, Deserialize)]

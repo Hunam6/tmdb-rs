@@ -1,10 +1,8 @@
 use std::collections::HashMap;
 
 use serde::Deserialize;
-use time::Date;
 
 use crate::append::appendable;
-use crate::datetime::opt_date;
 use crate::endpoints::credit::Credits;
 use crate::endpoints::keyword::{MovieKeywords, TvKeywords};
 use crate::endpoints::movie::ReleaseDates;
@@ -69,19 +67,6 @@ pub struct ExternalIds {
     pub facebook_id: Option<String>,
     pub instagram_id: Option<String>,
     pub twitter_id: Option<String>,
-}
-
-/// one season inside a series' details
-#[derive(Debug, Clone, Deserialize)]
-pub struct SeasonShort {
-    pub season_number: u32,
-    pub name: String,
-    pub episode_count: u32,
-    pub overview: Option<String>,
-    #[serde(rename = "poster_path")]
-    pub poster: Option<Poster>,
-    #[serde(default, deserialize_with = "opt_date")]
-    pub air_date: Option<Date>,
 }
 
 /// movie or series, for write-endpoint bodies
