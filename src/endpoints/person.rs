@@ -55,8 +55,12 @@ pub struct TvCastCredit {
     pub poster: Option<Poster>,
     #[serde(rename = "backdrop_path")]
     pub backdrop: Option<Backdrop>,
-    #[serde(default, deserialize_with = "crate::common::opt_date")]
-    pub first_air_date: Option<Date>,
+    #[serde(
+        rename = "first_air_date",
+        default,
+        deserialize_with = "crate::common::opt_date"
+    )]
+    pub release_date: Option<Date>,
     pub credit_id: String,
     pub episode_count: Option<u32>,
     pub vote_average: f64,
@@ -115,8 +119,12 @@ pub struct TvCrewCredit {
     pub poster: Option<Poster>,
     #[serde(rename = "backdrop_path")]
     pub backdrop: Option<Backdrop>,
-    #[serde(default, deserialize_with = "crate::common::opt_date")]
-    pub first_air_date: Option<Date>,
+    #[serde(
+        rename = "first_air_date",
+        default,
+        deserialize_with = "crate::common::opt_date"
+    )]
+    pub release_date: Option<Date>,
     pub credit_id: String,
     pub episode_count: Option<u32>,
     pub vote_average: f64,

@@ -48,8 +48,12 @@ pub struct TvShort {
     pub name: String,
     pub original_name: String,
     pub overview: String,
-    #[serde(default, deserialize_with = "crate::common::opt_date")]
-    pub first_air_date: Option<Date>,
+    #[serde(
+        rename = "first_air_date",
+        default,
+        deserialize_with = "crate::common::opt_date"
+    )]
+    pub release_date: Option<Date>,
     #[serde(rename = "poster_path")]
     pub poster: Option<Poster>,
     #[serde(rename = "backdrop_path")]
@@ -219,8 +223,12 @@ endpoint! {
             pub original_name: String,
             pub overview: String,
             pub tagline: String,
-            #[serde(default, deserialize_with = "crate::common::opt_date")]
-            pub first_air_date: Option<Date>,
+            #[serde(
+                rename = "first_air_date",
+                default,
+                deserialize_with = "crate::common::opt_date"
+            )]
+            pub release_date: Option<Date>,
             #[serde(default, deserialize_with = "crate::common::opt_date")]
             pub last_air_date: Option<Date>,
             pub vote_average: f64,
