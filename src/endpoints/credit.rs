@@ -1,7 +1,33 @@
 use serde::Deserialize;
 
 use crate::endpoints::person::PersonShort;
-use crate::{Backdrop, Poster, Still};
+use crate::{Backdrop, Poster, Profile, Still};
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct CastMember {
+    pub name: String,
+    pub character: Option<String>,
+    #[serde(rename = "profile_path")]
+    pub profile: Option<Profile>,
+    pub order: Option<u32>,
+    pub credit_id: String,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct CrewMember {
+    pub name: String,
+    pub job: String,
+    pub department: String,
+    #[serde(rename = "profile_path")]
+    pub profile: Option<Profile>,
+    pub credit_id: String,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct Credits {
+    pub cast: Vec<CastMember>,
+    pub crew: Vec<CrewMember>,
+}
 
 /// one season credited on an episode-level credit
 #[derive(Debug, Clone, Deserialize)]

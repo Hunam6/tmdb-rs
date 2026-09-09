@@ -2,13 +2,14 @@ use serde::Deserialize;
 use time::Date;
 
 use crate::datetime::opt_date;
+use crate::endpoints::credit::Credits;
 use crate::endpoints::genre::Genre;
 use crate::endpoints::keyword::MovieKeywords;
 use crate::endpoints::list::ListShort;
 use crate::endpoints::review::Review;
 use crate::models::{
-    AccountStates, AlternativeTitles, Changes, Credits, ExternalIds, Images, ReleaseDates,
-    StatusResponse, Translations, Videos, WatchProviders,
+    AccountStates, AlternativeTitles, Changes, ExternalIds, Images, ReleaseDates, StatusResponse,
+    Translations, Videos, WatchProviders,
 };
 use crate::{Backdrop, CountryCode, GuestSessionId, Language, Page, Poster, SessionId};
 

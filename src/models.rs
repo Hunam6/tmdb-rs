@@ -5,8 +5,9 @@ use time::Date;
 
 use crate::append::appendable;
 use crate::datetime::opt_date;
+use crate::endpoints::credit::Credits;
 use crate::endpoints::keyword::{MovieKeywords, TvKeywords};
-use crate::{Backdrop, CountryCode, Language, Logo, Poster, Profile};
+use crate::{Backdrop, CountryCode, Language, Logo, Poster};
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct Video {
@@ -45,32 +46,6 @@ pub struct Images {
     pub backdrops: Vec<Image<Backdrop>>,
     pub posters: Vec<Image<Poster>>,
     pub logos: Vec<Image<Logo>>,
-}
-
-#[derive(Debug, Clone, Deserialize)]
-pub struct CastMember {
-    pub name: String,
-    pub character: Option<String>,
-    #[serde(rename = "profile_path")]
-    pub profile: Option<Profile>,
-    pub order: Option<u32>,
-    pub credit_id: String,
-}
-
-#[derive(Debug, Clone, Deserialize)]
-pub struct CrewMember {
-    pub name: String,
-    pub job: String,
-    pub department: String,
-    #[serde(rename = "profile_path")]
-    pub profile: Option<Profile>,
-    pub credit_id: String,
-}
-
-#[derive(Debug, Clone, Deserialize)]
-pub struct Credits {
-    pub cast: Vec<CastMember>,
-    pub crew: Vec<CrewMember>,
 }
 
 /// TMDB's release date kinds
