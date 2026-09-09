@@ -317,25 +317,6 @@ pub struct WatchProviders {
     pub results: HashMap<String, CountryProviders>,
 }
 
-#[derive(Debug, Clone, Deserialize)]
-pub struct AuthorDetails {
-    pub name: String,
-    pub username: String,
-    pub avatar_path: Option<String>,
-    pub rating: Option<f64>,
-}
-
-#[derive(Debug, Clone, Deserialize)]
-pub struct Review {
-    pub id: String,
-    pub author: String,
-    pub author_details: AuthorDetails,
-    pub content: String,
-    pub created_at: String,
-    pub updated_at: String,
-    pub url: String,
-}
-
 appendable! {
     Credits,
     ReleaseDates,
