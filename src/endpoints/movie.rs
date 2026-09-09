@@ -14,30 +14,18 @@ use crate::models::{
 use crate::{Backdrop, CountryCode, GuestSessionId, Language, Page, Poster, SessionId};
 
 /// TMDB's release date kinds
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Deserialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Deserialize, num_enum::FromPrimitive)]
 #[serde(from = "u32")]
+#[repr(u32)]
 pub enum ReleaseType {
-    Premiere,
-    TheatricalLimited,
-    Theatrical,
-    Digital,
-    Physical,
-    Tv,
-    Unknown(u32),
-}
-
-impl From<u32> for ReleaseType {
-    fn from(kind: u32) -> Self {
-        match kind {
-            1 => Self::Premiere,
-            2 => Self::TheatricalLimited,
-            3 => Self::Theatrical,
-            4 => Self::Digital,
-            5 => Self::Physical,
-            6 => Self::Tv,
-            other => Self::Unknown(other),
-        }
-    }
+    Premiere = 1,
+    TheatricalLimited = 2,
+    Theatrical = 3,
+    Digital = 4,
+    Physical = 5,
+    Tv = 6,
+    #[num_enum(default)]
+    Unknown,
 }
 
 #[derive(Debug, Clone, Deserialize)]
