@@ -2,7 +2,7 @@ use crate::endpoints::movie::MovieShort;
 use crate::models::{Images, Translations};
 use crate::Language;
 
-details! {
+endpoint! {
     /// a collection and its parts
     collection(id: u64): GET "/collection/{}" => CollectionDetails {
         params { language: Language }

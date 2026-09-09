@@ -1,6 +1,14 @@
-/// a plain endpoint: `Client` method, builder with one method per optional
-/// query param, `send()`. path params fill the path's `{}` in order, required
-/// query params and body fields become method args
+/// an endpoint: `Client` method, builder with one method per optional query
+/// param, `send()`. path params fill the path's `{}` in order, required query
+/// params and body fields become method args.
+///
+/// a `base { }` + `appends { }` section makes it a detail endpoint with
+/// compile-time append_to_response: each `with_*` fills one slot of the
+/// response type, and a requested-but-missing payload is an error rather than
+/// a silent None. an append slot named differently from its TMDB key declares
+/// `as "the/key"`. field attributes (serde) apply to the private shadow
+/// struct that deserialization goes through; on the public struct they're
+/// stripped via cfg_attr, since it has no Deserialize derive
 macro_rules! endpoint {
     // bare
     (
@@ -211,17 +219,8 @@ macro_rules! endpoint {
         }
     };
     (@stream $verb:ident $method:ident $resp:ty) => {};
-}
 
-/// a detail endpoint with compile-time append_to_response: each `with_*`
-/// fills one slot of the response type, and a requested-but-missing payload
-/// is an error rather than a silent None. an append slot named differently
-/// from its TMDB key declares `as "the/key"`. field attributes (serde) apply
-/// to the private shadow struct that deserialization goes through; on the
-/// public struct they're stripped via cfg_attr, since it has no Deserialize
-/// derive
-macro_rules! details {
-    // no params section
+    // detail endpoint, no params section
     (
         $(#[$meta:meta])*
         $method:ident ($($pn:ident : $pt:ty),* $(,)?): GET $path:literal => $resp:ident {
@@ -229,7 +228,7 @@ macro_rules! details {
             appends { $($(#[$am:meta])* $an:ident : $at:ty $(as $key:literal)?),* $(,)? }
         }
     ) => {
-        details! {
+        endpoint! {
             $(#[$meta])*
             $method($($pn : $pt),*): GET $path => $resp {
                 params {}
@@ -290,7 +289,7 @@ macro_rules! details {
                 )*
             }
 
-            details!(@withs [<$resp Request>] [$($pn,)*] [] [$($(#[$am])* $an : $at $(as $key)?,)*]);
+            endpoint!(@withs [<$resp Request>] [$($pn,)*] [] [$($(#[$am])* $an : $at $(as $key)?,)*]);
 
             impl<$([<A $an:camel>]: $crate::Append),*> [<$resp Request>]<$([<A $an:camel>]),*> {
                 pub async fn send(self) -> $crate::Result<$resp<$([<A $an:camel>]),*>> {
@@ -298,7 +297,7 @@ macro_rules! details {
                     let mut append = ::std::string::String::new();
                     $(
                         if ![<A $an:camel>]::ABSENT {
-                            append.push_str(details!(@key $an $(as $key)?));
+                            append.push_str(endpoint!(@key $an $(as $key)?));
                             append.push(',');
                         }
                     )*
@@ -326,7 +325,7 @@ macro_rules! details {
                         let shadow: Shadow = client.get(path, pairs).await?;
                         Ok(Self {
                             $($bf: shadow.$bf,)*
-                            $($an: [<A $an:camel>]::from_json(details!(@key $an $(as $key)?), shadow.$an)?,)*
+                            $($an: [<A $an:camel>]::from_json(endpoint!(@key $an $(as $key)?), shadow.$an)?,)*
                         })
                     }
                 }
@@ -338,7 +337,7 @@ macro_rules! details {
                         let shadow = Shadow::deserialize(d)?;
                         Ok(Self {
                             $($bf: shadow.$bf,)*
-                            $($an: <() as $crate::Append>::from_json(details!(@key $an $(as $key)?), shadow.$an)
+                            $($an: <() as $crate::Append>::from_json(endpoint!(@key $an $(as $key)?), shadow.$an)
                                 .map_err(::serde::de::Error::custom)?,)*
                         })
                     }
@@ -357,7 +356,7 @@ macro_rules! details {
         ::paste::paste! {
             impl<$([<A $bn:camel>],)* $([<A $rest:camel>],)*> $req<$([<A $bn:camel>],)* (), $([<A $rest:camel>],)*> {
                 $(#[$am])*
-                #[doc = concat!("append `", details!(@key $an $(as $key)?), "` to the response")]
+                #[doc = concat!("append `", endpoint!(@key $an $(as $key)?), "` to the response")]
                 pub fn [<with_ $an>](self) -> $req<$([<A $bn:camel>],)* $at, $([<A $rest:camel>],)*> {
                     $req {
                         client: self.client,
@@ -368,6 +367,6 @@ macro_rules! details {
                 }
             }
         }
-        details!(@withs $req [$($pn,)*] [$($bn : $bt,)* $an : $at,] [$($(#[$rm])* $rest : $rt $(as $rkey)?,)*]);
+        endpoint!(@withs $req [$($pn,)*] [$($bn : $bt,)* $an : $at,] [$($(#[$rm])* $rest : $rt $(as $rkey)?,)*]);
     };
 }

@@ -29,7 +29,7 @@ pub struct MovieShort {
     pub video: bool,
 }
 
-details! {
+endpoint! {
     /// the primary details of a movie
     movie(id: u64): GET "/movie/{}" => MovieDetails {
         params { language: Language }

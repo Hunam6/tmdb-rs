@@ -170,7 +170,7 @@ appendable! {
     ScreenedTheatrically,
 }
 
-details! {
+endpoint! {
     /// the primary details of a series
     tv(id: u64): GET "/tv/{}" => TvDetails {
         params { language: Language }
@@ -228,7 +228,7 @@ details! {
     }
 }
 
-details! {
+endpoint! {
     /// one season of a series, episodes included
     tv_season(id: u64, season: u32): GET "/tv/{}/season/{}" => SeasonDetails {
         params { language: Language }
@@ -257,7 +257,7 @@ details! {
     }
 }
 
-details! {
+endpoint! {
     /// one episode of a series
     tv_episode(id: u64, season: u32, episode: u32): GET "/tv/{}/season/{}/episode/{}" => EpisodeDetails {
         params { language: Language }

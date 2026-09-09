@@ -176,7 +176,7 @@ appendable! {
     PersonTranslations,
 }
 
-details! {
+endpoint! {
     /// the primary details of a person
     person(id: u64): GET "/person/{}" => PersonDetails {
         params { language: Language }
