@@ -2,10 +2,10 @@ use serde::Deserialize;
 
 use crate::endpoints::collection::CollectionShort;
 use crate::endpoints::company::CompanyShort;
+use crate::endpoints::keyword::Keyword;
 use crate::endpoints::movie::MovieShort;
 use crate::endpoints::person::PersonShort;
 use crate::endpoints::tv::TvShort;
-use crate::models::Keyword;
 use crate::{CountryCode, Language, Page};
 
 /// one multi-search hit, discriminated by TMDB's `media_type`

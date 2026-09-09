@@ -1,6 +1,25 @@
+use serde::Deserialize;
+
 use crate::endpoints::movie::MovieShort;
-use crate::models::Keyword;
 use crate::{Language, Page};
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct Keyword {
+    pub id: u64,
+    pub name: String,
+}
+
+/// `/movie/{id}/keywords`
+#[derive(Debug, Clone, Deserialize)]
+pub struct MovieKeywords {
+    pub keywords: Vec<Keyword>,
+}
+
+/// `/tv/{id}/keywords` — same payload, different envelope
+#[derive(Debug, Clone, Deserialize)]
+pub struct TvKeywords {
+    pub results: Vec<Keyword>,
+}
 
 endpoint! {
     /// a keyword by id

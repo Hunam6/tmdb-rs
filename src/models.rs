@@ -5,25 +5,8 @@ use time::Date;
 
 use crate::append::appendable;
 use crate::datetime::opt_date;
+use crate::endpoints::keyword::{MovieKeywords, TvKeywords};
 use crate::{Backdrop, CountryCode, Language, Logo, Poster, Profile};
-
-#[derive(Debug, Clone, Deserialize)]
-pub struct Keyword {
-    pub id: u64,
-    pub name: String,
-}
-
-/// `/movie/{id}/keywords`
-#[derive(Debug, Clone, Deserialize)]
-pub struct MovieKeywords {
-    pub keywords: Vec<Keyword>,
-}
-
-/// `/tv/{id}/keywords` — same payload, different envelope
-#[derive(Debug, Clone, Deserialize)]
-pub struct TvKeywords {
-    pub results: Vec<Keyword>,
-}
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct Video {
