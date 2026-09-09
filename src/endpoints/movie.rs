@@ -69,7 +69,8 @@ pub struct MovieShort {
     pub popularity: f64,
     #[serde(default)]
     pub genre_ids: Vec<u64>,
-    pub original_language: Option<String>,
+    #[serde(default, deserialize_with = "crate::common::opt_language")]
+    pub original_language: Option<Language>,
     pub adult: bool,
     pub video: bool,
 }
@@ -92,11 +93,12 @@ endpoint! {
             pub vote_count: u32,
             pub popularity: f64,
             pub runtime: Option<u32>,
-            pub original_language: Option<String>,
+            #[serde(default, deserialize_with = "crate::common::opt_language")]
+            pub original_language: Option<Language>,
             #[serde(rename = "poster_path")]
-    pub poster: Option<Poster>,
+            pub poster: Option<Poster>,
             #[serde(rename = "backdrop_path")]
-    pub backdrop: Option<Backdrop>,
+            pub backdrop: Option<Backdrop>,
             pub genres: Vec<Genre>,
             pub imdb_id: Option<String>,
             #[serde(rename = "homepage")]

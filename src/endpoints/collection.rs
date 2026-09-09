@@ -15,7 +15,8 @@ pub struct CollectionShort {
     pub poster: Option<Poster>,
     #[serde(rename = "backdrop_path")]
     pub backdrop: Option<Backdrop>,
-    pub original_language: Option<String>,
+    #[serde(default, deserialize_with = "crate::common::opt_language")]
+    pub original_language: Option<Language>,
     pub adult: bool,
 }
 
@@ -32,7 +33,8 @@ endpoint! {
             pub poster: Option<Poster>,
             #[serde(rename = "backdrop_path")]
             pub backdrop: Option<Backdrop>,
-            pub original_language: Option<String>,
+            #[serde(default, deserialize_with = "crate::common::opt_language")]
+            pub original_language: Option<Language>,
             #[serde(default)]
             pub parts: Vec<MovieShort>,
         }

@@ -59,7 +59,8 @@ pub struct TvShort {
     pub popularity: f64,
     #[serde(default)]
     pub genre_ids: Vec<u64>,
-    pub original_language: Option<String>,
+    #[serde(default, deserialize_with = "crate::common::opt_language")]
+    pub original_language: Option<Language>,
     #[serde(default)]
     pub origin_country: Vec<String>,
     pub adult: bool,
@@ -228,18 +229,19 @@ endpoint! {
             pub number_of_seasons: u32,
             pub number_of_episodes: u32,
             pub episode_run_time: Vec<u32>,
-            pub original_language: Option<String>,
+            #[serde(default, deserialize_with = "crate::common::opt_language")]
+            pub original_language: Option<Language>,
             #[serde(rename = "poster_path")]
-    pub poster: Option<Poster>,
+            pub poster: Option<Poster>,
             #[serde(rename = "backdrop_path")]
-    pub backdrop: Option<Backdrop>,
+            pub backdrop: Option<Backdrop>,
             pub genres: Vec<Genre>,
             #[serde(rename = "homepage")]
             pub website: String,
             pub status: String,
             pub in_production: bool,
-            #[serde(default)]
-            pub languages: Vec<String>,
+            #[serde(default, deserialize_with = "crate::common::language_list")]
+            pub languages: Vec<Language>,
             #[serde(default)]
             pub origin_country: Vec<String>,
             #[serde(default)]

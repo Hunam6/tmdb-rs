@@ -1,4 +1,5 @@
 use std::collections::HashMap;
+use std::str::FromStr;
 
 use serde::{Deserialize, Deserializer};
 use time::macros::format_description;
@@ -257,6 +258,19 @@ impl<T> Page<T> {
     pub fn has_next(&self) -> bool {
         self.page < self.total_pages
     }
+}
+
+/// TMDB writes unknown languages as "" or codes outside ISO 639-1 ("xx", legacy "cn")
+pub(crate) fn opt_language<'de, D: Deserializer<'de>>(d: D) -> Result<Option<Language>, D::Error> {
+    Ok(Option::<String>::deserialize(d)?.and_then(|s| Language::from_str(&s).ok()))
+}
+
+/// skips codes outside ISO 639-1, see opt_language
+pub(crate) fn language_list<'de, D: Deserializer<'de>>(d: D) -> Result<Vec<Language>, D::Error> {
+    Ok(Vec::<String>::deserialize(d)?
+        .into_iter()
+        .filter_map(|s| Language::from_str(&s).ok())
+        .collect())
 }
 
 /// TMDB writes unknown dates as "" rather than null
