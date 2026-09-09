@@ -213,7 +213,7 @@ appendable! {
 
 endpoint! {
     /// the primary details of a person
-    person(id: u64): GET "/person/{}" => PersonDetails {
+    person(id: u64): GET "/person/{id}" => PersonDetails {
         params { language: Language }
         base {
             pub id: u64,
@@ -265,51 +265,51 @@ endpoint! {
 
 endpoint! {
     /// a person's recent changes
-    person_changes(id: u64): GET "/person/{}/changes" => Changes {
+    person_changes(id: u64): GET "/person/{id}/changes" => Changes {
         params { start_date: Date, end_date: Date, page: u32 }
     }
 }
 
 endpoint! {
     /// a person's combined movie and series credits
-    person_combined_credits(id: u64): GET "/person/{}/combined_credits" => PersonCredits {
+    person_combined_credits(id: u64): GET "/person/{id}/combined_credits" => PersonCredits {
         params { language: Language }
     }
 }
 
 endpoint! {
     /// a person's movie credits
-    person_movie_credits(id: u64): GET "/person/{}/movie_credits" => PersonCredits {
+    person_movie_credits(id: u64): GET "/person/{id}/movie_credits" => PersonCredits {
         params { language: Language }
     }
 }
 
 endpoint! {
     /// a person's series credits
-    person_tv_credits(id: u64): GET "/person/{}/tv_credits" => PersonCredits {
+    person_tv_credits(id: u64): GET "/person/{id}/tv_credits" => PersonCredits {
         params { language: Language }
     }
 }
 
 endpoint! {
     /// a person's ids on other databases
-    person_external_ids(id: u64): GET "/person/{}/external_ids" => ExternalIds
+    person_external_ids(id: u64): GET "/person/{id}/external_ids" => ExternalIds
 }
 
 endpoint! {
     /// a person's profile images
-    person_images(id: u64): GET "/person/{}/images" => PersonImages
+    person_images(id: u64): GET "/person/{id}/images" => PersonImages
 }
 
 endpoint! {
     /// the images a person is tagged in
     #[deprecated = "TMDB deprecated this endpoint; it no longer returns data"]
-    person_tagged_images(id: u64): GET "/person/{}/tagged_images" => Page<TaggedImage> {
+    person_tagged_images(id: u64): GET "/person/{id}/tagged_images" => Page<TaggedImage> {
         params { page: u32 }
     }
 }
 
 endpoint! {
     /// a person's translations
-    person_translations(id: u64): GET "/person/{}/translations" => PersonTranslations
+    person_translations(id: u64): GET "/person/{id}/translations" => PersonTranslations
 }

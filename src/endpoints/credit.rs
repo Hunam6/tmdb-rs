@@ -78,5 +78,5 @@ pub struct CreditDetails {
 
 endpoint! {
     /// a credit by its credit id
-    credit(id: &str): GET "/credit/{}" => CreditDetails
+    credit(id: &str): GET "/credit/{id}" => CreditDetails
 }

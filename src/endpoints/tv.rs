@@ -178,7 +178,7 @@ appendable! {
 
 endpoint! {
     /// the primary details of a series
-    tv(id: u64): GET "/tv/{}" => TvDetails {
+    tv(id: u64): GET "/tv/{id}" => TvDetails {
         params { language: Language }
         base {
             pub id: u64,
@@ -238,7 +238,7 @@ endpoint! {
 
 endpoint! {
     /// one season of a series, episodes included
-    tv_season(id: u64, season: u32): GET "/tv/{}/season/{}" => SeasonDetails {
+    tv_season(id: u64, season: u32): GET "/tv/{id}/season/{season}" => SeasonDetails {
         params { language: Language }
         base {
             pub id: u64,
@@ -268,7 +268,7 @@ endpoint! {
 
 endpoint! {
     /// one episode of a series
-    tv_episode(id: u64, season: u32, episode: u32): GET "/tv/{}/season/{}/episode/{}" => EpisodeDetails {
+    tv_episode(id: u64, season: u32, episode: u32): GET "/tv/{id}/season/{season}/episode/{episode}" => EpisodeDetails {
         params { language: Language }
         base {
             pub id: u64,
@@ -333,117 +333,117 @@ endpoint! {
 
 endpoint! {
     /// a series' keywords, without the details round-trip
-    tv_keywords(id: u64): GET "/tv/{}/keywords" => TvKeywords
+    tv_keywords(id: u64): GET "/tv/{id}/keywords" => TvKeywords
 }
 
 endpoint! {
     /// a series' ids on other databases
-    tv_external_ids(id: u64): GET "/tv/{}/external_ids" => ExternalIds
+    tv_external_ids(id: u64): GET "/tv/{id}/external_ids" => ExternalIds
 }
 
 endpoint! {
     /// a series' account states (favorite, rated, watchlist)
-    tv_account_states(id: u64): GET "/tv/{}/account_states" => AccountStates {
+    tv_account_states(id: u64): GET "/tv/{id}/account_states" => AccountStates {
         params { session_id: SessionId, guest_session_id: GuestSessionId }
     }
 }
 
 endpoint! {
     /// a series' aggregate credits
-    tv_aggregate_credits(id: u64): GET "/tv/{}/aggregate_credits" => AggregateCredits {
+    tv_aggregate_credits(id: u64): GET "/tv/{id}/aggregate_credits" => AggregateCredits {
         params { language: Language }
     }
 }
 
 endpoint! {
     /// a series' alternative titles
-    tv_alternative_titles(id: u64): GET "/tv/{}/alternative_titles" => AlternativeTitleResults
+    tv_alternative_titles(id: u64): GET "/tv/{id}/alternative_titles" => AlternativeTitleResults
 }
 
 endpoint! {
     /// a series' recent changes
-    tv_changes_by_id(id: u64): GET "/tv/{}/changes" => Changes {
+    tv_changes_by_id(id: u64): GET "/tv/{id}/changes" => Changes {
         params { start_date: Date, end_date: Date, page: u32 }
     }
 }
 
 endpoint! {
     /// a series' content ratings by country
-    tv_content_ratings(id: u64): GET "/tv/{}/content_ratings" => ContentRatings
+    tv_content_ratings(id: u64): GET "/tv/{id}/content_ratings" => ContentRatings
 }
 
 endpoint! {
     /// a series' credits
-    tv_credits(id: u64): GET "/tv/{}/credits" => Credits {
+    tv_credits(id: u64): GET "/tv/{id}/credits" => Credits {
         params { language: Language }
     }
 }
 
 endpoint! {
     /// a series' episode groups
-    tv_episode_groups(id: u64): GET "/tv/{}/episode_groups" => EpisodeGroups
+    tv_episode_groups(id: u64): GET "/tv/{id}/episode_groups" => EpisodeGroups
 }
 
 endpoint! {
     /// a series' images
-    tv_images(id: u64): GET "/tv/{}/images" => Images {
+    tv_images(id: u64): GET "/tv/{id}/images" => Images {
         params { language: Language, include_image_language: Vec<Language> }
     }
 }
 
 endpoint! {
     /// the lists a series appears in
-    tv_lists(id: u64): GET "/tv/{}/lists" => Page<ListShort> {
+    tv_lists(id: u64): GET "/tv/{id}/lists" => Page<ListShort> {
         params { language: Language, page: u32 }
     }
 }
 
 endpoint! {
     /// series similar to a series
-    tv_similar(id: u64): GET "/tv/{}/similar" => Page<TvShort> {
+    tv_similar(id: u64): GET "/tv/{id}/similar" => Page<TvShort> {
         params { language: Language, page: u32 }
     }
 }
 
 endpoint! {
     /// a series' recommendations
-    tv_recommendations(id: u64): GET "/tv/{}/recommendations" => Page<TvShort> {
+    tv_recommendations(id: u64): GET "/tv/{id}/recommendations" => Page<TvShort> {
         params { language: Language, page: u32 }
     }
 }
 
 endpoint! {
     /// a series' reviews
-    tv_reviews(id: u64): GET "/tv/{}/reviews" => Page<Review> {
+    tv_reviews(id: u64): GET "/tv/{id}/reviews" => Page<Review> {
         params { language: Language, page: u32 }
     }
 }
 
 endpoint! {
     /// the episodes of a series that were screened in theatres
-    tv_screened_theatrically(id: u64): GET "/tv/{}/screened_theatrically" => ScreenedTheatrically
+    tv_screened_theatrically(id: u64): GET "/tv/{id}/screened_theatrically" => ScreenedTheatrically
 }
 
 endpoint! {
     /// a series' translations
-    tv_translations(id: u64): GET "/tv/{}/translations" => Translations
+    tv_translations(id: u64): GET "/tv/{id}/translations" => Translations
 }
 
 endpoint! {
     /// a series' videos (trailers, teasers, ...)
-    tv_videos(id: u64): GET "/tv/{}/videos" => Videos {
+    tv_videos(id: u64): GET "/tv/{id}/videos" => Videos {
         params { language: Language, include_image_language: Vec<Language> }
     }
 }
 
 endpoint! {
     /// where a series can be streamed, rented or bought, by country
-    tv_watch_providers(id: u64): GET "/tv/{}/watch/providers" => WatchProviders
+    tv_watch_providers(id: u64): GET "/tv/{id}/watch/providers" => WatchProviders
 }
 
 endpoint! {
     /// rate a series; pass a session or guest session
-    rate_tv(id: u64): POST "/tv/{}/rating" => StatusResponse {
+    rate_tv(id: u64): POST "/tv/{id}/rating" => StatusResponse {
         params { session_id: SessionId, guest_session_id: GuestSessionId }
         body { value: f64 }
     }
@@ -451,14 +451,14 @@ endpoint! {
 
 endpoint! {
     /// delete a series rating
-    unrate_tv(id: u64): DELETE "/tv/{}/rating" => StatusResponse {
+    unrate_tv(id: u64): DELETE "/tv/{id}/rating" => StatusResponse {
         params { session_id: SessionId, guest_session_id: GuestSessionId }
     }
 }
 
 endpoint! {
     /// a season's account states (per-episode ratings)
-    tv_season_account_states(id: u64, season: u32): GET "/tv/{}/season/{}/account_states" => SeasonAccountStates {
+    tv_season_account_states(id: u64, season: u32): GET "/tv/{id}/season/{season}/account_states" => SeasonAccountStates {
         params { session_id: SessionId, guest_session_id: GuestSessionId }
     }
 }
@@ -478,57 +478,57 @@ pub struct EpisodeAccountState {
 
 endpoint! {
     /// a season's aggregate credits
-    tv_season_aggregate_credits(id: u64, season: u32): GET "/tv/{}/season/{}/aggregate_credits" => AggregateCredits {
+    tv_season_aggregate_credits(id: u64, season: u32): GET "/tv/{id}/season/{season}/aggregate_credits" => AggregateCredits {
         params { language: Language }
     }
 }
 
 endpoint! {
     /// a season's changes
-    tv_season_changes(id: u64): GET "/tv/season/{}/changes" => Changes {
+    tv_season_changes(id: u64): GET "/tv/season/{id}/changes" => Changes {
         params { start_date: Date, end_date: Date, page: u32 }
     }
 }
 
 endpoint! {
     /// a season's credits
-    tv_season_credits(id: u64, season: u32): GET "/tv/{}/season/{}/credits" => Credits {
+    tv_season_credits(id: u64, season: u32): GET "/tv/{id}/season/{season}/credits" => Credits {
         params { language: Language }
     }
 }
 
 endpoint! {
     /// a season's ids on other databases
-    tv_season_external_ids(id: u64, season: u32): GET "/tv/{}/season/{}/external_ids" => ExternalIds
+    tv_season_external_ids(id: u64, season: u32): GET "/tv/{id}/season/{season}/external_ids" => ExternalIds
 }
 
 endpoint! {
     /// a season's images
-    tv_season_images(id: u64, season: u32): GET "/tv/{}/season/{}/images" => Images {
+    tv_season_images(id: u64, season: u32): GET "/tv/{id}/season/{season}/images" => Images {
         params { language: Language, include_image_language: Vec<Language> }
     }
 }
 
 endpoint! {
     /// a season's translations
-    tv_season_translations(id: u64, season: u32): GET "/tv/{}/season/{}/translations" => Translations
+    tv_season_translations(id: u64, season: u32): GET "/tv/{id}/season/{season}/translations" => Translations
 }
 
 endpoint! {
     /// a season's videos
-    tv_season_videos(id: u64, season: u32): GET "/tv/{}/season/{}/videos" => Videos {
+    tv_season_videos(id: u64, season: u32): GET "/tv/{id}/season/{season}/videos" => Videos {
         params { language: Language, include_image_language: Vec<Language> }
     }
 }
 
 endpoint! {
     /// where a season can be watched, by country
-    tv_season_watch_providers(id: u64, season: u32): GET "/tv/{}/season/{}/watch/providers" => WatchProviders
+    tv_season_watch_providers(id: u64, season: u32): GET "/tv/{id}/season/{season}/watch/providers" => WatchProviders
 }
 
 endpoint! {
     /// an episode's account states
-    tv_episode_account_states(id: u64, season: u32, episode: u32): GET "/tv/{}/season/{}/episode/{}/account_states" => EpisodeAccountStates {
+    tv_episode_account_states(id: u64, season: u32, episode: u32): GET "/tv/{id}/season/{season}/episode/{episode}/account_states" => EpisodeAccountStates {
         params { session_id: SessionId, guest_session_id: GuestSessionId }
     }
 }
@@ -542,45 +542,45 @@ pub struct EpisodeAccountStates {
 
 endpoint! {
     /// an episode's changes
-    tv_episode_changes(id: u64): GET "/tv/episode/{}/changes" => Changes {
+    tv_episode_changes(id: u64): GET "/tv/episode/{id}/changes" => Changes {
         params { start_date: Date, end_date: Date, page: u32 }
     }
 }
 
 endpoint! {
     /// an episode's credits
-    tv_episode_credits(id: u64, season: u32, episode: u32): GET "/tv/{}/season/{}/episode/{}/credits" => Credits {
+    tv_episode_credits(id: u64, season: u32, episode: u32): GET "/tv/{id}/season/{season}/episode/{episode}/credits" => Credits {
         params { language: Language }
     }
 }
 
 endpoint! {
     /// an episode's ids on other databases
-    tv_episode_external_ids(id: u64, season: u32, episode: u32): GET "/tv/{}/season/{}/episode/{}/external_ids" => ExternalIds
+    tv_episode_external_ids(id: u64, season: u32, episode: u32): GET "/tv/{id}/season/{season}/episode/{episode}/external_ids" => ExternalIds
 }
 
 endpoint! {
     /// an episode's images
-    tv_episode_images(id: u64, season: u32, episode: u32): GET "/tv/{}/season/{}/episode/{}/images" => Images {
+    tv_episode_images(id: u64, season: u32, episode: u32): GET "/tv/{id}/season/{season}/episode/{episode}/images" => Images {
         params { language: Language, include_image_language: Vec<Language> }
     }
 }
 
 endpoint! {
     /// an episode's translations
-    tv_episode_translations(id: u64, season: u32, episode: u32): GET "/tv/{}/season/{}/episode/{}/translations" => Translations
+    tv_episode_translations(id: u64, season: u32, episode: u32): GET "/tv/{id}/season/{season}/episode/{episode}/translations" => Translations
 }
 
 endpoint! {
     /// an episode's videos
-    tv_episode_videos(id: u64, season: u32, episode: u32): GET "/tv/{}/season/{}/episode/{}/videos" => Videos {
+    tv_episode_videos(id: u64, season: u32, episode: u32): GET "/tv/{id}/season/{season}/episode/{episode}/videos" => Videos {
         params { language: Language, include_image_language: Vec<Language> }
     }
 }
 
 endpoint! {
     /// rate an episode; pass a session or guest session
-    rate_tv_episode(id: u64, season: u32, episode: u32): POST "/tv/{}/season/{}/episode/{}/rating" => StatusResponse {
+    rate_tv_episode(id: u64, season: u32, episode: u32): POST "/tv/{id}/season/{season}/episode/{episode}/rating" => StatusResponse {
         params { session_id: SessionId, guest_session_id: GuestSessionId }
         body { value: f64 }
     }
@@ -588,14 +588,14 @@ endpoint! {
 
 endpoint! {
     /// delete an episode rating
-    unrate_tv_episode(id: u64, season: u32, episode: u32): DELETE "/tv/{}/season/{}/episode/{}/rating" => StatusResponse {
+    unrate_tv_episode(id: u64, season: u32, episode: u32): DELETE "/tv/{id}/season/{season}/episode/{episode}/rating" => StatusResponse {
         params { session_id: SessionId, guest_session_id: GuestSessionId }
     }
 }
 
 endpoint! {
     /// an episode group
-    tv_episode_group(id: &str): GET "/tv/episode_group/{}" => EpisodeGroup {
+    tv_episode_group(id: &str): GET "/tv/episode_group/{id}" => EpisodeGroup {
         params { language: Language }
     }
 }

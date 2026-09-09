@@ -85,8 +85,7 @@ pub struct FindResults {
 
 endpoint! {
     /// find TMDB entries by an external id (imdb, tvdb, wikidata, ...)
-    find(external_id: &str): GET "/find/{}" => FindResults {
-        required { external_source: ExternalSource }
+    find(external_id: &str, external_source: ExternalSource): GET "/find/{external_id}" => FindResults {
         params { language: Language }
     }
 }

@@ -205,7 +205,7 @@ endpoint! {
 endpoint! {
     @gen V4,
     /// a list and one page of its items
-    v4_list(id: u64): GET "/list/{}" => V4List {
+    v4_list(id: u64): GET "/list/{id}" => V4List {
         params { language: Language, page: u32, sort_by: V4Sort }
     }
 }
@@ -221,7 +221,7 @@ endpoint! {
 endpoint! {
     @gen V4,
     /// rename or re-describe a list
-    v4_update_list(id: u64): PUT "/list/{}" => StatusResponse {
+    v4_update_list(id: u64): PUT "/list/{id}" => StatusResponse {
         body { name: &str, description: &str, public: bool }
     }
 }
@@ -229,7 +229,7 @@ endpoint! {
 endpoint! {
     @gen V4,
     /// delete a list
-    v4_delete_list(id: u64): DELETE "/list/{}" => StatusResponse {
+    v4_delete_list(id: u64): DELETE "/list/{id}" => StatusResponse {
         body {}
     }
 }
@@ -237,7 +237,7 @@ endpoint! {
 endpoint! {
     @gen V4,
     /// add items to a list
-    v4_list_add_items(id: u64): POST "/list/{}/items" => ItemsResponse {
+    v4_list_add_items(id: u64): POST "/list/{id}/items" => ItemsResponse {
         body { items: Vec<ListItem> }
     }
 }
@@ -245,7 +245,7 @@ endpoint! {
 endpoint! {
     @gen V4,
     /// remove items from a list
-    v4_list_remove_items(id: u64): DELETE "/list/{}/items" => ItemsResponse {
+    v4_list_remove_items(id: u64): DELETE "/list/{id}/items" => ItemsResponse {
         body { items: Vec<ListItem> }
     }
 }
@@ -253,13 +253,13 @@ endpoint! {
 endpoint! {
     @gen V4,
     /// remove every item from a list
-    v4_list_clear(id: u64): GET "/list/{}/clear" => StatusResponse
+    v4_list_clear(id: u64): GET "/list/{id}/clear" => StatusResponse
 }
 
 endpoint! {
     @gen V4,
     /// the account's own lists
-    v4_account_lists(account_id: &str): GET "/account/{}/lists" => Page<ListShort> {
+    v4_account_lists(account_id: &str): GET "/account/{account_id}/lists" => Page<ListShort> {
         params { page: u32 }
     }
 }
@@ -267,7 +267,7 @@ endpoint! {
 endpoint! {
     @gen V4,
     /// the account's favorite movies
-    v4_favorite_movies(account_id: &str): GET "/account/{}/movie/favorites" => Page<MovieShort> {
+    v4_favorite_movies(account_id: &str): GET "/account/{account_id}/movie/favorites" => Page<MovieShort> {
         params { language: Language, page: u32, sort_by: V4Sort }
     }
 }
@@ -275,7 +275,7 @@ endpoint! {
 endpoint! {
     @gen V4,
     /// the account's favorite series
-    v4_favorite_tv(account_id: &str): GET "/account/{}/tv/favorites" => Page<TvShort> {
+    v4_favorite_tv(account_id: &str): GET "/account/{account_id}/tv/favorites" => Page<TvShort> {
         params { language: Language, page: u32, sort_by: V4Sort }
     }
 }
@@ -283,7 +283,7 @@ endpoint! {
 endpoint! {
     @gen V4,
     /// the account's movie recommendations
-    v4_movie_recommendations(account_id: &str): GET "/account/{}/movie/recommendations" => Page<MovieShort> {
+    v4_movie_recommendations(account_id: &str): GET "/account/{account_id}/movie/recommendations" => Page<MovieShort> {
         params { language: Language, page: u32, sort_by: V4Sort }
     }
 }
@@ -291,7 +291,7 @@ endpoint! {
 endpoint! {
     @gen V4,
     /// the account's series recommendations
-    v4_tv_recommendations(account_id: &str): GET "/account/{}/tv/recommendations" => Page<TvShort> {
+    v4_tv_recommendations(account_id: &str): GET "/account/{account_id}/tv/recommendations" => Page<TvShort> {
         params { language: Language, page: u32, sort_by: V4Sort }
     }
 }
@@ -299,7 +299,7 @@ endpoint! {
 endpoint! {
     @gen V4,
     /// the account's movie watchlist
-    v4_watchlist_movies(account_id: &str): GET "/account/{}/movie/watchlist" => Page<MovieShort> {
+    v4_watchlist_movies(account_id: &str): GET "/account/{account_id}/movie/watchlist" => Page<MovieShort> {
         params { language: Language, page: u32, sort_by: V4Sort }
     }
 }
@@ -307,7 +307,7 @@ endpoint! {
 endpoint! {
     @gen V4,
     /// the account's series watchlist
-    v4_watchlist_tv(account_id: &str): GET "/account/{}/tv/watchlist" => Page<TvShort> {
+    v4_watchlist_tv(account_id: &str): GET "/account/{account_id}/tv/watchlist" => Page<TvShort> {
         params { language: Language, page: u32, sort_by: V4Sort }
     }
 }
@@ -315,7 +315,7 @@ endpoint! {
 endpoint! {
     @gen V4,
     /// the account's rated movies
-    v4_rated_movies(account_id: &str): GET "/account/{}/movie/rated" => Page<MovieShort> {
+    v4_rated_movies(account_id: &str): GET "/account/{account_id}/movie/rated" => Page<MovieShort> {
         params { language: Language, page: u32, sort_by: V4Sort }
     }
 }
@@ -323,7 +323,7 @@ endpoint! {
 endpoint! {
     @gen V4,
     /// the account's rated series
-    v4_rated_tv(account_id: &str): GET "/account/{}/tv/rated" => Page<TvShort> {
+    v4_rated_tv(account_id: &str): GET "/account/{account_id}/tv/rated" => Page<TvShort> {
         params { language: Language, page: u32, sort_by: V4Sort }
     }
 }
@@ -331,7 +331,7 @@ endpoint! {
 endpoint! {
     @gen V4,
     /// mark or unmark a favorite
-    v4_mark_favorite(account_id: &str): POST "/account/{}/favorites" => StatusResponse {
+    v4_mark_favorite(account_id: &str): POST "/account/{account_id}/favorites" => StatusResponse {
         body { media_type: MediaType, media_id: u64, favorite: bool }
     }
 }
@@ -339,7 +339,7 @@ endpoint! {
 endpoint! {
     @gen V4,
     /// add or remove a watchlist entry
-    v4_set_watchlist(account_id: &str): POST "/account/{}/watchlist" => StatusResponse {
+    v4_set_watchlist(account_id: &str): POST "/account/{account_id}/watchlist" => StatusResponse {
         body { media_type: MediaType, media_id: u64, watchlist: bool }
     }
 }

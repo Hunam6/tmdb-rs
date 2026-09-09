@@ -24,28 +24,28 @@ impl fmt::Display for TimeWindow {
 
 endpoint! {
     /// the trending movies
-    trending_movies(window: TimeWindow): GET "/trending/movie/{}" => Page<MovieShort> {
+    trending_movies(window: TimeWindow): GET "/trending/movie/{window}" => Page<MovieShort> {
         params { language: Language }
     }
 }
 
 endpoint! {
     /// the trending series
-    trending_tv(window: TimeWindow): GET "/trending/tv/{}" => Page<TvShort> {
+    trending_tv(window: TimeWindow): GET "/trending/tv/{window}" => Page<TvShort> {
         params { language: Language }
     }
 }
 
 endpoint! {
     /// the trending people
-    trending_people(window: TimeWindow): GET "/trending/person/{}" => Page<PersonShort> {
+    trending_people(window: TimeWindow): GET "/trending/person/{window}" => Page<PersonShort> {
         params { language: Language }
     }
 }
 
 endpoint! {
     /// everything trending, movies, series and people mixed
-    trending_all(window: TimeWindow): GET "/trending/all/{}" => Page<MultiResult> {
+    trending_all(window: TimeWindow): GET "/trending/all/{window}" => Page<MultiResult> {
         params { language: Language }
     }
 }

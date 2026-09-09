@@ -47,53 +47,47 @@ pub struct CreateListResponse {
 
 endpoint! {
     /// a list and its items
-    list(id: u64): GET "/list/{}" => ListDetails {
+    list(id: u64, session_id: SessionId): GET "/list/{id}" => ListDetails {
         params { language: Language, page: u32 }
     }
 }
 
 endpoint! {
     /// whether a title is on a list
-    list_item_status(id: u64): GET "/list/{}/item_status" => ItemStatus {
+    list_item_status(id: u64, session_id: SessionId): GET "/list/{id}/item_status" => ItemStatus {
         params { movie_id: u64 }
     }
 }
 
 endpoint! {
     /// create a list
-    create_list(): POST "/list" => CreateListResponse {
-        required { session_id: SessionId }
+    create_list(session_id: SessionId): POST "/list" => CreateListResponse {
         body { name: &str, description: &str, language: &str }
     }
 }
 
 endpoint! {
     /// add a title to a list
-    list_add_item(id: u64): POST "/list/{}/add_item" => StatusResponse {
-        required { session_id: SessionId }
+    list_add_item(id: u64, session_id: SessionId): POST "/list/{id}/add_item" => StatusResponse {
         body { media_id: u64 }
     }
 }
 
 endpoint! {
     /// remove a title from a list
-    list_remove_item(id: u64): POST "/list/{}/remove_item" => StatusResponse {
-        required { session_id: SessionId }
+    list_remove_item(id: u64, session_id: SessionId): POST "/list/{id}/remove_item" => StatusResponse {
         body { media_id: u64 }
     }
 }
 
 endpoint! {
     /// remove every title from a list
-    list_clear(id: u64): POST "/list/{}/clear" => StatusResponse {
-        required { session_id: SessionId }
+    list_clear(id: u64, session_id: SessionId): POST "/list/{id}/clear" => StatusResponse {
         body { confirm: bool }
     }
 }
 
 endpoint! {
     /// delete a list
-    list_delete(id: u64): DELETE "/list/{}" => StatusResponse {
-        required { session_id: SessionId }
-    }
+    list_delete(id: u64, session_id: SessionId): DELETE "/list/{id}" => StatusResponse
 }

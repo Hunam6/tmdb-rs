@@ -19,8 +19,7 @@ pub enum MultiResult {
 
 endpoint! {
     /// search for movies by title
-    search_movies(): GET "/search/movie" => Page<MovieShort> {
-            required { query: &str }
+    search_movies(query: &str): GET "/search/movie" => Page<MovieShort> {
         params {
             language: Language,
             page: u32,
@@ -34,8 +33,7 @@ endpoint! {
 
 endpoint! {
     /// search for series by name
-    search_tv(): GET "/search/tv" => Page<TvShort> {
-            required { query: &str }
+    search_tv(query: &str): GET "/search/tv" => Page<TvShort> {
         params {
             language: Language,
             page: u32,
@@ -48,40 +46,35 @@ endpoint! {
 
 endpoint! {
     /// search movies, series and people in one call
-    search(): GET "/search/multi" => Page<MultiResult> {
-            required { query: &str }
+    search(query: &str): GET "/search/multi" => Page<MultiResult> {
         params { language: Language, page: u32, include_adult: bool }
     }
 }
 
 endpoint! {
     /// search for people by name
-    search_people(): GET "/search/person" => Page<PersonShort> {
-            required { query: &str }
+    search_people(query: &str): GET "/search/person" => Page<PersonShort> {
         params { language: Language, page: u32, include_adult: bool }
     }
 }
 
 endpoint! {
     /// search for collections by name
-    search_collections(): GET "/search/collection" => Page<CollectionShort> {
-            required { query: &str }
+    search_collections(query: &str): GET "/search/collection" => Page<CollectionShort> {
         params { language: Language, page: u32, include_adult: bool }
     }
 }
 
 endpoint! {
     /// search for keywords by name
-    search_keywords(): GET "/search/keyword" => Page<Keyword> {
-            required { query: &str }
+    search_keywords(query: &str): GET "/search/keyword" => Page<Keyword> {
         params { page: u32 }
     }
 }
 
 endpoint! {
     /// search for companies by name
-    search_companies(): GET "/search/company" => Page<CompanyShort> {
-            required { query: &str }
+    search_companies(query: &str): GET "/search/company" => Page<CompanyShort> {
         params { page: u32 }
     }
 }

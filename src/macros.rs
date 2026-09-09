@@ -1,6 +1,7 @@
 /// an endpoint: `Client` method, builder with one method per optional query
-/// param, `send()`. path params fill the path's `{}` in order, required query
-/// params and body fields become method args.
+/// param, `send()`. a signature param fills the path's `{name}` hole, or
+/// becomes a required query param when the path has no such hole. body fields
+/// become method args.
 ///
 /// a `base { }` + `appends { }` section makes it a detail endpoint with
 /// compile-time append_to_response: each `with_*` fills one slot of the
@@ -17,9 +18,9 @@ macro_rules! endpoint {
         $method:ident ($($pn:ident : $pt:ty),* $(,)?): $verb:ident $path:literal => $resp:ty
     ) => {
         endpoint! {
-            $(@gen $recv,)?
+            @full $(@gen $recv,)?
             $(#[$meta])*
-            $method($($pn : $pt),*): $verb $path => $resp { required {} params {} body {} }
+            $method($($pn : $pt),*): $verb $path => $resp { params {} body {} }
         }
     };
     // params only
@@ -31,29 +32,9 @@ macro_rules! endpoint {
         }
     ) => {
         endpoint! {
-            $(@gen $recv,)?
+            @full $(@gen $recv,)?
             $(#[$meta])*
             $method($($pn : $pt),*): $verb $path => $resp {
-                required {}
-                params { $($qp : $qt),* }
-                body {}
-            }
-        }
-    };
-    // required + params
-    (
-        $(@gen $recv:ident,)?
-        $(#[$meta:meta])*
-        $method:ident ($($pn:ident : $pt:ty),* $(,)?): $verb:ident $path:literal => $resp:ty {
-            required { $($rq:ident : $rt:ty),* $(,)? }
-            params { $($qp:ident : $qt:ty),* $(,)? }
-        }
-    ) => {
-        endpoint! {
-            $(@gen $recv,)?
-            $(#[$meta])*
-            $method($($pn : $pt),*): $verb $path => $resp {
-                required { $($rq : $rt),* }
                 params { $($qp : $qt),* }
                 body {}
             }
@@ -68,30 +49,11 @@ macro_rules! endpoint {
         }
     ) => {
         endpoint! {
-            $(@gen $recv,)?
+            @full $(@gen $recv,)?
             $(#[$meta])*
             $method($($pn : $pt),*): $verb $path => $resp {
-                required {}
                 params {}
                 body { $($bn : $bt),* }
-            }
-        }
-    };
-    // required only
-    (
-        $(@gen $recv:ident,)?
-        $(#[$meta:meta])*
-        $method:ident ($($pn:ident : $pt:ty),* $(,)?): $verb:ident $path:literal => $resp:ty {
-            required { $($rq:ident : $rt:ty),* $(,)? }
-        }
-    ) => {
-        endpoint! {
-            $(@gen $recv,)?
-            $(#[$meta])*
-            $method($($pn : $pt),*): $verb $path => $resp {
-                required { $($rq : $rt),* }
-                params {}
-                body {}
             }
         }
     };
@@ -105,54 +67,31 @@ macro_rules! endpoint {
         }
     ) => {
         endpoint! {
-            $(@gen $recv,)?
+            @full $(@gen $recv,)?
             $(#[$meta])*
             $method($($pn : $pt),*): $verb $path => $resp {
-                required {}
                 params { $($qp : $qt),* }
                 body { $($bn : $bt),* }
             }
         }
     };
-    // required + body
+    // full form: default the receiver to the v3 client
     (
-        $(@gen $recv:ident,)?
-        $(#[$meta:meta])*
+        @full $(#[$meta:meta])*
         $method:ident ($($pn:ident : $pt:ty),* $(,)?): $verb:ident $path:literal => $resp:ty {
-            required { $($rq:ident : $rt:ty),* $(,)? }
-            body { $($bn:ident : $bt:ty),* $(,)? }
-        }
-    ) => {
-        endpoint! {
-            $(@gen $recv,)?
-            $(#[$meta])*
-            $method($($pn : $pt),*): $verb $path => $resp {
-                required { $($rq : $rt),* }
-                params {}
-                body { $($bn : $bt),* }
-            }
-        }
-    };
-    // full form, on the v3 client
-    (
-        $(#[$meta:meta])*
-        $method:ident ($($pn:ident : $pt:ty),* $(,)?): $verb:ident $path:literal => $resp:ty {
-            required { $($rq:ident : $rt:ty),* $(,)? }
             params { $($qp:ident : $qt:ty),* $(,)? }
             body { $($bn:ident : $bt:ty),* $(,)? }
         }
     ) => {
-        endpoint!(@gen Client, $(#[$meta])* $method($($pn : $pt),*): $verb $path => $resp {
-            required { $($rq : $rt),* }
+        endpoint!(@full @gen Client, $(#[$meta])* $method($($pn : $pt),*): $verb $path => $resp {
             params { $($qp : $qt),* }
             body { $($bn : $bt),* }
         });
     };
     // generator, with the receiver made explicit so v4 can share it
     (
-        @gen $recv:ident, $(#[$meta:meta])*
+        @full @gen $recv:ident, $(#[$meta:meta])*
         $method:ident ($($pn:ident : $pt:ty),* $(,)?): $verb:ident $path:literal => $resp:ty {
-            required { $($rq:ident : $rt:ty),* $(,)? }
             params { $($qp:ident : $qt:ty),* $(,)? }
             body { $($bn:ident : $bt:ty),* $(,)? }
         }
@@ -169,9 +108,10 @@ macro_rules! endpoint {
 
             impl $crate::$recv {
                 $(#[$meta])*
-                pub fn $method(&self, $($pn: $pt,)* $($rq: $rt,)* $($bn: $bt),*) -> [<$method:camel Request>] {
-                    let path = ::std::format!($path $(, $pn)*);
-                    let pairs = ::std::vec![$((stringify!($rq), $crate::ToParam::to_param(&$rq))),*];
+                pub fn $method(&self, $($pn: $pt,)* $($bn: $bt),*) -> [<$method:camel Request>] {
+                    #[allow(unused_mut)]
+                    let mut pairs = ::std::vec::Vec::new();
+                    let path = endpoint!(@args $path, pairs, $($pn),*);
                     let _body = ::serde_json::json!({ $(stringify!($bn): $bn),* });
                     [<$method:camel Request>] { client: self.clone(), path, pairs, _body }
                 }
@@ -192,6 +132,22 @@ macro_rules! endpoint {
         }
         endpoint!(@stream $verb $method $resp);
     };
+
+    // a param named in the path fills its hole; any other is a query param
+    (@args $path:expr, $q:ident, $($pn:ident),* $(,)?) => {{
+        #[allow(unused_mut)]
+        let mut path = $path.to_string();
+        $(
+            let value = $crate::ToParam::to_param(&$pn);
+            let hole = concat!("{", stringify!($pn), "}");
+            if path.contains(hole) {
+                path = path.replace(hole, &value);
+            } else {
+                $q.push((stringify!($pn), value));
+            }
+        )*
+        path
+    }};
 
     (@send GET $self:ident) => {
         $self.client.get(&$self.path, &$self.pairs).await
@@ -271,10 +227,13 @@ macro_rules! endpoint {
             impl $crate::Client {
                 $(#[$meta])*
                 pub fn $method(&self, $($pn: $pt),*) -> [<$resp Request>] {
+                    #[allow(unused_mut)]
+                    let mut pairs = ::std::vec::Vec::new();
+                    let path = endpoint!(@args $path, pairs, $($pn),*);
                     [<$resp Request>] {
                         client: self.clone(),
-                        path: ::std::format!($path $(, $pn)*),
-                        pairs: ::std::vec::Vec::new(),
+                        path,
+                        pairs,
                         _appends: ::std::marker::PhantomData,
                     }
                 }

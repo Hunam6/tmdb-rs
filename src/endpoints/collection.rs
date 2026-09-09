@@ -21,7 +21,7 @@ pub struct CollectionShort {
 
 endpoint! {
     /// a collection and its parts
-    collection(id: u64): GET "/collection/{}" => CollectionDetails {
+    collection(id: u64): GET "/collection/{id}" => CollectionDetails {
         params { language: Language }
         base {
             pub id: u64,
@@ -45,12 +45,12 @@ endpoint! {
 
 endpoint! {
     /// a collection's images
-    collection_images(id: u64): GET "/collection/{}/images" => Images {
+    collection_images(id: u64): GET "/collection/{id}/images" => Images {
         params { language: Language, include_image_language: Vec<Language> }
     }
 }
 
 endpoint! {
     /// a collection's translations
-    collection_translations(id: u64): GET "/collection/{}/translations" => Translations
+    collection_translations(id: u64): GET "/collection/{id}/translations" => Translations
 }

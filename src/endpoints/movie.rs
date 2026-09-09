@@ -35,7 +35,7 @@ pub struct MovieShort {
 
 endpoint! {
     /// the primary details of a movie
-    movie(id: u64): GET "/movie/{}" => MovieDetails {
+    movie(id: u64): GET "/movie/{id}" => MovieDetails {
         params { language: Language }
         base {
             pub id: u64,
@@ -86,92 +86,92 @@ endpoint! {
 
 endpoint! {
     /// a movie's account states (favorite, rated, watchlist)
-    movie_account_states(id: u64): GET "/movie/{}/account_states" => AccountStates {
+    movie_account_states(id: u64): GET "/movie/{id}/account_states" => AccountStates {
         params { session_id: SessionId, guest_session_id: GuestSessionId }
     }
 }
 
 endpoint! {
     /// a movie's alternative titles
-    movie_alternative_titles(id: u64): GET "/movie/{}/alternative_titles" => AlternativeTitles {
+    movie_alternative_titles(id: u64): GET "/movie/{id}/alternative_titles" => AlternativeTitles {
         params { language: Language, country: CountryCode }
     }
 }
 
 endpoint! {
     /// a movie's recent changes
-    movie_changes_by_id(id: u64): GET "/movie/{}/changes" => Changes {
+    movie_changes_by_id(id: u64): GET "/movie/{id}/changes" => Changes {
         params { start_date: Date, end_date: Date, page: u32 }
     }
 }
 
 endpoint! {
     /// a movie's credits
-    movie_credits(id: u64): GET "/movie/{}/credits" => Credits {
+    movie_credits(id: u64): GET "/movie/{id}/credits" => Credits {
         params { language: Language }
     }
 }
 
 endpoint! {
     /// a movie's images
-    movie_images(id: u64): GET "/movie/{}/images" => Images {
+    movie_images(id: u64): GET "/movie/{id}/images" => Images {
         params { language: Language, include_image_language: Vec<Language> }
     }
 }
 
 endpoint! {
     /// the lists a movie appears in
-    movie_lists(id: u64): GET "/movie/{}/lists" => Page<ListShort> {
+    movie_lists(id: u64): GET "/movie/{id}/lists" => Page<ListShort> {
         params { language: Language, page: u32 }
     }
 }
 
 endpoint! {
     /// movies similar to a movie, from TMDB's collaborative filtering
-    movie_similar(id: u64): GET "/movie/{}/similar" => Page<MovieShort> {
+    movie_similar(id: u64): GET "/movie/{id}/similar" => Page<MovieShort> {
         params { language: Language, page: u32 }
     }
 }
 
 endpoint! {
     /// a movie's recommendations
-    movie_recommendations(id: u64): GET "/movie/{}/recommendations" => Page<MovieShort> {
+    movie_recommendations(id: u64): GET "/movie/{id}/recommendations" => Page<MovieShort> {
         params { language: Language, page: u32 }
     }
 }
 
 endpoint! {
     /// a movie's release dates by country
-    movie_release_dates(id: u64): GET "/movie/{}/release_dates" => ReleaseDates
+    movie_release_dates(id: u64): GET "/movie/{id}/release_dates" => ReleaseDates
 }
 
 endpoint! {
     /// a movie's reviews
-    movie_reviews(id: u64): GET "/movie/{}/reviews" => Page<Review> {
+    movie_reviews(id: u64): GET "/movie/{id}/reviews" => Page<Review> {
         params { language: Language, page: u32 }
     }
 }
 
 endpoint! {
     /// a movie's translations
-    movie_translations(id: u64): GET "/movie/{}/translations" => Translations
+    movie_translations(id: u64): GET "/movie/{id}/translations" => Translations
 }
 
 endpoint! {
     /// a movie's videos (trailers, teasers, ...)
-    movie_videos(id: u64): GET "/movie/{}/videos" => Videos {
+    movie_videos(id: u64): GET "/movie/{id}/videos" => Videos {
         params { language: Language, include_image_language: Vec<Language> }
     }
 }
 
 endpoint! {
     /// where a movie can be streamed, rented or bought, by country
-    movie_watch_providers(id: u64): GET "/movie/{}/watch/providers" => WatchProviders
+    movie_watch_providers(id: u64): GET "/movie/{id}/watch/providers" => WatchProviders
 }
 
 endpoint! {
     /// rate a movie; pass a session or guest session
-    rate_movie(id: u64): POST "/movie/{}/rating" => StatusResponse {
+    rate_movie(id: u64): POST "/movie/{id}/rating" => StatusResponse {
         params { session_id: SessionId, guest_session_id: GuestSessionId }
         body { value: f64 }
     }
@@ -179,7 +179,7 @@ endpoint! {
 
 endpoint! {
     /// delete a movie rating
-    unrate_movie(id: u64): DELETE "/movie/{}/rating" => StatusResponse {
+    unrate_movie(id: u64): DELETE "/movie/{id}/rating" => StatusResponse {
         params { session_id: SessionId, guest_session_id: GuestSessionId }
     }
 }
@@ -235,10 +235,10 @@ endpoint! {
 
 endpoint! {
     /// a movie's keywords, without the details round-trip
-    movie_keywords(id: u64): GET "/movie/{}/keywords" => MovieKeywords
+    movie_keywords(id: u64): GET "/movie/{id}/keywords" => MovieKeywords
 }
 
 endpoint! {
     /// a movie's ids on other databases
-    movie_external_ids(id: u64): GET "/movie/{}/external_ids" => ExternalIds
+    movie_external_ids(id: u64): GET "/movie/{id}/external_ids" => ExternalIds
 }

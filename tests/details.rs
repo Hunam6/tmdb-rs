@@ -214,11 +214,7 @@ async fn search_discriminates_by_media_type() {
         .mount(&server)
         .await;
 
-    let page = mock_client(&server)
-        .search("fight")
-        .send()
-        .await
-        .unwrap();
+    let page = mock_client(&server).search("fight").send().await.unwrap();
     assert_eq!(page.results.len(), 2);
     assert!(matches!(page.results[0], tmdb_rs::MultiResult::Movie(_)));
     assert!(matches!(page.results[1], tmdb_rs::MultiResult::Tv(_)));

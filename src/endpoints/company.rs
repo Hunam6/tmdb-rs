@@ -28,15 +28,15 @@ pub struct CompanyDetails {
 
 endpoint! {
     /// a company's details
-    company(id: u64): GET "/company/{}" => CompanyDetails
+    company(id: u64): GET "/company/{id}" => CompanyDetails
 }
 
 endpoint! {
     /// a company's alternative names
-    company_alternative_names(id: u64): GET "/company/{}/alternative_names" => AlternativeNames
+    company_alternative_names(id: u64): GET "/company/{id}/alternative_names" => AlternativeNames
 }
 
 endpoint! {
     /// a company's logos
-    company_images(id: u64): GET "/company/{}/images" => Images
+    company_images(id: u64): GET "/company/{id}/images" => Images
 }

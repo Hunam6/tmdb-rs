@@ -88,95 +88,82 @@ pub struct AccountWatchProviders {
 
 endpoint! {
     /// the account the session belongs to
-    account(): GET "/account" => AccountDetails {
-        required { session_id: SessionId }
-    }
+    account(session_id: SessionId): GET "/account" => AccountDetails
 }
 
 endpoint! {
     /// the account's favorite movies
-    favorite_movies(account_id: u64): GET "/account/{}/favorite/movies" => Page<MovieShort> {
-        required { session_id: SessionId }
+    favorite_movies(account_id: u64, session_id: SessionId): GET "/account/{account_id}/favorite/movies" => Page<MovieShort> {
         params { language: Language, page: u32, sort_by: AccountSort }
     }
 }
 
 endpoint! {
     /// the account's favorite series
-    favorite_tv(account_id: u64): GET "/account/{}/favorite/tv" => Page<TvShort> {
-        required { session_id: SessionId }
+    favorite_tv(account_id: u64, session_id: SessionId): GET "/account/{account_id}/favorite/tv" => Page<TvShort> {
         params { language: Language, page: u32, sort_by: AccountSort }
     }
 }
 
 endpoint! {
     /// mark or unmark a favorite
-    mark_favorite(account_id: u64): POST "/account/{}/favorite" => StatusResponse {
-        required { session_id: SessionId }
+    mark_favorite(account_id: u64, session_id: SessionId): POST "/account/{account_id}/favorite" => StatusResponse {
         body { media_type: MediaType, media_id: u64, favorite: bool }
     }
 }
 
 endpoint! {
     /// the account's rated movies
-    rated_movies(account_id: u64): GET "/account/{}/rated/movies" => Page<MovieShort> {
-        required { session_id: SessionId }
+    rated_movies(account_id: u64, session_id: SessionId): GET "/account/{account_id}/rated/movies" => Page<MovieShort> {
         params { language: Language, page: u32, sort_by: AccountSort }
     }
 }
 
 endpoint! {
     /// the account's rated series
-    rated_tv(account_id: u64): GET "/account/{}/rated/tv" => Page<TvShort> {
-        required { session_id: SessionId }
+    rated_tv(account_id: u64, session_id: SessionId): GET "/account/{account_id}/rated/tv" => Page<TvShort> {
         params { language: Language, page: u32, sort_by: AccountSort }
     }
 }
 
 endpoint! {
     /// the account's rated episodes
-    rated_episodes(account_id: u64): GET "/account/{}/rated/episodes" => Page<RatedEpisode> {
-        required { session_id: SessionId }
+    rated_episodes(account_id: u64, session_id: SessionId): GET "/account/{account_id}/rated/episodes" => Page<RatedEpisode> {
         params { language: Language, page: u32, sort_by: AccountSort }
     }
 }
 
 endpoint! {
     /// the account's movie watchlist
-    watchlist_movies(account_id: u64): GET "/account/{}/watchlist/movies" => Page<MovieShort> {
-        required { session_id: SessionId }
+    watchlist_movies(account_id: u64, session_id: SessionId): GET "/account/{account_id}/watchlist/movies" => Page<MovieShort> {
         params { language: Language, page: u32, sort_by: AccountSort }
     }
 }
 
 endpoint! {
     /// the account's series watchlist
-    watchlist_tv(account_id: u64): GET "/account/{}/watchlist/tv" => Page<TvShort> {
-        required { session_id: SessionId }
+    watchlist_tv(account_id: u64, session_id: SessionId): GET "/account/{account_id}/watchlist/tv" => Page<TvShort> {
         params { language: Language, page: u32, sort_by: AccountSort }
     }
 }
 
 endpoint! {
     /// add or remove a watchlist entry
-    set_watchlist(account_id: u64): POST "/account/{}/watchlist" => StatusResponse {
-        required { session_id: SessionId }
+    set_watchlist(account_id: u64, session_id: SessionId): POST "/account/{account_id}/watchlist" => StatusResponse {
         body { media_type: MediaType, media_id: u64, watchlist: bool }
     }
 }
 
 endpoint! {
     /// the account's lists
-    account_lists(account_id: u64): GET "/account/{}/lists" => Page<ListShort> {
-        required { session_id: SessionId }
+    account_lists(account_id: u64, session_id: SessionId): GET "/account/{account_id}/lists" => Page<ListShort> {
         params { language: Language, page: u32 }
     }
 }
 
 endpoint! {
     /// the account's watch providers preferences
-    account_watch_providers(): GET "/account/watch/providers" => AccountWatchProviders {
-        required { session_id: SessionId }
+    account_watch_providers(session_id: SessionId): GET "/account/watch/providers" => AccountWatchProviders {
         params { watch_region: CountryCode }
     }
 }
