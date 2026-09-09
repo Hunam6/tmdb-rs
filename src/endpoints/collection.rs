@@ -1,6 +1,23 @@
+use serde::Deserialize;
+
 use crate::endpoints::movie::MovieShort;
 use crate::models::{Images, Translations};
 use crate::{Backdrop, Language, Poster};
+
+/// one collection in a search response
+#[derive(Debug, Clone, Deserialize)]
+pub struct CollectionShort {
+    pub id: u64,
+    pub name: String,
+    pub original_name: String,
+    pub overview: String,
+    #[serde(rename = "poster_path")]
+    pub poster: Option<Poster>,
+    #[serde(rename = "backdrop_path")]
+    pub backdrop: Option<Backdrop>,
+    pub original_language: Option<String>,
+    pub adult: bool,
+}
 
 endpoint! {
     /// a collection and its parts

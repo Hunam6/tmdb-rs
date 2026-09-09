@@ -1,48 +1,12 @@
 use serde::Deserialize;
 
+use crate::endpoints::collection::CollectionShort;
+use crate::endpoints::company::CompanyShort;
 use crate::endpoints::movie::MovieShort;
+use crate::endpoints::person::PersonShort;
 use crate::endpoints::tv::TvShort;
 use crate::models::Keyword;
-use crate::{Backdrop, CountryCode, Language, Logo, Page, Poster, Profile};
-
-/// one person in a list or search response
-#[derive(Debug, Clone, Deserialize)]
-pub struct PersonShort {
-    pub id: u64,
-    pub name: String,
-    pub original_name: String,
-    #[serde(rename = "profile_path")]
-    pub profile: Option<Profile>,
-    pub known_for_department: Option<String>,
-    pub popularity: f64,
-    pub gender: Option<u32>,
-    pub adult: bool,
-}
-
-/// one collection in a search response
-#[derive(Debug, Clone, Deserialize)]
-pub struct CollectionShort {
-    pub id: u64,
-    pub name: String,
-    pub original_name: String,
-    pub overview: String,
-    #[serde(rename = "poster_path")]
-    pub poster: Option<Poster>,
-    #[serde(rename = "backdrop_path")]
-    pub backdrop: Option<Backdrop>,
-    pub original_language: Option<String>,
-    pub adult: bool,
-}
-
-/// one company in a search response
-#[derive(Debug, Clone, Deserialize)]
-pub struct CompanyShort {
-    pub id: u64,
-    pub name: String,
-    #[serde(rename = "logo_path")]
-    pub logo: Option<Logo>,
-    pub origin_country: Option<String>,
-}
+use crate::{CountryCode, Language, Page};
 
 /// one multi-search hit, discriminated by TMDB's `media_type`
 #[derive(Debug, Clone, Deserialize)]

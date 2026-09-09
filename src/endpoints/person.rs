@@ -3,9 +3,22 @@ use time::Date;
 
 use crate::append::appendable;
 use crate::datetime::opt_date;
-use crate::endpoints::search::PersonShort;
 use crate::models::{Changes, ExternalIds, Image};
 use crate::{Backdrop, CountryCode, Language, Page, Poster, Profile};
+
+/// one person in a list or search response
+#[derive(Debug, Clone, Deserialize)]
+pub struct PersonShort {
+    pub id: u64,
+    pub name: String,
+    pub original_name: String,
+    #[serde(rename = "profile_path")]
+    pub profile: Option<Profile>,
+    pub known_for_department: Option<String>,
+    pub popularity: f64,
+    pub gender: Option<u32>,
+    pub adult: bool,
+}
 
 /// a movie acting credit in a person's filmography
 #[derive(Debug, Clone, Deserialize)]

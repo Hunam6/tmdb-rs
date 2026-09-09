@@ -1,8 +1,17 @@
 use serde::Deserialize;
 
-use crate::endpoints::search::CompanyShort;
 use crate::models::{AlternativeNames, Images};
 use crate::Logo;
+
+/// one company in a search response
+#[derive(Debug, Clone, Deserialize)]
+pub struct CompanyShort {
+    pub id: u64,
+    pub name: String,
+    #[serde(rename = "logo_path")]
+    pub logo: Option<Logo>,
+    pub origin_country: Option<String>,
+}
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct CompanyDetails {

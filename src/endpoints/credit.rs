@@ -1,6 +1,6 @@
 use serde::Deserialize;
 
-use crate::endpoints::search::PersonShort;
+use crate::endpoints::person::PersonShort;
 use crate::{Backdrop, Poster, Still};
 
 /// one season credited on an episode-level credit

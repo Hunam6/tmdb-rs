@@ -1,7 +1,8 @@
 use std::fmt;
 
 use crate::endpoints::movie::MovieShort;
-use crate::endpoints::search::{MultiResult, PersonShort};
+use crate::endpoints::person::PersonShort;
+use crate::endpoints::search::MultiResult;
 use crate::endpoints::tv::TvShort;
 use crate::{Language, Page};
 
