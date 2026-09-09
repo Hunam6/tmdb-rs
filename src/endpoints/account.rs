@@ -6,7 +6,7 @@ use crate::datetime::opt_date;
 use crate::endpoints::movie::MovieShort;
 use crate::endpoints::tv::TvShort;
 use crate::models::{ListShort, MediaType, StatusResponse};
-use crate::{CountryCode, Language, Page, SessionId, Still};
+use crate::{CountryCode, Language, Page, Profile, SessionId, Still};
 
 /// the sort order of account lists
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Display)]
@@ -21,7 +21,7 @@ pub enum AccountSort {
 #[serde(from = "RawAvatar")]
 pub struct Avatar {
     pub gravatar_hash: String,
-    pub path: Option<String>,
+    pub path: Option<Profile>,
 }
 
 #[derive(Deserialize)]
@@ -37,7 +37,7 @@ struct RawGravatar {
 
 #[derive(Deserialize)]
 struct RawTmdbAvatar {
-    avatar_path: Option<String>,
+    avatar_path: Option<Profile>,
 }
 
 impl From<RawAvatar> for Avatar {
