@@ -38,8 +38,10 @@ pub struct AccountDetails {
     pub id: u64,
     pub name: String,
     pub username: String,
-    pub iso_639_1: String,
-    pub iso_3166_1: String,
+    #[serde(rename = "iso_639_1")]
+    pub language: Language,
+    #[serde(rename = "iso_3166_1")]
+    pub country: CountryCode,
     pub include_adult: bool,
     pub avatar: Avatar,
 }

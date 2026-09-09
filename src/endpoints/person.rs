@@ -5,7 +5,7 @@ use crate::append::appendable;
 use crate::datetime::opt_date;
 use crate::endpoints::search::PersonShort;
 use crate::models::{Changes, ExternalIds, Image};
-use crate::{Language, Page};
+use crate::{CountryCode, Language, Page};
 
 /// a movie acting credit in a person's filmography
 #[derive(Debug, Clone, Deserialize)]
@@ -156,8 +156,10 @@ pub struct PersonTranslationData {
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct PersonTranslation {
-    pub iso_639_1: String,
-    pub iso_3166_1: String,
+    #[serde(rename = "iso_639_1")]
+    pub language: Language,
+    #[serde(rename = "iso_3166_1")]
+    pub country: CountryCode,
     pub name: String,
     pub english_name: String,
     pub data: PersonTranslationData,

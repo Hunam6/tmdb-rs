@@ -11,7 +11,8 @@ pub struct ListDetails {
     pub name: String,
     pub description: String,
     pub item_count: u32,
-    pub iso_639_1: Option<String>,
+    #[serde(rename = "iso_639_1")]
+    pub language: Option<Language>,
     pub list_type: Option<String>,
     pub poster_path: Option<String>,
     pub favorite: bool,

@@ -10,7 +10,7 @@ use crate::endpoints::movie::MovieShort;
 use crate::endpoints::search::MultiResult;
 use crate::endpoints::tv::TvShort;
 use crate::models::{ListShort, MediaType, StatusResponse};
-use crate::{AccessToken, Client, Language, Page, Result};
+use crate::{AccessToken, Client, CountryCode, Language, Page, Result};
 
 /// the v4 api surface; get one from [`Client::v4`]
 #[derive(Clone)]
@@ -124,8 +124,10 @@ pub struct V4List {
     pub name: String,
     pub description: String,
     pub public: bool,
-    pub iso_639_1: Option<String>,
-    pub iso_3166_1: Option<String>,
+    #[serde(rename = "iso_639_1")]
+    pub language: Option<Language>,
+    #[serde(rename = "iso_3166_1")]
+    pub country: Option<CountryCode>,
     pub item_count: u32,
     pub average_rating: Option<f64>,
     pub backdrop_path: Option<String>,

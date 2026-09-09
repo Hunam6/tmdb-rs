@@ -5,7 +5,8 @@ use crate::{CountryCode, Language};
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct ProviderRegion {
-    pub iso_3166_1: String,
+    #[serde(rename = "iso_3166_1")]
+    pub country: CountryCode,
     pub english_name: String,
     pub native_name: String,
 }

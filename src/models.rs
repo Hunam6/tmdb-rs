@@ -5,6 +5,7 @@ use time::Date;
 
 use crate::append::appendable;
 use crate::datetime::opt_date;
+use crate::{CountryCode, Language};
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct Genre {
@@ -55,7 +56,9 @@ pub struct Image {
     pub aspect_ratio: f64,
     pub vote_average: f64,
     pub vote_count: u32,
-    pub iso_639_1: Option<String>,
+    /// textless images have no language
+    #[serde(rename = "iso_639_1")]
+    pub language: Option<Language>,
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -131,7 +134,8 @@ pub struct ReleaseDate {
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct CountryReleaseDates {
-    pub iso_3166_1: String,
+    #[serde(rename = "iso_3166_1")]
+    pub country: CountryCode,
     pub release_dates: Vec<ReleaseDate>,
 }
 
@@ -142,7 +146,8 @@ pub struct ReleaseDates {
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct ContentRating {
-    pub iso_3166_1: String,
+    #[serde(rename = "iso_3166_1")]
+    pub country: CountryCode,
     pub rating: String,
 }
 
@@ -191,8 +196,10 @@ pub struct StatusResponse {
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct Translation {
-    pub iso_3166_1: String,
-    pub iso_639_1: String,
+    #[serde(rename = "iso_3166_1")]
+    pub country: CountryCode,
+    #[serde(rename = "iso_639_1")]
+    pub language: Language,
     pub name: String,
     pub english_name: String,
     pub data: TranslationData,
@@ -216,7 +223,8 @@ pub struct Translations {
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct AlternativeTitle {
-    pub iso_3166_1: String,
+    #[serde(rename = "iso_3166_1")]
+    pub country: CountryCode,
     pub title: String,
     #[serde(rename = "type")]
     pub kind: String,
@@ -252,8 +260,10 @@ pub struct ChangeItem {
     pub id: String,
     pub action: String,
     pub time: String,
-    pub iso_639_1: Option<String>,
-    pub iso_3166_1: Option<String>,
+    #[serde(rename = "iso_639_1")]
+    pub language: Option<Language>,
+    #[serde(rename = "iso_3166_1")]
+    pub country: Option<CountryCode>,
     /// free-form: the shape depends on the changed key
     pub value: serde_json::Value,
     pub original_value: Option<serde_json::Value>,
@@ -350,7 +360,8 @@ pub struct ListShort {
     pub name: String,
     pub description: String,
     pub item_count: u32,
-    pub iso_639_1: Option<String>,
+    #[serde(rename = "iso_639_1")]
+    pub language: Option<Language>,
     pub list_type: Option<String>,
     pub poster_path: Option<String>,
     pub favorite: Option<bool>,

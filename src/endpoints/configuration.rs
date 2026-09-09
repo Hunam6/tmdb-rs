@@ -1,5 +1,7 @@
 use serde::Deserialize;
 
+use crate::{CountryCode, Language};
+
 #[derive(Debug, Clone, Deserialize)]
 pub struct ImageConfig {
     pub base_url: String,
@@ -20,7 +22,8 @@ pub struct Configuration {
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct CountryInfo {
-    pub iso_3166_1: String,
+    #[serde(rename = "iso_3166_1")]
+    pub country: CountryCode,
     pub english_name: String,
     pub native_name: String,
 }
@@ -33,14 +36,16 @@ pub struct DepartmentJobs {
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct LanguageInfo {
-    pub iso_639_1: String,
+    #[serde(rename = "iso_639_1")]
+    pub language: Language,
     pub english_name: String,
     pub name: String,
 }
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct Timezone {
-    pub iso_3166_1: String,
+    #[serde(rename = "iso_3166_1")]
+    pub country: CountryCode,
     pub zones: Vec<String>,
 }
 
