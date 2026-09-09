@@ -358,6 +358,14 @@ pub struct Review {
     pub url: String,
 }
 
+/// the kind of items a v3 list holds
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum ListType {
+    Movie,
+    Tv,
+}
+
 /// one list in a list-of-lists response
 #[derive(Debug, Clone, Deserialize)]
 pub struct ListShort {
@@ -367,7 +375,7 @@ pub struct ListShort {
     pub item_count: u32,
     #[serde(rename = "iso_639_1")]
     pub language: Option<Language>,
-    pub list_type: Option<String>,
+    pub list_type: Option<ListType>,
     #[serde(rename = "poster_path")]
     pub poster: Option<Poster>,
     pub favorite: Option<bool>,

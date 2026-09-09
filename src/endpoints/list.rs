@@ -1,7 +1,7 @@
 use serde::Deserialize;
 
 use crate::endpoints::search::MultiResult;
-use crate::models::StatusResponse;
+use crate::models::{ListType, StatusResponse};
 use crate::{Language, Poster, SessionId};
 
 /// a v3 list and its items
@@ -13,7 +13,7 @@ pub struct ListDetails {
     pub item_count: u32,
     #[serde(rename = "iso_639_1")]
     pub language: Option<Language>,
-    pub list_type: Option<String>,
+    pub list_type: Option<ListType>,
     #[serde(rename = "poster_path")]
     pub poster: Option<Poster>,
     pub favorite: bool,
