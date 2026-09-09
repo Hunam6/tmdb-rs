@@ -2,8 +2,8 @@ use serde::Deserialize;
 use time::Date;
 
 use crate::append::appendable;
+use crate::common::{Changes, ExternalIds, Image};
 use crate::datetime::opt_date;
-use crate::models::{Changes, ExternalIds, Image};
 use crate::{Backdrop, CountryCode, Language, Page, Poster, Profile};
 
 /// one person in a list or search response

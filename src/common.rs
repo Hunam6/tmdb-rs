@@ -6,7 +6,6 @@ use crate::append::appendable;
 use crate::endpoints::credit::Credits;
 use crate::endpoints::keyword::{MovieKeywords, TvKeywords};
 use crate::endpoints::movie::ReleaseDates;
-use crate::endpoints::tv::ContentRatings;
 use crate::{Backdrop, CountryCode, Language, Logo, Poster};
 
 #[derive(Debug, Clone, Deserialize)]
@@ -112,21 +111,31 @@ pub struct Translations {
 pub struct AlternativeTitle {
     #[serde(rename = "iso_3166_1")]
     pub country: CountryCode,
-    pub title: String,
+    #[serde(rename = "title")]
+    pub name: String,
     #[serde(rename = "type")]
     pub kind: String,
 }
 
-/// `/movie/{id}/alternative_titles`
+/// `/movie` or `/tv` `alternative_titles` — movies wrap it in `titles`, series in `results`
 #[derive(Debug, Clone, Deserialize)]
+#[serde(from = "RawAlternativeTitles")]
 pub struct AlternativeTitles {
     pub titles: Vec<AlternativeTitle>,
 }
 
-/// `/tv/{id}/alternative_titles` — same payload, different envelope
-#[derive(Debug, Clone, Deserialize)]
-pub struct AlternativeTitleResults {
-    pub results: Vec<AlternativeTitle>,
+#[derive(Deserialize)]
+struct RawAlternativeTitles {
+    titles: Option<Vec<AlternativeTitle>>,
+    results: Option<Vec<AlternativeTitle>>,
+}
+
+impl From<RawAlternativeTitles> for AlternativeTitles {
+    fn from(raw: RawAlternativeTitles) -> Self {
+        Self {
+            titles: raw.titles.or(raw.results).unwrap_or_default(),
+        }
+    }
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -221,7 +230,6 @@ pub struct WatchProviders {
 appendable! {
     Credits,
     ReleaseDates,
-    ContentRatings,
     MovieKeywords,
     TvKeywords,
     ExternalIds,
@@ -229,7 +237,6 @@ appendable! {
     Images,
     Translations,
     AlternativeTitles,
-    AlternativeTitleResults,
     Changes,
     AccountStates,
     WatchProviders,

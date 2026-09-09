@@ -1,7 +1,7 @@
 use serde::Deserialize;
 
+use crate::common::{Images, Translations};
 use crate::endpoints::movie::MovieShort;
-use crate::models::{Images, Translations};
 use crate::{Backdrop, Language, Poster};
 
 /// one collection in a search response

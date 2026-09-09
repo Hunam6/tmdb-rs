@@ -1,7 +1,7 @@
 use serde::Deserialize;
 
+use crate::common::StatusResponse;
 use crate::endpoints::search::MultiResult;
-use crate::models::StatusResponse;
 use crate::{Language, Poster, SessionId};
 
 /// the kind of items a v3 list holds

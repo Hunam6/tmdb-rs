@@ -1,6 +1,6 @@
 use serde::Deserialize;
 
-use crate::models::{AlternativeNames, Images};
+use crate::common::{AlternativeNames, Images};
 use crate::Logo;
 
 #[derive(Debug, Clone, Deserialize)]

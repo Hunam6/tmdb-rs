@@ -1,6 +1,6 @@
 use serde::Deserialize;
 
-use crate::models::WatchProvider;
+use crate::common::WatchProvider;
 use crate::{CountryCode, Language};
 
 #[derive(Debug, Clone, Deserialize)]

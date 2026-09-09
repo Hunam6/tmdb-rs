@@ -1,6 +1,6 @@
 use serde::Deserialize;
 
-use crate::models::StatusResponse;
+use crate::common::StatusResponse;
 use crate::SessionId;
 
 #[derive(Debug, Clone, Deserialize)]

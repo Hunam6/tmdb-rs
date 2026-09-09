@@ -1,16 +1,16 @@
 use serde::Deserialize;
 use time::Date;
 
+use crate::common::{
+    AccountStates, AlternativeTitles, Changes, ExternalIds, Images, Rated, StatusResponse,
+    Translations, Videos, WatchProviders,
+};
 use crate::datetime::opt_date;
 use crate::endpoints::credit::Credits;
 use crate::endpoints::genre::Genre;
 use crate::endpoints::keyword::TvKeywords;
 use crate::endpoints::list::ListShort;
 use crate::endpoints::review::Review;
-use crate::models::{
-    AccountStates, AlternativeTitleResults, Changes, ExternalIds, Images, Rated, StatusResponse,
-    Translations, Videos, WatchProviders,
-};
 use crate::{
     Backdrop, CountryCode, GuestSessionId, Language, Logo, Page, Poster, Profile, SessionId, Still,
 };
@@ -204,6 +204,7 @@ pub struct ScreenedTheatrically {
 
 appendable! {
     AggregateCredits,
+    ContentRatings,
     EpisodeGroups,
     ScreenedTheatrically,
 }
@@ -250,7 +251,7 @@ endpoint! {
         appends {
             account_states: AccountStates,
             aggregate_credits: AggregateCredits,
-            alternative_titles: AlternativeTitleResults,
+            alternative_titles: AlternativeTitles,
             changes: Changes,
             content_ratings: ContentRatings,
             credits: Credits,
@@ -390,7 +391,7 @@ endpoint! {
 
 endpoint! {
     /// a series' alternative titles
-    tv_alternative_titles(id: u64): GET "/tv/{id}/alternative_titles" => AlternativeTitleResults
+    tv_alternative_titles(id: u64): GET "/tv/{id}/alternative_titles" => AlternativeTitles
 }
 
 endpoint! {
