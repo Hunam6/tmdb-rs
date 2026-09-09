@@ -62,13 +62,11 @@ pub struct Image<K> {
     pub language: Option<Language>,
 }
 
-#[derive(Debug, Clone, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize)]
+#[serde(default)]
 pub struct Images {
-    #[serde(default)]
     pub backdrops: Vec<Image<Backdrop>>,
-    #[serde(default)]
     pub posters: Vec<Image<Poster>>,
-    #[serde(default)]
     pub logos: Vec<Image<Logo>>,
 }
 
@@ -324,18 +322,14 @@ pub struct WatchProvider {
 }
 
 /// one country's watch options for a title
-#[derive(Debug, Clone, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize)]
+#[serde(default)]
 pub struct CountryProviders {
     pub link: Option<String>,
-    #[serde(default)]
     pub flatrate: Vec<WatchProvider>,
-    #[serde(default)]
     pub rent: Vec<WatchProvider>,
-    #[serde(default)]
     pub buy: Vec<WatchProvider>,
-    #[serde(default)]
     pub ads: Vec<WatchProvider>,
-    #[serde(default)]
     pub free: Vec<WatchProvider>,
 }
 

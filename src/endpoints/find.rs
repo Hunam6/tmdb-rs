@@ -73,17 +73,13 @@ pub struct FoundEpisode {
 }
 
 /// everything matching one external id
-#[derive(Debug, Clone, Deserialize)]
+#[derive(Debug, Clone, Default, Deserialize)]
+#[serde(default)]
 pub struct FindResults {
-    #[serde(default)]
     pub movie_results: Vec<MovieShort>,
-    #[serde(default)]
     pub tv_results: Vec<TvShort>,
-    #[serde(default)]
     pub person_results: Vec<PersonShort>,
-    #[serde(default)]
     pub tv_episode_results: Vec<FoundEpisode>,
-    #[serde(default)]
     pub tv_season_results: Vec<FoundSeason>,
 }
 
