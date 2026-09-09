@@ -3,7 +3,6 @@ use time::Date;
 
 use crate::append::appendable;
 use crate::common::{Changes, ExternalIds, Image};
-use crate::datetime::opt_date;
 use crate::{Backdrop, CountryCode, Language, Page, Poster, Profile};
 
 /// one person in a list or search response
@@ -33,7 +32,7 @@ pub struct MovieCastCredit {
     pub poster: Option<Poster>,
     #[serde(rename = "backdrop_path")]
     pub backdrop: Option<Backdrop>,
-    #[serde(default, deserialize_with = "opt_date")]
+    #[serde(default, deserialize_with = "crate::common::opt_date")]
     pub release_date: Option<Date>,
     pub credit_id: String,
     pub vote_average: f64,
@@ -56,7 +55,7 @@ pub struct TvCastCredit {
     pub poster: Option<Poster>,
     #[serde(rename = "backdrop_path")]
     pub backdrop: Option<Backdrop>,
-    #[serde(default, deserialize_with = "opt_date")]
+    #[serde(default, deserialize_with = "crate::common::opt_date")]
     pub first_air_date: Option<Date>,
     pub credit_id: String,
     pub episode_count: Option<u32>,
@@ -92,7 +91,7 @@ pub struct MovieCrewCredit {
     pub poster: Option<Poster>,
     #[serde(rename = "backdrop_path")]
     pub backdrop: Option<Backdrop>,
-    #[serde(default, deserialize_with = "opt_date")]
+    #[serde(default, deserialize_with = "crate::common::opt_date")]
     pub release_date: Option<Date>,
     pub credit_id: String,
     pub vote_average: f64,
@@ -116,7 +115,7 @@ pub struct TvCrewCredit {
     pub poster: Option<Poster>,
     #[serde(rename = "backdrop_path")]
     pub backdrop: Option<Backdrop>,
-    #[serde(default, deserialize_with = "opt_date")]
+    #[serde(default, deserialize_with = "crate::common::opt_date")]
     pub first_air_date: Option<Date>,
     pub credit_id: String,
     pub episode_count: Option<u32>,
@@ -187,9 +186,9 @@ endpoint! {
             #[serde(default)]
             pub also_known_as: Vec<String>,
             pub biography: String,
-            #[serde(default, deserialize_with = "opt_date")]
+            #[serde(default, deserialize_with = "crate::common::opt_date")]
             pub birthday: Option<Date>,
-            #[serde(default, deserialize_with = "opt_date")]
+            #[serde(default, deserialize_with = "crate::common::opt_date")]
             pub deathday: Option<Date>,
             pub gender: Option<u32>,
             #[serde(rename = "homepage")]

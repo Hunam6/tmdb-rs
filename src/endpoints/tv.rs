@@ -5,7 +5,6 @@ use crate::common::{
     AccountStates, AlternativeTitles, Changes, ExternalIds, Images, Rated, StatusResponse,
     Translations, Videos, WatchProviders,
 };
-use crate::datetime::opt_date;
 use crate::endpoints::credit::Credits;
 use crate::endpoints::genre::Genre;
 use crate::endpoints::keyword::TvKeywords;
@@ -36,7 +35,7 @@ pub struct SeasonShort {
     pub overview: Option<String>,
     #[serde(rename = "poster_path")]
     pub poster: Option<Poster>,
-    #[serde(default, deserialize_with = "opt_date")]
+    #[serde(default, deserialize_with = "crate::common::opt_date")]
     pub air_date: Option<Date>,
 }
 
@@ -49,7 +48,7 @@ pub struct TvShort {
     pub name: String,
     pub original_name: String,
     pub overview: String,
-    #[serde(default, deserialize_with = "opt_date")]
+    #[serde(default, deserialize_with = "crate::common::opt_date")]
     pub first_air_date: Option<Date>,
     #[serde(rename = "poster_path")]
     pub poster: Option<Poster>,
@@ -73,7 +72,7 @@ pub struct NextEpisode {
     pub name: String,
     pub episode_number: u32,
     pub season_number: u32,
-    #[serde(default, deserialize_with = "opt_date")]
+    #[serde(default, deserialize_with = "crate::common::opt_date")]
     pub air_date: Option<Date>,
 }
 
@@ -88,7 +87,7 @@ pub struct Episode {
     pub runtime: Option<u32>,
     #[serde(rename = "still_path")]
     pub still: Option<Still>,
-    #[serde(default, deserialize_with = "opt_date")]
+    #[serde(default, deserialize_with = "crate::common::opt_date")]
     pub air_date: Option<Date>,
     pub vote_average: f64,
     pub vote_count: u32,
@@ -219,9 +218,9 @@ endpoint! {
             pub original_name: String,
             pub overview: String,
             pub tagline: String,
-            #[serde(default, deserialize_with = "opt_date")]
+            #[serde(default, deserialize_with = "crate::common::opt_date")]
             pub first_air_date: Option<Date>,
-            #[serde(default, deserialize_with = "opt_date")]
+            #[serde(default, deserialize_with = "crate::common::opt_date")]
             pub last_air_date: Option<Date>,
             pub vote_average: f64,
             pub vote_count: u32,
@@ -279,7 +278,7 @@ endpoint! {
             pub season_number: u32,
             pub name: String,
             pub overview: String,
-            #[serde(default, deserialize_with = "opt_date")]
+            #[serde(default, deserialize_with = "crate::common::opt_date")]
             pub air_date: Option<Date>,
             #[serde(rename = "poster_path")]
     pub poster: Option<Poster>,
@@ -313,7 +312,7 @@ endpoint! {
             pub runtime: Option<u32>,
             #[serde(rename = "still_path")]
     pub still: Option<Still>,
-            #[serde(default, deserialize_with = "opt_date")]
+            #[serde(default, deserialize_with = "crate::common::opt_date")]
             pub air_date: Option<Date>,
             pub vote_average: f64,
             pub vote_count: u32,

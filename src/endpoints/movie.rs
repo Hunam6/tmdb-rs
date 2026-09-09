@@ -5,7 +5,6 @@ use crate::common::{
     AccountStates, AlternativeTitles, Changes, ExternalIds, Images, StatusResponse, Translations,
     Videos, WatchProviders,
 };
-use crate::datetime::opt_date;
 use crate::endpoints::credit::Credits;
 use crate::endpoints::genre::Genre;
 use crate::endpoints::keyword::MovieKeywords;
@@ -59,7 +58,7 @@ pub struct MovieShort {
     #[serde(rename = "original_title")]
     pub original_name: String,
     pub overview: String,
-    #[serde(default, deserialize_with = "opt_date")]
+    #[serde(default, deserialize_with = "crate::common::opt_date")]
     pub release_date: Option<Date>,
     #[serde(rename = "poster_path")]
     pub poster: Option<Poster>,
@@ -87,7 +86,7 @@ endpoint! {
             pub original_name: String,
             pub overview: String,
             pub tagline: String,
-            #[serde(default, deserialize_with = "opt_date")]
+            #[serde(default, deserialize_with = "crate::common::opt_date")]
             pub release_date: Option<Date>,
             pub vote_average: f64,
             pub vote_count: u32,

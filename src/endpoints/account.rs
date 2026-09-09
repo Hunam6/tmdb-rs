@@ -3,7 +3,6 @@ use strum::Display;
 use time::Date;
 
 use crate::common::{MediaType, StatusResponse};
-use crate::datetime::opt_date;
 use crate::endpoints::list::ListShort;
 use crate::endpoints::movie::MovieShort;
 use crate::endpoints::tv::TvShort;
@@ -71,7 +70,7 @@ pub struct RatedEpisode {
     pub episode_number: u32,
     pub season_number: u32,
     pub show_id: Option<u64>,
-    #[serde(default, deserialize_with = "opt_date")]
+    #[serde(default, deserialize_with = "crate::common::opt_date")]
     pub air_date: Option<Date>,
     #[serde(rename = "still_path")]
     pub still: Option<Still>,

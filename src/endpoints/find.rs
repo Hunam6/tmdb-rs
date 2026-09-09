@@ -2,7 +2,6 @@ use serde::Deserialize;
 use strum::Display;
 use time::Date;
 
-use crate::datetime::opt_date;
 use crate::endpoints::movie::MovieShort;
 use crate::endpoints::person::PersonShort;
 use crate::endpoints::tv::TvShort;
@@ -38,7 +37,7 @@ pub struct FoundSeason {
     pub show_id: u64,
     pub name: String,
     pub season_number: u32,
-    #[serde(default, deserialize_with = "opt_date")]
+    #[serde(default, deserialize_with = "crate::common::opt_date")]
     pub air_date: Option<Date>,
     #[serde(rename = "poster_path")]
     pub poster: Option<Poster>,
@@ -52,7 +51,7 @@ pub struct FoundEpisode {
     pub name: String,
     pub episode_number: u32,
     pub season_number: u32,
-    #[serde(default, deserialize_with = "opt_date")]
+    #[serde(default, deserialize_with = "crate::common::opt_date")]
     pub air_date: Option<Date>,
     #[serde(rename = "still_path")]
     pub still: Option<Still>,
