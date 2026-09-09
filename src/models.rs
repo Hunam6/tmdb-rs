@@ -7,6 +7,7 @@ use crate::append::appendable;
 use crate::datetime::opt_date;
 use crate::endpoints::credit::Credits;
 use crate::endpoints::keyword::{MovieKeywords, TvKeywords};
+use crate::endpoints::movie::ReleaseDates;
 use crate::{Backdrop, CountryCode, Language, Logo, Poster};
 
 #[derive(Debug, Clone, Deserialize)]
@@ -46,55 +47,6 @@ pub struct Images {
     pub backdrops: Vec<Image<Backdrop>>,
     pub posters: Vec<Image<Poster>>,
     pub logos: Vec<Image<Logo>>,
-}
-
-/// TMDB's release date kinds
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Deserialize)]
-#[serde(from = "u32")]
-pub enum ReleaseType {
-    Premiere,
-    TheatricalLimited,
-    Theatrical,
-    Digital,
-    Physical,
-    Tv,
-    Unknown(u32),
-}
-
-impl From<u32> for ReleaseType {
-    fn from(kind: u32) -> Self {
-        match kind {
-            1 => Self::Premiere,
-            2 => Self::TheatricalLimited,
-            3 => Self::Theatrical,
-            4 => Self::Digital,
-            5 => Self::Physical,
-            6 => Self::Tv,
-            other => Self::Unknown(other),
-        }
-    }
-}
-
-#[derive(Debug, Clone, Deserialize)]
-pub struct ReleaseDate {
-    pub certification: String,
-    #[serde(rename = "type")]
-    pub kind: ReleaseType,
-    /// ISO 8601 datetime
-    pub release_date: String,
-    pub note: Option<String>,
-}
-
-#[derive(Debug, Clone, Deserialize)]
-pub struct CountryReleaseDates {
-    #[serde(rename = "iso_3166_1")]
-    pub country: CountryCode,
-    pub release_dates: Vec<ReleaseDate>,
-}
-
-#[derive(Debug, Clone, Deserialize)]
-pub struct ReleaseDates {
-    pub results: Vec<CountryReleaseDates>,
 }
 
 #[derive(Debug, Clone, Deserialize)]
