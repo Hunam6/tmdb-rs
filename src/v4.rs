@@ -3,14 +3,14 @@
 //! reached via [`Client::v4`]; every call authenticates with the v4 user
 //! access token, never the read token
 
-use serde::de::DeserializeOwned;
-use serde::{Deserialize, Serialize};
-use strum::Display;
 use crate::endpoints::movie::MovieShort;
 use crate::endpoints::search::MultiResult;
 use crate::endpoints::tv::TvShort;
 use crate::models::{ListShort, MediaType, StatusResponse};
-use crate::{AccessToken, Client, CountryCode, Language, Page, Result};
+use crate::{AccessToken, Backdrop, Client, CountryCode, Language, Page, Poster, Result};
+use serde::de::DeserializeOwned;
+use serde::{Deserialize, Serialize};
+use strum::Display;
 
 /// the v4 api surface; get one from [`Client::v4`]
 #[derive(Clone)]
@@ -130,8 +130,10 @@ pub struct V4List {
     pub country: Option<CountryCode>,
     pub item_count: u32,
     pub average_rating: Option<f64>,
-    pub backdrop_path: Option<String>,
-    pub poster_path: Option<String>,
+    #[serde(rename = "backdrop_path")]
+    pub backdrop: Option<Backdrop>,
+    #[serde(rename = "poster_path")]
+    pub poster: Option<Poster>,
     pub created_by: Option<String>,
     pub sort_by: Option<String>,
     pub page: u32,

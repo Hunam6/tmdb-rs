@@ -6,7 +6,7 @@ use crate::models::{
     AccountStates, AlternativeTitles, Changes, Credits, ExternalIds, Genre, Images, ListShort,
     MovieKeywords, ReleaseDates, Review, StatusResponse, Translations, Videos, WatchProviders,
 };
-use crate::{CountryCode, GuestSessionId, Language, Page, SessionId};
+use crate::{Backdrop, CountryCode, GuestSessionId, Language, Page, Poster, SessionId};
 
 /// one movie in a list or search response
 #[derive(Debug, Clone, Deserialize)]
@@ -17,8 +17,10 @@ pub struct MovieShort {
     pub overview: String,
     #[serde(default, deserialize_with = "opt_date")]
     pub release_date: Option<Date>,
-    pub poster_path: Option<String>,
-    pub backdrop_path: Option<String>,
+    #[serde(rename = "poster_path")]
+    pub poster: Option<Poster>,
+    #[serde(rename = "backdrop_path")]
+    pub backdrop: Option<Backdrop>,
     pub vote_average: f64,
     pub vote_count: u32,
     pub popularity: f64,
@@ -46,8 +48,10 @@ endpoint! {
             pub popularity: f64,
             pub runtime: Option<u32>,
             pub original_language: Option<String>,
-            pub poster_path: Option<String>,
-            pub backdrop_path: Option<String>,
+            #[serde(rename = "poster_path")]
+    pub poster: Option<Poster>,
+            #[serde(rename = "backdrop_path")]
+    pub backdrop: Option<Backdrop>,
             pub genres: Vec<Genre>,
             pub imdb_id: Option<String>,
             pub homepage: String,

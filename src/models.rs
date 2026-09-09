@@ -5,7 +5,7 @@ use time::Date;
 
 use crate::append::appendable;
 use crate::datetime::opt_date;
-use crate::{CountryCode, Language};
+use crate::{Backdrop, CountryCode, Language, Logo, Poster, Profile};
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct Genre {
@@ -49,8 +49,9 @@ pub struct Videos {
 }
 
 #[derive(Debug, Clone, Deserialize)]
-pub struct Image {
-    pub file_path: String,
+pub struct Image<K> {
+    #[serde(rename = "file_path")]
+    pub file: K,
     pub width: u32,
     pub height: u32,
     pub aspect_ratio: f64,
@@ -64,18 +65,19 @@ pub struct Image {
 #[derive(Debug, Clone, Deserialize)]
 pub struct Images {
     #[serde(default)]
-    pub backdrops: Vec<Image>,
+    pub backdrops: Vec<Image<Backdrop>>,
     #[serde(default)]
-    pub posters: Vec<Image>,
+    pub posters: Vec<Image<Poster>>,
     #[serde(default)]
-    pub logos: Vec<Image>,
+    pub logos: Vec<Image<Logo>>,
 }
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct CastMember {
     pub name: String,
     pub character: Option<String>,
-    pub profile_path: Option<String>,
+    #[serde(rename = "profile_path")]
+    pub profile: Option<Profile>,
     pub order: Option<u32>,
     pub credit_id: String,
 }
@@ -85,7 +87,8 @@ pub struct CrewMember {
     pub name: String,
     pub job: String,
     pub department: String,
-    pub profile_path: Option<String>,
+    #[serde(rename = "profile_path")]
+    pub profile: Option<Profile>,
     pub credit_id: String,
 }
 
@@ -173,7 +176,8 @@ pub struct SeasonShort {
     pub name: String,
     pub episode_count: u32,
     pub overview: Option<String>,
-    pub poster_path: Option<String>,
+    #[serde(rename = "poster_path")]
+    pub poster: Option<Poster>,
     #[serde(default, deserialize_with = "opt_date")]
     pub air_date: Option<Date>,
 }
@@ -308,7 +312,8 @@ pub struct AccountStates {
 pub struct WatchProvider {
     pub provider_id: u64,
     pub provider_name: String,
-    pub logo_path: Option<String>,
+    #[serde(rename = "logo_path")]
+    pub logo: Option<Logo>,
     pub display_priority: Option<u32>,
 }
 
@@ -363,7 +368,8 @@ pub struct ListShort {
     #[serde(rename = "iso_639_1")]
     pub language: Option<Language>,
     pub list_type: Option<String>,
-    pub poster_path: Option<String>,
+    #[serde(rename = "poster_path")]
+    pub poster: Option<Poster>,
     pub favorite: Option<bool>,
 }
 

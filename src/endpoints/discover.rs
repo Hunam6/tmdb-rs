@@ -1,7 +1,7 @@
-use strum::Display;
 use crate::endpoints::movie::MovieShort;
 use crate::endpoints::tv::TvShort;
 use crate::{CountryCode, Date, Language, Page};
+use strum::Display;
 
 /// the movie discover sort orders
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Display)]

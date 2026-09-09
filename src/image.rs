@@ -1,30 +1,36 @@
 const BASE: &str = "https://image.tmdb.org/t/p";
 
-macro_rules! sizes {
-    ($($name:ident { $($variant:ident = $key:literal),* $(,)? }),* $(,)?) => {$(
-        #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-        pub enum $name {
-            $($variant,)*
-            Original,
-        }
+macro_rules! paths {
+    ($($name:ident { $($method:ident = $key:literal),* $(,)? }),* $(,)?) => {$(
+        /// an image path; call a size method for the full url
+        #[derive(Debug, Clone, PartialEq, Eq, serde::Deserialize)]
+        #[serde(transparent)]
+        pub struct $name(String);
 
         impl $name {
-            /// the full image url for a `*_path` value
-            pub fn url(self, path: &str) -> String {
-                    let size = match self {
-                    $(Self::$variant => $key,)*
-                    Self::Original => "original",
-                };
-                format!("{BASE}/{size}{path}")
+            $(
+                pub fn $method(&self) -> String {
+                    format!("{BASE}/{}{}", $key, self.0)
+                }
+            )*
+
+            /// the full url at the original upload size
+            pub fn original(&self) -> String {
+                format!("{BASE}/original{}", self.0)
+            }
+
+            /// the raw `*_path` value, for storage
+            pub fn path(&self) -> &str {
+                &self.0
             }
         }
     )*};
 }
 
-sizes! {
-    Poster { W92 = "w92", W154 = "w154", W185 = "w185", W342 = "w342", W500 = "w500", W780 = "w780" },
-    Backdrop { W300 = "w300", W780 = "w780", W1280 = "w1280" },
-    Profile { W45 = "w45", W185 = "w185", H632 = "h632" },
-    Still { W92 = "w92", W185 = "w185", W300 = "w300" },
-    Logo { W45 = "w45", W92 = "w92", W154 = "w154", W185 = "w185", W300 = "w300", W500 = "w500" },
+paths! {
+    Poster { w92 = "w92", w154 = "w154", w185 = "w185", w342 = "w342", w500 = "w500", w780 = "w780" },
+    Backdrop { w300 = "w300", w780 = "w780", w1280 = "w1280" },
+    Profile { w45 = "w45", w185 = "w185", h632 = "h632" },
+    Still { w92 = "w92", w185 = "w185", w300 = "w300" },
+    Logo { w45 = "w45", w92 = "w92", w154 = "w154", w185 = "w185", w300 = "w300", w500 = "w500" },
 }

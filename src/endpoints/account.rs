@@ -6,7 +6,7 @@ use crate::datetime::opt_date;
 use crate::endpoints::movie::MovieShort;
 use crate::endpoints::tv::TvShort;
 use crate::models::{ListShort, MediaType, StatusResponse};
-use crate::{CountryCode, Language, Page, SessionId};
+use crate::{CountryCode, Language, Page, SessionId, Still};
 
 /// the sort order of account lists
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Display)]
@@ -21,7 +21,7 @@ pub enum AccountSort {
 #[serde(from = "RawAvatar")]
 pub struct Avatar {
     pub gravatar_hash: String,
-    pub avatar_path: Option<String>,
+    pub path: Option<String>,
 }
 
 #[derive(Deserialize)]
@@ -44,7 +44,7 @@ impl From<RawAvatar> for Avatar {
     fn from(raw: RawAvatar) -> Self {
         Avatar {
             gravatar_hash: raw.gravatar.hash,
-            avatar_path: raw.tmdb.avatar_path,
+            path: raw.tmdb.avatar_path,
         }
     }
 }
@@ -72,7 +72,8 @@ pub struct RatedEpisode {
     pub show_id: Option<u64>,
     #[serde(default, deserialize_with = "opt_date")]
     pub air_date: Option<Date>,
-    pub still_path: Option<String>,
+    #[serde(rename = "still_path")]
+    pub still: Option<Still>,
     pub vote_average: f64,
     pub rating: f64,
 }
@@ -84,7 +85,6 @@ pub struct AccountWatchProviders {
     pub watch_region: Option<String>,
     pub watch_provider_ids: Vec<u64>,
 }
-
 
 endpoint! {
     /// the account the session belongs to

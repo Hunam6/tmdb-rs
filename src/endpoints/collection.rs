@@ -1,6 +1,6 @@
 use crate::endpoints::movie::MovieShort;
 use crate::models::{Images, Translations};
-use crate::Language;
+use crate::{Backdrop, Language, Poster};
 
 endpoint! {
     /// a collection and its parts
@@ -11,8 +11,10 @@ endpoint! {
             pub name: String,
             pub original_name: String,
             pub overview: String,
-            pub poster_path: Option<String>,
-            pub backdrop_path: Option<String>,
+            #[serde(rename = "poster_path")]
+            pub poster: Option<Poster>,
+            #[serde(rename = "backdrop_path")]
+            pub backdrop: Option<Backdrop>,
             pub original_language: Option<String>,
             #[serde(default)]
             pub parts: Vec<MovieShort>,

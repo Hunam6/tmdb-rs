@@ -1,13 +1,15 @@
 use serde::Deserialize;
 
 use crate::endpoints::search::PersonShort;
+use crate::{Backdrop, Poster, Still};
 
 /// one season credited on an episode-level credit
 #[derive(Debug, Clone, Deserialize)]
 pub struct CreditSeason {
     pub season_number: u32,
     pub name: String,
-    pub poster_path: Option<String>,
+    #[serde(rename = "poster_path")]
+    pub poster: Option<Poster>,
     pub air_date: Option<String>,
 }
 
@@ -19,7 +21,8 @@ pub struct CreditEpisode {
     pub episode_number: u32,
     pub season_number: u32,
     pub air_date: Option<String>,
-    pub still_path: Option<String>,
+    #[serde(rename = "still_path")]
+    pub still: Option<Still>,
     pub overview: Option<String>,
 }
 
@@ -33,8 +36,10 @@ pub struct CreditMedia {
     /// series
     pub name: Option<String>,
     pub original_name: Option<String>,
-    pub poster_path: Option<String>,
-    pub backdrop_path: Option<String>,
+    #[serde(rename = "poster_path")]
+    pub poster: Option<Poster>,
+    #[serde(rename = "backdrop_path")]
+    pub backdrop: Option<Backdrop>,
     pub media_type: Option<String>,
     #[serde(default)]
     pub seasons: Vec<CreditSeason>,

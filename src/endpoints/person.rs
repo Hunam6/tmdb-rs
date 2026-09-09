@@ -5,7 +5,7 @@ use crate::append::appendable;
 use crate::datetime::opt_date;
 use crate::endpoints::search::PersonShort;
 use crate::models::{Changes, ExternalIds, Image};
-use crate::{CountryCode, Language, Page};
+use crate::{Backdrop, CountryCode, Language, Page, Poster, Profile};
 
 /// a movie acting credit in a person's filmography
 #[derive(Debug, Clone, Deserialize)]
@@ -14,8 +14,10 @@ pub struct MovieCastCredit {
     pub title: String,
     pub original_title: String,
     pub character: Option<String>,
-    pub poster_path: Option<String>,
-    pub backdrop_path: Option<String>,
+    #[serde(rename = "poster_path")]
+    pub poster: Option<Poster>,
+    #[serde(rename = "backdrop_path")]
+    pub backdrop: Option<Backdrop>,
     #[serde(default, deserialize_with = "opt_date")]
     pub release_date: Option<Date>,
     pub credit_id: String,
@@ -35,8 +37,10 @@ pub struct TvCastCredit {
     pub name: String,
     pub original_name: String,
     pub character: Option<String>,
-    pub poster_path: Option<String>,
-    pub backdrop_path: Option<String>,
+    #[serde(rename = "poster_path")]
+    pub poster: Option<Poster>,
+    #[serde(rename = "backdrop_path")]
+    pub backdrop: Option<Backdrop>,
     #[serde(default, deserialize_with = "opt_date")]
     pub first_air_date: Option<Date>,
     pub credit_id: String,
@@ -67,8 +71,10 @@ pub struct MovieCrewCredit {
     pub original_title: String,
     pub job: String,
     pub department: String,
-    pub poster_path: Option<String>,
-    pub backdrop_path: Option<String>,
+    #[serde(rename = "poster_path")]
+    pub poster: Option<Poster>,
+    #[serde(rename = "backdrop_path")]
+    pub backdrop: Option<Backdrop>,
     #[serde(default, deserialize_with = "opt_date")]
     pub release_date: Option<Date>,
     pub credit_id: String,
@@ -89,8 +95,10 @@ pub struct TvCrewCredit {
     pub original_name: String,
     pub job: String,
     pub department: String,
-    pub poster_path: Option<String>,
-    pub backdrop_path: Option<String>,
+    #[serde(rename = "poster_path")]
+    pub poster: Option<Poster>,
+    #[serde(rename = "backdrop_path")]
+    pub backdrop: Option<Backdrop>,
     #[serde(default, deserialize_with = "opt_date")]
     pub first_air_date: Option<Date>,
     pub credit_id: String,
@@ -122,7 +130,7 @@ pub struct PersonCredits {
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct PersonImages {
-    pub profiles: Vec<Image>,
+    pub profiles: Vec<Image<Profile>>,
 }
 
 /// the media a tagged image belongs to
@@ -131,15 +139,18 @@ pub struct TaggedMedia {
     pub id: u64,
     pub title: Option<String>,
     pub name: Option<String>,
-    pub poster_path: Option<String>,
-    pub backdrop_path: Option<String>,
+    #[serde(rename = "poster_path")]
+    pub poster: Option<Poster>,
+    #[serde(rename = "backdrop_path")]
+    pub backdrop: Option<Backdrop>,
     pub vote_average: Option<f64>,
 }
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct TaggedImage {
     pub id: String,
-    pub file_path: String,
+    #[serde(rename = "file_path")]
+    pub file: String,
     pub width: u32,
     pub height: u32,
     pub aspect_ratio: f64,
@@ -196,7 +207,8 @@ endpoint! {
             pub known_for_department: Option<String>,
             pub place_of_birth: Option<String>,
             pub popularity: f64,
-            pub profile_path: Option<String>,
+            #[serde(rename = "profile_path")]
+    pub profile: Option<Profile>,
             pub adult: bool,
         }
         appends {

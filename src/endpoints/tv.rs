@@ -8,7 +8,7 @@ use crate::models::{
     Images, ListShort, Rated, Review, SeasonShort, StatusResponse, Translations, TvKeywords,
     Videos, WatchProviders,
 };
-use crate::{GuestSessionId, Language, Page, SessionId};
+use crate::{Backdrop, GuestSessionId, Language, Logo, Page, Poster, Profile, SessionId, Still};
 
 /// one series in a list or search response
 #[derive(Debug, Clone, Deserialize)]
@@ -19,8 +19,10 @@ pub struct TvShort {
     pub overview: String,
     #[serde(default, deserialize_with = "opt_date")]
     pub first_air_date: Option<Date>,
-    pub poster_path: Option<String>,
-    pub backdrop_path: Option<String>,
+    #[serde(rename = "poster_path")]
+    pub poster: Option<Poster>,
+    #[serde(rename = "backdrop_path")]
+    pub backdrop: Option<Backdrop>,
     pub vote_average: f64,
     pub vote_count: u32,
     pub popularity: f64,
@@ -52,7 +54,8 @@ pub struct Episode {
     pub episode_number: u32,
     pub season_number: u32,
     pub runtime: Option<u32>,
-    pub still_path: Option<String>,
+    #[serde(rename = "still_path")]
+    pub still: Option<Still>,
     #[serde(default, deserialize_with = "opt_date")]
     pub air_date: Option<Date>,
     pub vote_average: f64,
@@ -71,7 +74,8 @@ pub struct Role {
 pub struct AggregateCastMember {
     pub id: u64,
     pub name: String,
-    pub profile_path: Option<String>,
+    #[serde(rename = "profile_path")]
+    pub profile: Option<Profile>,
     pub roles: Vec<Role>,
     pub total_episode_count: u32,
     pub order: Option<u32>,
@@ -89,7 +93,8 @@ pub struct Job {
 pub struct AggregateCrewMember {
     pub id: u64,
     pub name: String,
-    pub profile_path: Option<String>,
+    #[serde(rename = "profile_path")]
+    pub profile: Option<Profile>,
     pub jobs: Vec<Job>,
     pub total_episode_count: u32,
     pub department: String,
@@ -107,7 +112,8 @@ pub struct AggregateCredits {
 pub struct NetworkShort {
     pub id: u64,
     pub name: String,
-    pub logo_path: Option<String>,
+    #[serde(rename = "logo_path")]
+    pub logo: Option<Logo>,
     pub origin_country: Option<String>,
 }
 
@@ -191,8 +197,10 @@ endpoint! {
             pub number_of_episodes: u32,
             pub episode_run_time: Vec<u32>,
             pub original_language: Option<String>,
-            pub poster_path: Option<String>,
-            pub backdrop_path: Option<String>,
+            #[serde(rename = "poster_path")]
+    pub poster: Option<Poster>,
+            #[serde(rename = "backdrop_path")]
+    pub backdrop: Option<Backdrop>,
             pub genres: Vec<Genre>,
             pub homepage: String,
             pub status: String,
@@ -239,7 +247,8 @@ endpoint! {
             pub overview: String,
             #[serde(default, deserialize_with = "opt_date")]
             pub air_date: Option<Date>,
-            pub poster_path: Option<String>,
+            #[serde(rename = "poster_path")]
+    pub poster: Option<Poster>,
             #[serde(default)]
             pub episodes: Vec<Episode>,
         }
@@ -268,7 +277,8 @@ endpoint! {
             pub episode_number: u32,
             pub season_number: u32,
             pub runtime: Option<u32>,
-            pub still_path: Option<String>,
+            #[serde(rename = "still_path")]
+    pub still: Option<Still>,
             #[serde(default, deserialize_with = "opt_date")]
             pub air_date: Option<Date>,
             pub vote_average: f64,

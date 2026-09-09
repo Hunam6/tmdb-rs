@@ -7,7 +7,7 @@ use crate::datetime::opt_date;
 use crate::endpoints::movie::MovieShort;
 use crate::endpoints::search::PersonShort;
 use crate::endpoints::tv::TvShort;
-use crate::Language;
+use crate::{Language, Poster, Still};
 
 /// the database an external id comes from
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -60,7 +60,8 @@ pub struct FoundSeason {
     pub season_number: u32,
     #[serde(default, deserialize_with = "opt_date")]
     pub air_date: Option<Date>,
-    pub poster_path: Option<String>,
+    #[serde(rename = "poster_path")]
+    pub poster: Option<Poster>,
 }
 
 /// one episode found by external id
@@ -73,7 +74,8 @@ pub struct FoundEpisode {
     pub season_number: u32,
     #[serde(default, deserialize_with = "opt_date")]
     pub air_date: Option<Date>,
-    pub still_path: Option<String>,
+    #[serde(rename = "still_path")]
+    pub still: Option<Still>,
     pub vote_average: f64,
     pub vote_count: u32,
 }
