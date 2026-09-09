@@ -31,7 +31,6 @@ mod datetime;
 mod endpoints;
 mod error;
 mod image;
-mod page;
 mod param;
 #[cfg(feature = "stream")]
 pub mod stream;
@@ -68,7 +67,6 @@ pub use error::Error;
 pub use image::{Backdrop, Logo, Poster, Profile, Still};
 pub use isocountry::CountryCode;
 pub use isolang::Language;
-pub use page::Page;
 pub use param::ToParam;
 pub use time::Date;
 #[cfg(feature = "v4")]
