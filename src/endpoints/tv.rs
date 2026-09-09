@@ -8,10 +8,24 @@ use crate::endpoints::keyword::TvKeywords;
 use crate::endpoints::list::ListShort;
 use crate::endpoints::review::Review;
 use crate::models::{
-    AccountStates, AlternativeTitleResults, Changes, ContentRatings, ExternalIds, Images, Rated,
-    StatusResponse, Translations, Videos, WatchProviders,
+    AccountStates, AlternativeTitleResults, Changes, ExternalIds, Images, Rated, StatusResponse,
+    Translations, Videos, WatchProviders,
 };
-use crate::{Backdrop, GuestSessionId, Language, Logo, Page, Poster, Profile, SessionId, Still};
+use crate::{
+    Backdrop, CountryCode, GuestSessionId, Language, Logo, Page, Poster, Profile, SessionId, Still,
+};
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct ContentRating {
+    #[serde(rename = "iso_3166_1")]
+    pub country: CountryCode,
+    pub rating: String,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct ContentRatings {
+    pub results: Vec<ContentRating>,
+}
 
 /// one season inside a series' details
 #[derive(Debug, Clone, Deserialize)]

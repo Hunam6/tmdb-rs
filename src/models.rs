@@ -6,6 +6,7 @@ use crate::append::appendable;
 use crate::endpoints::credit::Credits;
 use crate::endpoints::keyword::{MovieKeywords, TvKeywords};
 use crate::endpoints::movie::ReleaseDates;
+use crate::endpoints::tv::ContentRatings;
 use crate::{Backdrop, CountryCode, Language, Logo, Poster};
 
 #[derive(Debug, Clone, Deserialize)]
@@ -45,18 +46,6 @@ pub struct Images {
     pub backdrops: Vec<Image<Backdrop>>,
     pub posters: Vec<Image<Poster>>,
     pub logos: Vec<Image<Logo>>,
-}
-
-#[derive(Debug, Clone, Deserialize)]
-pub struct ContentRating {
-    #[serde(rename = "iso_3166_1")]
-    pub country: CountryCode,
-    pub rating: String,
-}
-
-#[derive(Debug, Clone, Deserialize)]
-pub struct ContentRatings {
-    pub results: Vec<ContentRating>,
 }
 
 #[derive(Debug, Clone, Deserialize)]
