@@ -64,7 +64,7 @@ async fn season_and_search() {
         let season = tmdb.tv_season(1399, 1).send().await?;
         assert_eq!(season.episodes.len(), 10);
 
-        let page = tmdb.search_multi("fight club").send().await?;
+        let page = tmdb.search("fight club").send().await?;
         assert!(!page.results.is_empty());
 
         let genres = tmdb.movie_genres().send().await?;

@@ -48,7 +48,7 @@ endpoint! {
 
 endpoint! {
     /// search movies, series and people in one call
-    search_multi(): GET "/search/multi" => Page<MultiResult> {
+    search(): GET "/search/multi" => Page<MultiResult> {
             required { query: &str }
         params { language: Language, page: u32, include_adult: bool }
     }

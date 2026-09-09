@@ -165,7 +165,7 @@ async fn tmdb_404_maps_to_not_found() {
 }
 
 #[tokio::test]
-async fn search_multi_discriminates_by_media_type() {
+async fn search_discriminates_by_media_type() {
     let server = MockServer::start().await;
     Mock::given(method("GET"))
         .and(path("/search/multi"))
@@ -215,7 +215,7 @@ async fn search_multi_discriminates_by_media_type() {
         .await;
 
     let page = mock_client(&server)
-        .search_multi("fight")
+        .search("fight")
         .send()
         .await
         .unwrap();
