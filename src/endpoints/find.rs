@@ -1,6 +1,3 @@
-// the derived Display still names the dead variants so old data keeps parsing
-#![allow(deprecated)]
-
 use serde::Deserialize;
 use strum::Display;
 use time::Date;
@@ -16,17 +13,8 @@ use crate::{Language, Poster, Still};
 pub enum ExternalSource {
     #[strum(serialize = "imdb_id")]
     Imdb,
-    #[deprecated = "freebase shut down in 2016; TMDB no longer supports this source"]
-    #[strum(serialize = "freebase_mid")]
-    FreebaseMid,
-    #[deprecated = "freebase shut down in 2016; TMDB no longer supports this source"]
-    #[strum(serialize = "freebase_id")]
-    Freebase,
     #[strum(serialize = "tvdb_id")]
     Tvdb,
-    #[deprecated = "tvrage shut down; TMDB no longer supports this source"]
-    #[strum(serialize = "tvrage_id")]
-    Tvrage,
     #[strum(serialize = "facebook_id")]
     Facebook,
     #[strum(serialize = "instagram_id")]
