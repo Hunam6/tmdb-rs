@@ -63,7 +63,7 @@ async fn appends_fill_typed_slots() {
         .await
         .unwrap();
 
-    assert_eq!(movie.title, "Fight Club");
+    assert_eq!(movie.name, "Fight Club");
     assert_eq!(movie.release_date.unwrap().year(), 1999);
     assert_eq!(movie.credits.cast[0].name, "Edward Norton");
     assert_eq!(movie.similar.page, 1);

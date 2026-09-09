@@ -45,7 +45,7 @@ async fn stream_walks_every_page() {
     let titles: Vec<String> = client
         .movie_popular()
         .into_stream()
-        .map(|movie| movie.unwrap().title)
+        .map(|movie| movie.unwrap().name)
         .collect()
         .await;
     assert_eq!(titles, ["One", "Two", "Three"]);

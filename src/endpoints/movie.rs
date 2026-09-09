@@ -12,8 +12,10 @@ use crate::{Backdrop, CountryCode, GuestSessionId, Language, Page, Poster, Sessi
 #[derive(Debug, Clone, Deserialize)]
 pub struct MovieShort {
     pub id: u64,
-    pub title: String,
-    pub original_title: String,
+    #[serde(rename = "title")]
+    pub name: String,
+    #[serde(rename = "original_title")]
+    pub original_name: String,
     pub overview: String,
     #[serde(default, deserialize_with = "opt_date")]
     pub release_date: Option<Date>,
@@ -37,8 +39,10 @@ endpoint! {
         params { language: Language }
         base {
             pub id: u64,
-            pub title: String,
-            pub original_title: String,
+            #[serde(rename = "title")]
+            pub name: String,
+            #[serde(rename = "original_title")]
+            pub original_name: String,
             pub overview: String,
             pub tagline: String,
             #[serde(default, deserialize_with = "opt_date")]

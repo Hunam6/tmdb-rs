@@ -24,8 +24,10 @@ pub struct PersonShort {
 #[derive(Debug, Clone, Deserialize)]
 pub struct MovieCastCredit {
     pub id: u64,
-    pub title: String,
-    pub original_title: String,
+    #[serde(rename = "title")]
+    pub name: String,
+    #[serde(rename = "original_title")]
+    pub original_name: String,
     pub character: Option<String>,
     #[serde(rename = "poster_path")]
     pub poster: Option<Poster>,
@@ -80,8 +82,10 @@ pub enum CastCredit {
 #[derive(Debug, Clone, Deserialize)]
 pub struct MovieCrewCredit {
     pub id: u64,
-    pub title: String,
-    pub original_title: String,
+    #[serde(rename = "title")]
+    pub name: String,
+    #[serde(rename = "original_title")]
+    pub original_name: String,
     pub job: String,
     pub department: String,
     #[serde(rename = "poster_path")]

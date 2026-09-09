@@ -37,7 +37,7 @@ async fn movie_with_appends() {
             .send()
             .await
     });
-    assert_eq!(movie.title, "Fight Club");
+    assert_eq!(movie.name, "Fight Club");
     assert!(!movie.credits.cast.is_empty());
     assert!(!movie.release_dates.results.is_empty());
     assert!(!movie.similar.results.is_empty());

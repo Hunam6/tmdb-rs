@@ -30,8 +30,10 @@ pub struct CreditEpisode {
 #[derive(Debug, Clone, Deserialize)]
 pub struct CreditMovie {
     pub id: u64,
-    pub title: String,
-    pub original_title: String,
+    #[serde(rename = "title")]
+    pub name: String,
+    #[serde(rename = "original_title")]
+    pub original_name: String,
     #[serde(rename = "poster_path")]
     pub poster: Option<Poster>,
     #[serde(rename = "backdrop_path")]

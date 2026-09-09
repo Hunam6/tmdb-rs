@@ -12,7 +12,7 @@
 //! let tmdb = tmdb_rs::Client::new(std::env::var("TMDB_READ_TOKEN").unwrap());
 //!
 //! let movie = tmdb.movie(550).with_credits().with_similar().send().await?;
-//! println!("{}", movie.title);
+//! println!("{}", movie.name);
 //! println!("{} cast members", movie.credits.cast.len());
 //! println!("{} similar movies", movie.similar.results.len());
 //! // movie.images is () — it wasn't requested, and the type says so
