@@ -1,6 +1,8 @@
-use std::fmt;
+// the derived Display still names the dead variants so old data keeps parsing
+#![allow(deprecated)]
 
 use serde::Deserialize;
+use strum::Display;
 use time::Date;
 
 use crate::datetime::opt_date;
@@ -10,45 +12,35 @@ use crate::endpoints::tv::TvShort;
 use crate::{Language, Poster, Still};
 
 /// the database an external id comes from
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Display)]
 pub enum ExternalSource {
+    #[strum(serialize = "imdb_id")]
     Imdb,
     #[deprecated = "freebase shut down in 2016; TMDB no longer supports this source"]
+    #[strum(serialize = "freebase_mid")]
     FreebaseMid,
     #[deprecated = "freebase shut down in 2016; TMDB no longer supports this source"]
+    #[strum(serialize = "freebase_id")]
     Freebase,
+    #[strum(serialize = "tvdb_id")]
     Tvdb,
     #[deprecated = "tvrage shut down; TMDB no longer supports this source"]
+    #[strum(serialize = "tvrage_id")]
     Tvrage,
+    #[strum(serialize = "facebook_id")]
     Facebook,
+    #[strum(serialize = "instagram_id")]
     Instagram,
+    #[strum(serialize = "threads_id")]
     Threads,
+    #[strum(serialize = "tiktok_id")]
     Tiktok,
+    #[strum(serialize = "twitter_id")]
     Twitter,
+    #[strum(serialize = "wikidata_id")]
     Wikidata,
+    #[strum(serialize = "youtube_id")]
     Youtube,
-}
-
-// the match still names the dead variants so old data keeps parsing
-#[allow(deprecated)]
-impl fmt::Display for ExternalSource {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        let source = match self {
-            Self::Imdb => "imdb_id",
-            Self::FreebaseMid => "freebase_mid",
-            Self::Freebase => "freebase_id",
-            Self::Tvdb => "tvdb_id",
-            Self::Tvrage => "tvrage_id",
-            Self::Facebook => "facebook_id",
-            Self::Instagram => "instagram_id",
-            Self::Threads => "threads_id",
-            Self::Tiktok => "tiktok_id",
-            Self::Twitter => "twitter_id",
-            Self::Wikidata => "wikidata_id",
-            Self::Youtube => "youtube_id",
-        };
-        f.write_str(source)
-    }
 }
 
 /// one season found by external id
@@ -78,12 +70,6 @@ pub struct FoundEpisode {
     pub still: Option<Still>,
     pub vote_average: f64,
     pub vote_count: u32,
-}
-
-impl crate::ToParam for ExternalSource {
-    fn to_param(&self) -> String {
-        self.to_string()
-    }
 }
 
 /// everything matching one external id

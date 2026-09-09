@@ -29,6 +29,7 @@ to_param!(
     GuestSessionId,
     crate::endpoints::account::AccountSort,
     crate::endpoints::discover::MovieSort,
+    crate::endpoints::find::ExternalSource,
     crate::endpoints::discover::TvSort,
     crate::v4::V4Sort,
 );
