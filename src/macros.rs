@@ -1,7 +1,8 @@
 /// an endpoint: `Client` method, builder with one method per optional query
 /// param, `send()`. a signature param fills the path's `{name}` hole, or
 /// becomes a required query param when the path has no such hole. body fields
-/// become method args.
+/// become method args. `=> T [key]` unwraps a single-key envelope like
+/// `{"genres": [...]}` so the endpoint returns `T` directly
 ///
 /// a `base { }` + `appends { }` section makes it a detail endpoint with
 /// compile-time append_to_response: each `with_*` fills one slot of the
@@ -15,26 +16,26 @@ macro_rules! endpoint {
     (
         $(@gen $recv:ident,)?
         $(#[$meta:meta])*
-        $method:ident ($($pn:ident : $pt:ty),* $(,)?): $verb:ident $path:literal => $resp:ty
+        $method:ident ($($pn:ident : $pt:ty),* $(,)?): $verb:ident $path:literal => $resp:ty $([$key:ident])?
     ) => {
         endpoint! {
             @full $(@gen $recv,)?
             $(#[$meta])*
-            $method($($pn : $pt),*): $verb $path => $resp { params {} body {} }
+            $method($($pn : $pt),*): $verb $path => $resp $([$key])? { params {} body {} }
         }
     };
     // params only
     (
         $(@gen $recv:ident,)?
         $(#[$meta:meta])*
-        $method:ident ($($pn:ident : $pt:ty),* $(,)?): $verb:ident $path:literal => $resp:ty {
+        $method:ident ($($pn:ident : $pt:ty),* $(,)?): $verb:ident $path:literal => $resp:ty $([$key:ident])? {
             params { $($qp:ident : $qt:ty),* $(,)? }
         }
     ) => {
         endpoint! {
             @full $(@gen $recv,)?
             $(#[$meta])*
-            $method($($pn : $pt),*): $verb $path => $resp {
+            $method($($pn : $pt),*): $verb $path => $resp $([$key])? {
                 params { $($qp : $qt),* }
                 body {}
             }
@@ -44,14 +45,14 @@ macro_rules! endpoint {
     (
         $(@gen $recv:ident,)?
         $(#[$meta:meta])*
-        $method:ident ($($pn:ident : $pt:ty),* $(,)?): $verb:ident $path:literal => $resp:ty {
+        $method:ident ($($pn:ident : $pt:ty),* $(,)?): $verb:ident $path:literal => $resp:ty $([$key:ident])? {
             body { $($bn:ident : $bt:ty),* $(,)? }
         }
     ) => {
         endpoint! {
             @full $(@gen $recv,)?
             $(#[$meta])*
-            $method($($pn : $pt),*): $verb $path => $resp {
+            $method($($pn : $pt),*): $verb $path => $resp $([$key])? {
                 params {}
                 body { $($bn : $bt),* }
             }
@@ -61,7 +62,7 @@ macro_rules! endpoint {
     (
         $(@gen $recv:ident,)?
         $(#[$meta:meta])*
-        $method:ident ($($pn:ident : $pt:ty),* $(,)?): $verb:ident $path:literal => $resp:ty {
+        $method:ident ($($pn:ident : $pt:ty),* $(,)?): $verb:ident $path:literal => $resp:ty $([$key:ident])? {
             params { $($qp:ident : $qt:ty),* $(,)? }
             body { $($bn:ident : $bt:ty),* $(,)? }
         }
@@ -69,7 +70,7 @@ macro_rules! endpoint {
         endpoint! {
             @full $(@gen $recv,)?
             $(#[$meta])*
-            $method($($pn : $pt),*): $verb $path => $resp {
+            $method($($pn : $pt),*): $verb $path => $resp $([$key])? {
                 params { $($qp : $qt),* }
                 body { $($bn : $bt),* }
             }
@@ -78,12 +79,12 @@ macro_rules! endpoint {
     // full form: default the receiver to the v3 client
     (
         @full $(#[$meta:meta])*
-        $method:ident ($($pn:ident : $pt:ty),* $(,)?): $verb:ident $path:literal => $resp:ty {
+        $method:ident ($($pn:ident : $pt:ty),* $(,)?): $verb:ident $path:literal => $resp:ty $([$key:ident])? {
             params { $($qp:ident : $qt:ty),* $(,)? }
             body { $($bn:ident : $bt:ty),* $(,)? }
         }
     ) => {
-        endpoint!(@full @gen Client, $(#[$meta])* $method($($pn : $pt),*): $verb $path => $resp {
+        endpoint!(@full @gen Client, $(#[$meta])* $method($($pn : $pt),*): $verb $path => $resp $([$key])? {
             params { $($qp : $qt),* }
             body { $($bn : $bt),* }
         });
@@ -91,7 +92,7 @@ macro_rules! endpoint {
     // generator, with the receiver made explicit so v4 can share it
     (
         @full @gen $recv:ident, $(#[$meta:meta])*
-        $method:ident ($($pn:ident : $pt:ty),* $(,)?): $verb:ident $path:literal => $resp:ty {
+        $method:ident ($($pn:ident : $pt:ty),* $(,)?): $verb:ident $path:literal => $resp:ty $([$key:ident])? {
             params { $($qp:ident : $qt:ty),* $(,)? }
             body { $($bn:ident : $bt:ty),* $(,)? }
         }
@@ -126,7 +127,7 @@ macro_rules! endpoint {
                 )*
 
                 pub async fn send(self) -> $crate::Result<$resp> {
-                    endpoint!(@send $verb self)
+                    endpoint!(@send $verb self $resp $([$key])?)
                 }
             }
         }
@@ -149,10 +150,17 @@ macro_rules! endpoint {
         path
     }};
 
-    (@send GET $self:ident) => {
+    // unwrap a single-key envelope like {"genres": [...]}
+    (@send GET $self:ident $resp:ty [$key:ident]) => {{
+        #[derive(::serde::Deserialize)]
+        struct Envelope { $key: $resp }
+        let envelope: Envelope = $self.client.get(&$self.path, &$self.pairs).await?;
+        Ok(envelope.$key)
+    }};
+    (@send GET $self:ident $resp:ty) => {
         $self.client.get(&$self.path, &$self.pairs).await
     };
-    (@send $verb:ident $self:ident) => {
+    (@send $verb:ident $self:ident $resp:ty) => {
         ::paste::paste! { $self.client.[<$verb:lower>](&$self.path, &$self.pairs, &$self._body).await }
     };
 
@@ -186,7 +194,7 @@ macro_rules! endpoint {
     ) => {
         endpoint! {
             $(#[$meta])*
-            $method($($pn : $pt),*): GET $path => $resp {
+            $method($($pn : $pt),*): GET $path => $resp $([$key])? {
                 params {}
                 base { $($(#[$bm])* pub $bf : $bt),* }
                 appends { $($(#[$am])* $an : $at $(as $key)?),* }

@@ -68,7 +68,7 @@ async fn season_and_search() {
         assert!(!page.results.is_empty());
 
         let genres = tmdb.movie_genres().send().await?;
-        assert!(!genres.genres.is_empty());
+        assert!(!genres.is_empty());
         Ok::<(), tmdb_rs::Error>(())
     });
 }
