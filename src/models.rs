@@ -209,15 +209,21 @@ pub struct Translation {
     pub data: TranslationData,
 }
 
+/// movies fill `title`, series `name`
 #[derive(Debug, Clone, Deserialize)]
 pub struct TranslationData {
-    /// movies
     pub title: Option<String>,
-    /// series
     pub name: Option<String>,
     pub overview: Option<String>,
     pub homepage: Option<String>,
     pub tagline: Option<String>,
+}
+
+impl TranslationData {
+    /// the translated title, whichever of the movie/series keys it came in
+    pub fn display_title(&self) -> Option<&str> {
+        self.title.as_deref().or(self.name.as_deref())
+    }
 }
 
 #[derive(Debug, Clone, Deserialize)]

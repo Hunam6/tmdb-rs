@@ -26,26 +26,41 @@ pub struct CreditEpisode {
     pub overview: Option<String>,
 }
 
-/// the movie or series a credit points at
+/// the movie a credit points at
 #[derive(Debug, Clone, Deserialize)]
-pub struct CreditMedia {
+pub struct CreditMovie {
     pub id: u64,
-    /// movies
-    pub title: Option<String>,
-    pub original_title: Option<String>,
-    /// series
-    pub name: Option<String>,
-    pub original_name: Option<String>,
+    pub title: String,
+    pub original_title: String,
     #[serde(rename = "poster_path")]
     pub poster: Option<Poster>,
     #[serde(rename = "backdrop_path")]
     pub backdrop: Option<Backdrop>,
-    pub media_type: Option<String>,
+}
+
+/// the series a credit points at
+#[derive(Debug, Clone, Deserialize)]
+pub struct CreditSeries {
+    pub id: u64,
+    pub name: String,
+    pub original_name: String,
+    #[serde(rename = "poster_path")]
+    pub poster: Option<Poster>,
+    #[serde(rename = "backdrop_path")]
+    pub backdrop: Option<Backdrop>,
     #[serde(default)]
     pub seasons: Vec<CreditSeason>,
     #[serde(default)]
     pub episodes: Vec<CreditEpisode>,
     pub character: Option<String>,
+}
+
+/// the movie or series a credit points at, discriminated by TMDB's `media_type`
+#[derive(Debug, Clone, Deserialize)]
+#[serde(tag = "media_type", rename_all = "snake_case")]
+pub enum CreditMedia {
+    Movie(CreditMovie),
+    Tv(CreditSeries),
 }
 
 /// a single credit by its credit id

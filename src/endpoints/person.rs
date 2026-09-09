@@ -146,7 +146,7 @@ pub struct PersonImages {
     pub profiles: Vec<Image<Profile>>,
 }
 
-/// the media a tagged image belongs to
+/// the media a tagged image belongs to; movies fill `title`, series `name`
 #[derive(Debug, Clone, Deserialize)]
 pub struct TaggedMedia {
     pub id: u64,
@@ -157,6 +157,13 @@ pub struct TaggedMedia {
     #[serde(rename = "backdrop_path")]
     pub backdrop: Option<Backdrop>,
     pub vote_average: Option<f64>,
+}
+
+impl TaggedMedia {
+    /// the title, whichever of the movie/series keys it came in
+    pub fn display_title(&self) -> Option<&str> {
+        self.title.as_deref().or(self.name.as_deref())
+    }
 }
 
 #[derive(Debug, Clone, Deserialize)]
