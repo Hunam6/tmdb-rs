@@ -46,6 +46,7 @@ impl Client {
     /// the v4 api, authenticated with a user access token from the v4 auth
     /// flow — a different credential than the read token, so mixing them is
     /// a compile error
+    #[cfg(feature = "v4")]
     pub fn v4(&self, access_token: &crate::AccessToken) -> crate::V4 {
         let mut client = self.clone();
         // a custom base (proxy, mock) serves both versions as-is
@@ -86,6 +87,7 @@ impl Client {
             .await
     }
 
+    #[cfg(feature = "v4")]
     pub(crate) async fn put<T: DeserializeOwned>(
         &self,
         path: &str,

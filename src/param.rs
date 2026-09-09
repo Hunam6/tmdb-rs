@@ -32,7 +32,6 @@ to_param!(
     crate::endpoints::find::ExternalSource,
     crate::endpoints::trending::TimeWindow,
     crate::endpoints::discover::TvSort,
-    crate::v4::V4Sort,
 );
 
 impl ToParam for Language {

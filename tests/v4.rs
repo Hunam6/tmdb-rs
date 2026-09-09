@@ -1,3 +1,5 @@
+#![cfg(feature = "v4")]
+
 use tmdb_rs::{AccessToken, Client, MediaType};
 use wiremock::matchers::{bearer_token, body_json, method, path};
 use wiremock::{Mock, MockServer, ResponseTemplate};

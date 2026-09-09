@@ -29,6 +29,7 @@ credential! {
     SessionId
 }
 
+#[cfg(feature = "v4")]
 credential! {
     /// a v4 user access token, from the v4 auth flow
     AccessToken

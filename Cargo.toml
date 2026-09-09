@@ -16,6 +16,7 @@ rustdoc-args = ["--cfg", "docsrs"]
 [features]
 default = []
 stream = ["dep:futures-core"]
+v4 = []
 
 [dependencies]
 reqwest = { version = "0.13.4", default-features = false, features = ["json", "query", "rustls"] }

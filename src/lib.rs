@@ -35,12 +35,15 @@ mod page;
 mod param;
 #[cfg(feature = "stream")]
 pub mod stream;
+#[cfg(feature = "v4")]
 mod v4;
 
 pub use append::Append;
 pub use client::Client;
 pub use common::*;
-pub use credentials::{AccessToken, GuestSessionId, SessionId};
+#[cfg(feature = "v4")]
+pub use credentials::AccessToken;
+pub use credentials::{GuestSessionId, SessionId};
 pub use endpoints::account::*;
 pub use endpoints::authentication::*;
 pub use endpoints::certification::*;
@@ -68,6 +71,7 @@ pub use isolang::Language;
 pub use page::Page;
 pub use param::ToParam;
 pub use time::Date;
+#[cfg(feature = "v4")]
 pub use v4::*;
 
 pub type Result<T> = std::result::Result<T, Error>;

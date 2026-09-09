@@ -83,6 +83,12 @@ pub enum V4Sort {
     CreatedAtDesc,
 }
 
+impl crate::ToParam for V4Sort {
+    fn to_param(&self) -> String {
+        self.to_string()
+    }
+}
+
 /// step 1's answer: the request token to send the user to approve
 #[derive(Debug, Clone, Deserialize)]
 pub struct V4RequestToken {
