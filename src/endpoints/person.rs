@@ -299,7 +299,7 @@ endpoint! {
 
 endpoint! {
     /// a person's profile images
-    person_images(id: u64): GET "/person/{id}/images" => PersonImages
+    person_images(id: u64): GET "/person/{id}/images" => Vec<Image<Profile>> [profiles]
 }
 
 endpoint! {
