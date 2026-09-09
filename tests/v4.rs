@@ -5,7 +5,7 @@ use wiremock::matchers::{bearer_token, body_json, method, path};
 use wiremock::{Mock, MockServer, ResponseTemplate};
 
 fn v4(server: &MockServer) -> tmdb_rs::V4 {
-    let client = Client::new("read-token").with_base_url(server.uri());
+    let client = Client::with_read_token("read-token").with_base_url(server.uri());
     client.v4(&AccessToken::new("user-token"))
 }
 

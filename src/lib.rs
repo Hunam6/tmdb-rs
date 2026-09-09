@@ -9,7 +9,7 @@
 //!
 //! ```no_run
 //! # async fn example() -> tmdb_rs::Result<()> {
-//! let tmdb = tmdb_rs::Client::new(std::env::var("TMDB_READ_TOKEN").unwrap());
+//! let tmdb = tmdb_rs::Client::with_read_token(std::env::var("TMDB_READ_TOKEN").unwrap());
 //!
 //! let movie = tmdb.movie(550).with_credits().with_similar().send().await?;
 //! println!("{}", movie.name);

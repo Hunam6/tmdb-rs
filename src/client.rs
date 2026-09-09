@@ -26,7 +26,7 @@ pub struct Client {
 
 impl Client {
     /// authenticate with a v4 read access token
-    pub fn new(read_access_token: impl Into<String>) -> Self {
+    pub fn with_read_token(read_access_token: impl Into<String>) -> Self {
         Self::build(Auth::Token(read_access_token.into()))
     }
 
