@@ -5,7 +5,7 @@
 
 use serde::de::DeserializeOwned;
 use serde::{Deserialize, Serialize};
-
+use strum::Display;
 use crate::endpoints::movie::MovieShort;
 use crate::endpoints::search::MultiResult;
 use crate::endpoints::tv::TvShort;
@@ -58,34 +58,28 @@ impl V4 {
 }
 
 /// the v4 list sort orders
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Display)]
 pub enum V4Sort {
-    #[serde(rename = "original_order.asc")]
+    #[strum(serialize = "original_order.asc")]
     OriginalOrderAsc,
-    #[serde(rename = "original_order.desc")]
+    #[strum(serialize = "original_order.desc")]
     OriginalOrderDesc,
-    #[serde(rename = "title.asc")]
+    #[strum(serialize = "title.asc")]
     TitleAsc,
-    #[serde(rename = "title.desc")]
+    #[strum(serialize = "title.desc")]
     TitleDesc,
-    #[serde(rename = "release_date.asc")]
+    #[strum(serialize = "release_date.asc")]
     ReleaseDateAsc,
-    #[serde(rename = "release_date.desc")]
+    #[strum(serialize = "release_date.desc")]
     ReleaseDateDesc,
-    #[serde(rename = "vote_average.asc")]
+    #[strum(serialize = "vote_average.asc")]
     VoteAverageAsc,
-    #[serde(rename = "vote_average.desc")]
+    #[strum(serialize = "vote_average.desc")]
     VoteAverageDesc,
-    #[serde(rename = "created_at.asc")]
+    #[strum(serialize = "created_at.asc")]
     CreatedAtAsc,
-    #[serde(rename = "created_at.desc")]
+    #[strum(serialize = "created_at.desc")]
     CreatedAtDesc,
-}
-
-impl crate::ToParam for V4Sort {
-    fn to_param(&self) -> String {
-        crate::param::serde_param(self)
-    }
 }
 
 /// step 1's answer: the request token to send the user to approve

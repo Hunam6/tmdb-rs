@@ -1,82 +1,68 @@
-use serde::Serialize;
-
+use strum::Display;
 use crate::endpoints::movie::MovieShort;
 use crate::endpoints::tv::TvShort;
-use crate::param::serde_param;
-use crate::{CountryCode, Date, Language, Page, ToParam};
+use crate::{CountryCode, Date, Language, Page};
 
 /// the movie discover sort orders
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Display)]
 pub enum MovieSort {
-    #[serde(rename = "original_title.asc")]
+    #[strum(serialize = "original_title.asc")]
     OriginalTitleAsc,
-    #[serde(rename = "original_title.desc")]
+    #[strum(serialize = "original_title.desc")]
     OriginalTitleDesc,
-    #[serde(rename = "popularity.asc")]
+    #[strum(serialize = "popularity.asc")]
     PopularityAsc,
-    #[serde(rename = "popularity.desc")]
+    #[strum(serialize = "popularity.desc")]
     PopularityDesc,
-    #[serde(rename = "revenue.asc")]
+    #[strum(serialize = "revenue.asc")]
     RevenueAsc,
-    #[serde(rename = "revenue.desc")]
+    #[strum(serialize = "revenue.desc")]
     RevenueDesc,
-    #[serde(rename = "primary_release_date.asc")]
+    #[strum(serialize = "primary_release_date.asc")]
     PrimaryReleaseDateAsc,
-    #[serde(rename = "primary_release_date.desc")]
+    #[strum(serialize = "primary_release_date.desc")]
     PrimaryReleaseDateDesc,
-    #[serde(rename = "title.asc")]
+    #[strum(serialize = "title.asc")]
     TitleAsc,
-    #[serde(rename = "title.desc")]
+    #[strum(serialize = "title.desc")]
     TitleDesc,
-    #[serde(rename = "vote_average.asc")]
+    #[strum(serialize = "vote_average.asc")]
     VoteAverageAsc,
-    #[serde(rename = "vote_average.desc")]
+    #[strum(serialize = "vote_average.desc")]
     VoteAverageDesc,
-    #[serde(rename = "vote_count.asc")]
+    #[strum(serialize = "vote_count.asc")]
     VoteCountAsc,
-    #[serde(rename = "vote_count.desc")]
+    #[strum(serialize = "vote_count.desc")]
     VoteCountDesc,
-}
-
-impl ToParam for MovieSort {
-    fn to_param(&self) -> String {
-        serde_param(self)
-    }
 }
 
 /// the series discover sort orders
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Display)]
 pub enum TvSort {
-    #[serde(rename = "first_air_date.asc")]
+    #[strum(serialize = "first_air_date.asc")]
     FirstAirDateAsc,
-    #[serde(rename = "first_air_date.desc")]
+    #[strum(serialize = "first_air_date.desc")]
     FirstAirDateDesc,
-    #[serde(rename = "name.asc")]
+    #[strum(serialize = "name.asc")]
     NameAsc,
-    #[serde(rename = "name.desc")]
+    #[strum(serialize = "name.desc")]
     NameDesc,
-    #[serde(rename = "original_name.asc")]
+    #[strum(serialize = "original_name.asc")]
     OriginalNameAsc,
-    #[serde(rename = "original_name.desc")]
+    #[strum(serialize = "original_name.desc")]
     OriginalNameDesc,
-    #[serde(rename = "popularity.asc")]
+    #[strum(serialize = "popularity.asc")]
     PopularityAsc,
-    #[serde(rename = "popularity.desc")]
+    #[strum(serialize = "popularity.desc")]
     PopularityDesc,
-    #[serde(rename = "vote_average.asc")]
+    #[strum(serialize = "vote_average.asc")]
     VoteAverageAsc,
-    #[serde(rename = "vote_average.desc")]
+    #[strum(serialize = "vote_average.desc")]
     VoteAverageDesc,
-    #[serde(rename = "vote_count.asc")]
+    #[strum(serialize = "vote_count.asc")]
     VoteCountAsc,
-    #[serde(rename = "vote_count.desc")]
+    #[strum(serialize = "vote_count.desc")]
     VoteCountDesc,
-}
-
-impl ToParam for TvSort {
-    fn to_param(&self) -> String {
-        serde_param(self)
-    }
 }
 
 endpoint! {

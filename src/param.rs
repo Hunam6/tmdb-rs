@@ -15,7 +15,23 @@ macro_rules! to_param {
     )*};
 }
 
-to_param!(u32, u64, i32, i64, f64, bool, &str, String, Date, SessionId, GuestSessionId);
+to_param!(
+    u32,
+    u64,
+    i32,
+    i64,
+    f64,
+    bool,
+    &str,
+    String,
+    Date,
+    SessionId,
+    GuestSessionId,
+    crate::endpoints::account::AccountSort,
+    crate::endpoints::discover::MovieSort,
+    crate::endpoints::discover::TvSort,
+    crate::v4::V4Sort,
+);
 
 impl ToParam for Language {
     fn to_param(&self) -> String {
@@ -27,14 +43,6 @@ impl ToParam for Language {
 impl ToParam for CountryCode {
     fn to_param(&self) -> String {
         self.alpha2().into()
-    }
-}
-
-/// enums whose wire form a serde derive already spells out
-pub(crate) fn serde_param(value: &impl serde::Serialize) -> String {
-    match serde_json::to_value(value).expect("a unit variant") {
-        serde_json::Value::String(s) => s,
-        _ => unreachable!("unit variants serialize to strings"),
     }
 }
 

@@ -1,4 +1,5 @@
 use serde::Deserialize;
+use strum::Display;
 use time::Date;
 
 use crate::datetime::opt_date;
@@ -8,18 +9,12 @@ use crate::models::{ListShort, MediaType, StatusResponse};
 use crate::{CountryCode, Language, Page, SessionId};
 
 /// the sort order of account lists
-#[derive(Debug, Clone, Copy, PartialEq, Eq, serde::Serialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Display)]
 pub enum AccountSort {
-    #[serde(rename = "created_at.asc")]
+    #[strum(serialize = "created_at.asc")]
     CreatedAtAsc,
-    #[serde(rename = "created_at.desc")]
+    #[strum(serialize = "created_at.desc")]
     CreatedAtDesc,
-}
-
-impl crate::ToParam for AccountSort {
-    fn to_param(&self) -> String {
-        crate::param::serde_param(self)
-    }
 }
 
 #[derive(Debug, Clone, Deserialize)]
@@ -63,6 +58,15 @@ pub struct RatedEpisode {
     pub vote_average: f64,
     pub rating: f64,
 }
+
+/// the account's watch provider preferences
+#[derive(Debug, Clone, Deserialize)]
+pub struct AccountWatchProviders {
+    pub id: u64,
+    pub watch_region: Option<String>,
+    pub watch_provider_ids: Vec<u64>,
+}
+
 
 endpoint! {
     /// the account the session belongs to
@@ -157,12 +161,4 @@ endpoint! {
         required { session_id: SessionId }
         params { watch_region: CountryCode }
     }
-}
-
-/// the account's watch provider preferences
-#[derive(Debug, Clone, Deserialize)]
-pub struct AccountWatchProviders {
-    pub id: u64,
-    pub watch_region: Option<String>,
-    pub watch_provider_ids: Vec<u64>,
 }
