@@ -150,40 +150,6 @@ pub struct PersonImages {
     pub profiles: Vec<Image<Profile>>,
 }
 
-/// the media a tagged image belongs to; movies fill `title`, series `name`
-#[derive(Debug, Clone, Deserialize)]
-pub struct TaggedMedia {
-    pub id: u64,
-    pub title: Option<String>,
-    pub name: Option<String>,
-    #[serde(rename = "poster_path")]
-    pub poster: Option<Poster>,
-    #[serde(rename = "backdrop_path")]
-    pub backdrop: Option<Backdrop>,
-    pub vote_average: Option<f64>,
-}
-
-impl TaggedMedia {
-    /// the title, whichever of the movie/series keys it came in
-    pub fn display_title(&self) -> Option<&str> {
-        self.title.as_deref().or(self.name.as_deref())
-    }
-}
-
-#[derive(Debug, Clone, Deserialize)]
-pub struct TaggedImage {
-    pub id: String,
-    #[serde(rename = "file_path")]
-    pub file: String,
-    pub width: u32,
-    pub height: u32,
-    pub aspect_ratio: f64,
-    pub vote_average: f64,
-    pub vote_count: u32,
-    pub media_type: String,
-    pub media: Option<TaggedMedia>,
-}
-
 #[derive(Debug, Clone, Deserialize)]
 pub struct PersonTranslationData {
     pub biography: String,
@@ -242,8 +208,6 @@ endpoint! {
             external_ids: ExternalIds,
             images: PersonImages,
             movie_credits: PersonCredits,
-            #[deprecated = "TMDB deprecated tagged_images; it no longer returns data"]
-            tagged_images: Page<TaggedImage>,
             translations: PersonTranslations,
             tv_credits: PersonCredits,
         }
@@ -300,14 +264,6 @@ endpoint! {
 endpoint! {
     /// a person's profile images
     person_images(id: u64): GET "/person/{id}/images" => Vec<Image<Profile>> [profiles]
-}
-
-endpoint! {
-    /// the images a person is tagged in
-    #[deprecated = "TMDB deprecated this endpoint; it no longer returns data"]
-    person_tagged_images(id: u64): GET "/person/{id}/tagged_images" => Page<TaggedImage> {
-        params { page: u32 }
-    }
 }
 
 endpoint! {
