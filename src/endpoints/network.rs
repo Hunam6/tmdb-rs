@@ -8,7 +8,8 @@ pub struct NetworkDetails {
     pub id: u64,
     pub name: String,
     pub headquarters: Option<String>,
-    pub homepage: String,
+    #[serde(rename = "homepage")]
+    pub website: String,
     #[serde(rename = "logo_path")]
     pub logo: Option<Logo>,
     pub origin_country: Option<String>,

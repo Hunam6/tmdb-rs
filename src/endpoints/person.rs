@@ -226,7 +226,8 @@ endpoint! {
             #[serde(default, deserialize_with = "opt_date")]
             pub deathday: Option<Date>,
             pub gender: Option<u32>,
-            pub homepage: Option<String>,
+            #[serde(rename = "homepage")]
+            pub website: Option<String>,
             pub imdb_id: Option<String>,
             pub known_for_department: Option<String>,
             pub place_of_birth: Option<String>,

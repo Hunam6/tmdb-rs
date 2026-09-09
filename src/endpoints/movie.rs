@@ -61,7 +61,8 @@ endpoint! {
     pub backdrop: Option<Backdrop>,
             pub genres: Vec<Genre>,
             pub imdb_id: Option<String>,
-            pub homepage: String,
+            #[serde(rename = "homepage")]
+            pub website: String,
             pub status: String,
             pub budget: u64,
             pub revenue: u64,

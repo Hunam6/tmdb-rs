@@ -204,7 +204,8 @@ endpoint! {
             #[serde(rename = "backdrop_path")]
     pub backdrop: Option<Backdrop>,
             pub genres: Vec<Genre>,
-            pub homepage: String,
+            #[serde(rename = "homepage")]
+            pub website: String,
             pub status: String,
             pub in_production: bool,
             #[serde(default)]

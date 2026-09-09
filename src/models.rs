@@ -190,7 +190,8 @@ pub struct TranslationData {
     pub title: Option<String>,
     pub name: Option<String>,
     pub overview: Option<String>,
-    pub homepage: Option<String>,
+    #[serde(rename = "homepage")]
+    pub website: Option<String>,
     pub tagline: Option<String>,
 }
 

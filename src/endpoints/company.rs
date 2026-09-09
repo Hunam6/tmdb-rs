@@ -19,7 +19,8 @@ pub struct CompanyDetails {
     pub name: String,
     pub description: String,
     pub headquarters: Option<String>,
-    pub homepage: String,
+    #[serde(rename = "homepage")]
+    pub website: String,
     #[serde(rename = "logo_path")]
     pub logo: Option<Logo>,
     pub origin_country: Option<String>,
