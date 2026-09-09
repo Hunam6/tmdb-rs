@@ -203,6 +203,7 @@ details! {
             external_ids: ExternalIds,
             images: PersonImages,
             movie_credits: PersonCredits,
+            #[deprecated = "TMDB deprecated tagged_images; it no longer returns data"]
             tagged_images: Page<TaggedImage>,
             translations: PersonTranslations,
             tv_credits: PersonCredits,
@@ -264,6 +265,7 @@ endpoint! {
 
 endpoint! {
     /// the images a person is tagged in
+    #[deprecated = "TMDB deprecated this endpoint; it no longer returns data"]
     person_tagged_images(id: u64): GET "/person/{}/tagged_images" => Page<TaggedImage> {
         params { page: u32 }
     }

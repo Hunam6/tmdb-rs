@@ -226,7 +226,7 @@ macro_rules! details {
         $(#[$meta:meta])*
         $method:ident ($($pn:ident : $pt:ty),* $(,)?): GET $path:literal => $resp:ident {
             base { $($(#[$bm:meta])* pub $bf:ident : $bt:ty),* $(,)? }
-            appends { $($an:ident : $at:ty $(as $key:literal)?),* $(,)? }
+            appends { $($(#[$am:meta])* $an:ident : $at:ty $(as $key:literal)?),* $(,)? }
         }
     ) => {
         details! {
@@ -234,7 +234,7 @@ macro_rules! details {
             $method($($pn : $pt),*): GET $path => $resp {
                 params {}
                 base { $($(#[$bm])* pub $bf : $bt),* }
-                appends { $($an : $at $(as $key)?),* }
+                appends { $($(#[$am])* $an : $at $(as $key)?),* }
             }
         }
     };
@@ -244,7 +244,7 @@ macro_rules! details {
         $method:ident ($($pn:ident : $pt:ty),* $(,)?): GET $path:literal => $resp:ident {
             params { $($qp:ident : $qt:ty),* $(,)? }
             base { $($(#[$bm:meta])* pub $bf:ident : $bt:ty),* $(,)? }
-            appends { $($an:ident : $at:ty $(as $key:literal)?),* $(,)? }
+            appends { $($(#[$am:meta])* $an:ident : $at:ty $(as $key:literal)?),* $(,)? }
         }
     ) => {
         ::paste::paste! {
@@ -290,7 +290,7 @@ macro_rules! details {
                 )*
             }
 
-            details!(@withs [<$resp Request>] [$($pn,)*] [] [$($an : $at $(as $key)?,)*]);
+            details!(@withs [<$resp Request>] [$($pn,)*] [] [$($(#[$am])* $an : $at $(as $key)?,)*]);
 
             impl<$([<A $an:camel>]: $crate::Append),*> [<$resp Request>]<$([<A $an:camel>]),*> {
                 pub async fn send(self) -> $crate::Result<$resp<$([<A $an:camel>]),*>> {
@@ -353,9 +353,10 @@ macro_rules! details {
 
     // one with_* per append slot, available only while that slot is ()
     (@withs $req:ident [$($pn:ident,)*] [$($bn:ident : $bt:ty,)*] []) => {};
-    (@withs $req:ident [$($pn:ident,)*] [$($bn:ident : $bt:ty,)*] [$an:ident : $at:ty $(as $key:literal)?, $($rest:ident : $rt:ty $(as $rkey:literal)?,)*]) => {
+    (@withs $req:ident [$($pn:ident,)*] [$($bn:ident : $bt:ty,)*] [$(#[$am:meta])* $an:ident : $at:ty $(as $key:literal)?, $($(#[$rm:meta])* $rest:ident : $rt:ty $(as $rkey:literal)?,)*]) => {
         ::paste::paste! {
             impl<$([<A $bn:camel>],)* $([<A $rest:camel>],)*> $req<$([<A $bn:camel>],)* (), $([<A $rest:camel>],)*> {
+                $(#[$am])*
                 #[doc = concat!("append `", details!(@key $an $(as $key)?), "` to the response")]
                 pub fn [<with_ $an>](self) -> $req<$([<A $bn:camel>],)* $at, $([<A $rest:camel>],)*> {
                     $req {
@@ -367,6 +368,6 @@ macro_rules! details {
                 }
             }
         }
-        details!(@withs $req [$($pn,)*] [$($bn : $bt,)* $an : $at,] [$($rest : $rt,)*]);
+        details!(@withs $req [$($pn,)*] [$($bn : $bt,)* $an : $at,] [$($(#[$rm])* $rest : $rt $(as $rkey)?,)*]);
     };
 }

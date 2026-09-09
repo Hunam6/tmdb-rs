@@ -9,6 +9,7 @@ endpoint! {
 
 endpoint! {
     /// the movies tagged with a keyword
+    #[deprecated = "TMDB deprecated this endpoint; use discover_movies().with_keywords(...) instead"]
     keyword_movies(id: u64): GET "/keyword/{}/movies" => Page<MovieShort> {
         params { language: Language, include_adult: bool }
     }

@@ -13,9 +13,12 @@ use crate::Language;
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum ExternalSource {
     Imdb,
+    #[deprecated = "freebase shut down in 2016; TMDB no longer supports this source"]
     FreebaseMid,
+    #[deprecated = "freebase shut down in 2016; TMDB no longer supports this source"]
     Freebase,
     Tvdb,
+    #[deprecated = "tvrage shut down; TMDB no longer supports this source"]
     Tvrage,
     Facebook,
     Instagram,
@@ -26,6 +29,8 @@ pub enum ExternalSource {
     Youtube,
 }
 
+// the match still names the dead variants so old data keeps parsing
+#[allow(deprecated)]
 impl fmt::Display for ExternalSource {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let source = match self {
