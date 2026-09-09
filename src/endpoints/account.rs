@@ -3,9 +3,10 @@ use strum::Display;
 use time::Date;
 
 use crate::datetime::opt_date;
+use crate::endpoints::list::ListShort;
 use crate::endpoints::movie::MovieShort;
 use crate::endpoints::tv::TvShort;
-use crate::models::{ListShort, MediaType, StatusResponse};
+use crate::models::{MediaType, StatusResponse};
 use crate::{CountryCode, Language, Page, Profile, SessionId, Still};
 
 /// the sort order of account lists

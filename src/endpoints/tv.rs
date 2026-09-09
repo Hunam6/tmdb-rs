@@ -3,10 +3,11 @@ use time::Date;
 
 use crate::append::appendable;
 use crate::datetime::opt_date;
+use crate::endpoints::genre::Genre;
+use crate::endpoints::list::ListShort;
 use crate::models::{
-    AccountStates, AlternativeTitleResults, Changes, ContentRatings, Credits, ExternalIds, Genre,
-    Images, ListShort, Rated, Review, SeasonShort, StatusResponse, Translations, TvKeywords,
-    Videos, WatchProviders,
+    AccountStates, AlternativeTitleResults, Changes, ContentRatings, Credits, ExternalIds, Images,
+    Rated, Review, SeasonShort, StatusResponse, Translations, TvKeywords, Videos, WatchProviders,
 };
 use crate::{Backdrop, GuestSessionId, Language, Logo, Page, Poster, Profile, SessionId, Still};
 

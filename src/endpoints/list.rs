@@ -1,8 +1,31 @@
 use serde::Deserialize;
 
 use crate::endpoints::search::MultiResult;
-use crate::models::{ListType, StatusResponse};
+use crate::models::StatusResponse;
 use crate::{Language, Poster, SessionId};
+
+/// the kind of items a v3 list holds
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum ListType {
+    Movie,
+    Tv,
+}
+
+/// one list in a list-of-lists response
+#[derive(Debug, Clone, Deserialize)]
+pub struct ListShort {
+    pub id: u64,
+    pub name: String,
+    pub description: String,
+    pub item_count: u32,
+    #[serde(rename = "iso_639_1")]
+    pub language: Option<Language>,
+    pub list_type: Option<ListType>,
+    #[serde(rename = "poster_path")]
+    pub poster: Option<Poster>,
+    pub favorite: Option<bool>,
+}
 
 /// a v3 list and its items
 #[derive(Debug, Clone, Deserialize)]

@@ -3,10 +3,11 @@
 //! reached via [`Client::v4`]; every call authenticates with the v4 user
 //! access token, never the read token
 
+use crate::endpoints::list::ListShort;
 use crate::endpoints::movie::MovieShort;
 use crate::endpoints::search::MultiResult;
 use crate::endpoints::tv::TvShort;
-use crate::models::{ListShort, MediaType, StatusResponse};
+use crate::models::{MediaType, StatusResponse};
 use crate::{AccessToken, Backdrop, Client, CountryCode, Language, Page, Poster, Result};
 use serde::de::DeserializeOwned;
 use serde::{Deserialize, Serialize};

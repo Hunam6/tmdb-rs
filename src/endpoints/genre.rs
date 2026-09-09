@@ -1,5 +1,11 @@
-use crate::models::Genre;
 use crate::Language;
+use serde::Deserialize;
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct Genre {
+    pub id: u64,
+    pub name: String,
+}
 
 endpoint! {
     /// the movie genre list
