@@ -1,13 +1,15 @@
 [package]
 name = "tmdb-rs"
-version = "0.1.0"
+version = "1.0.0"
 edition = "2021"
 rust-version = "1.85"
 license = "MIT"
 description = "Async, fully-typed TMDB (API v3 + v4) client with compile-time append_to_response"
-keywords = ["tmdb", "movies", "api", "client"]
+keywords = ["tmdb", "api", "client", "movies", "series"]
 categories = ["api-bindings"]
 documentation = "https://docs.rs/tmdb-rs"
+repository = "https://github.com/Hunam6/tmdb-rs"
+exclude = [".github/", ".cargo/"]
 
 [package.metadata.docs.rs]
 all-features = true

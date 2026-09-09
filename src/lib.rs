@@ -20,6 +20,8 @@
 //! # }
 //! ```
 
+#![cfg_attr(docsrs, feature(doc_auto_cfg))]
+
 #[macro_use]
 mod macros;
 
