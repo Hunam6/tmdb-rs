@@ -1,5 +1,3 @@
-use std::fmt;
-
 use serde::Deserialize;
 use time::Date;
 
@@ -10,24 +8,17 @@ use crate::models::{ListShort, MediaType, StatusResponse};
 use crate::{CountryCode, Language, Page, SessionId};
 
 /// the sort order of account lists
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, serde::Serialize)]
 pub enum AccountSort {
+    #[serde(rename = "created_at.asc")]
     CreatedAtAsc,
+    #[serde(rename = "created_at.desc")]
     CreatedAtDesc,
-}
-
-impl fmt::Display for AccountSort {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        f.write_str(match self {
-            Self::CreatedAtAsc => "created_at.asc",
-            Self::CreatedAtDesc => "created_at.desc",
-        })
-    }
 }
 
 impl crate::ToParam for AccountSort {
     fn to_param(&self) -> String {
-        self.to_string()
+        crate::param::serde_param(self)
     }
 }
 

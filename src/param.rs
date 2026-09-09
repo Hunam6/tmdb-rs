@@ -30,6 +30,14 @@ impl ToParam for CountryCode {
     }
 }
 
+/// enums whose wire form a serde derive already spells out
+pub(crate) fn serde_param(value: &impl serde::Serialize) -> String {
+    match serde_json::to_value(value).expect("a unit variant") {
+        serde_json::Value::String(s) => s,
+        _ => unreachable!("unit variants serialize to strings"),
+    }
+}
+
 impl<T: ToParam> ToParam for &[T] {
     fn to_param(&self) -> String {
         self.iter()

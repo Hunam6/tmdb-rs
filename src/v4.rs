@@ -3,8 +3,6 @@
 //! reached via [`Client::v4`]; every call authenticates with the v4 user
 //! access token, never the read token
 
-use std::fmt;
-
 use serde::de::DeserializeOwned;
 use serde::{Deserialize, Serialize};
 
@@ -60,41 +58,33 @@ impl V4 {
 }
 
 /// the v4 list sort orders
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
 pub enum V4Sort {
+    #[serde(rename = "original_order.asc")]
     OriginalOrderAsc,
+    #[serde(rename = "original_order.desc")]
     OriginalOrderDesc,
+    #[serde(rename = "title.asc")]
     TitleAsc,
+    #[serde(rename = "title.desc")]
     TitleDesc,
+    #[serde(rename = "release_date.asc")]
     ReleaseDateAsc,
+    #[serde(rename = "release_date.desc")]
     ReleaseDateDesc,
+    #[serde(rename = "vote_average.asc")]
     VoteAverageAsc,
+    #[serde(rename = "vote_average.desc")]
     VoteAverageDesc,
+    #[serde(rename = "created_at.asc")]
     CreatedAtAsc,
+    #[serde(rename = "created_at.desc")]
     CreatedAtDesc,
-}
-
-impl fmt::Display for V4Sort {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        let key = match self {
-            Self::OriginalOrderAsc => "original_order.asc",
-            Self::OriginalOrderDesc => "original_order.desc",
-            Self::TitleAsc => "title.asc",
-            Self::TitleDesc => "title.desc",
-            Self::ReleaseDateAsc => "release_date.asc",
-            Self::ReleaseDateDesc => "release_date.desc",
-            Self::VoteAverageAsc => "vote_average.asc",
-            Self::VoteAverageDesc => "vote_average.desc",
-            Self::CreatedAtAsc => "created_at.asc",
-            Self::CreatedAtDesc => "created_at.desc",
-        };
-        f.write_str(key)
-    }
 }
 
 impl crate::ToParam for V4Sort {
     fn to_param(&self) -> String {
-        self.to_string()
+        crate::param::serde_param(self)
     }
 }
 

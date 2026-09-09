@@ -1,68 +1,81 @@
-use std::fmt;
+use serde::Serialize;
 
 use crate::endpoints::movie::MovieShort;
 use crate::endpoints::tv::TvShort;
-use crate::{CountryCode, Date, Language, Page};
+use crate::param::serde_param;
+use crate::{CountryCode, Date, Language, Page, ToParam};
 
-macro_rules! sort {
-    ($(#[$meta:meta])* $name:ident { $($variant:ident = $key:literal),* $(,)? }) => {
-        $(#[$meta])*
-        #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-        pub enum $name {
-            $($variant,)*
-        }
-
-        impl fmt::Display for $name {
-            fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-                f.write_str(match self {
-                    $(Self::$variant => $key,)*
-                })
-            }
-        }
-
-        impl crate::ToParam for $name {
-            fn to_param(&self) -> String {
-                self.to_string()
-            }
-        }
-    };
+/// the movie discover sort orders
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
+pub enum MovieSort {
+    #[serde(rename = "original_title.asc")]
+    OriginalTitleAsc,
+    #[serde(rename = "original_title.desc")]
+    OriginalTitleDesc,
+    #[serde(rename = "popularity.asc")]
+    PopularityAsc,
+    #[serde(rename = "popularity.desc")]
+    PopularityDesc,
+    #[serde(rename = "revenue.asc")]
+    RevenueAsc,
+    #[serde(rename = "revenue.desc")]
+    RevenueDesc,
+    #[serde(rename = "primary_release_date.asc")]
+    PrimaryReleaseDateAsc,
+    #[serde(rename = "primary_release_date.desc")]
+    PrimaryReleaseDateDesc,
+    #[serde(rename = "title.asc")]
+    TitleAsc,
+    #[serde(rename = "title.desc")]
+    TitleDesc,
+    #[serde(rename = "vote_average.asc")]
+    VoteAverageAsc,
+    #[serde(rename = "vote_average.desc")]
+    VoteAverageDesc,
+    #[serde(rename = "vote_count.asc")]
+    VoteCountAsc,
+    #[serde(rename = "vote_count.desc")]
+    VoteCountDesc,
 }
 
-sort! {
-    /// the movie discover sort orders
-    MovieSort {
-        OriginalTitleAsc = "original_title.asc",
-        OriginalTitleDesc = "original_title.desc",
-        PopularityAsc = "popularity.asc",
-        PopularityDesc = "popularity.desc",
-        RevenueAsc = "revenue.asc",
-        RevenueDesc = "revenue.desc",
-        PrimaryReleaseDateAsc = "primary_release_date.asc",
-        PrimaryReleaseDateDesc = "primary_release_date.desc",
-        TitleAsc = "title.asc",
-        TitleDesc = "title.desc",
-        VoteAverageAsc = "vote_average.asc",
-        VoteAverageDesc = "vote_average.desc",
-        VoteCountAsc = "vote_count.asc",
-        VoteCountDesc = "vote_count.desc",
+impl ToParam for MovieSort {
+    fn to_param(&self) -> String {
+        serde_param(self)
     }
 }
 
-sort! {
-    /// the series discover sort orders
-    TvSort {
-        FirstAirDateAsc = "first_air_date.asc",
-        FirstAirDateDesc = "first_air_date.desc",
-        NameAsc = "name.asc",
-        NameDesc = "name.desc",
-        OriginalNameAsc = "original_name.asc",
-        OriginalNameDesc = "original_name.desc",
-        PopularityAsc = "popularity.asc",
-        PopularityDesc = "popularity.desc",
-        VoteAverageAsc = "vote_average.asc",
-        VoteAverageDesc = "vote_average.desc",
-        VoteCountAsc = "vote_count.asc",
-        VoteCountDesc = "vote_count.desc",
+/// the series discover sort orders
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
+pub enum TvSort {
+    #[serde(rename = "first_air_date.asc")]
+    FirstAirDateAsc,
+    #[serde(rename = "first_air_date.desc")]
+    FirstAirDateDesc,
+    #[serde(rename = "name.asc")]
+    NameAsc,
+    #[serde(rename = "name.desc")]
+    NameDesc,
+    #[serde(rename = "original_name.asc")]
+    OriginalNameAsc,
+    #[serde(rename = "original_name.desc")]
+    OriginalNameDesc,
+    #[serde(rename = "popularity.asc")]
+    PopularityAsc,
+    #[serde(rename = "popularity.desc")]
+    PopularityDesc,
+    #[serde(rename = "vote_average.asc")]
+    VoteAverageAsc,
+    #[serde(rename = "vote_average.desc")]
+    VoteAverageDesc,
+    #[serde(rename = "vote_count.asc")]
+    VoteCountAsc,
+    #[serde(rename = "vote_count.desc")]
+    VoteCountDesc,
+}
+
+impl ToParam for TvSort {
+    fn to_param(&self) -> String {
+        serde_param(self)
     }
 }
 
